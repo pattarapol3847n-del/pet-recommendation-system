@@ -13,6 +13,18 @@ st.set_page_config(
     layout="wide"
 )
 
+st.markdown("""
+<style>
+.pet-section-title {
+    color: #D4A017;
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+</style>
+""", unsafe_allow_html=True)
+
 
 # =========================================================
 # IMAGE FOLDER
@@ -387,13 +399,22 @@ elif page == "🐾 Pet Guide":
                     f"🐾 {pet['title']}"
                 )
 
-                st.markdown("**ลักษณะนิสัย**")
+                st.markdown(
+                    '<div class="pet-section-title">ลักษณะนิสัย</div>',
+                    unsafe_allow_html=True
+                )
                 st.write(pet["personality"])
 
-                st.markdown("**ลักษณะทั่วไป**")
+                st.markdown(
+                    '<div class="pet-section-title">ลักษณะทั่วไป</div>',
+                    unsafe_allow_html=True
+                )
                 st.write(pet["description"])
 
-                st.markdown("**การดูแลเบื้องต้น**")
+                st.markdown(
+                    '<div class="pet-section-title">การดูแลเบื้องต้น</div>',
+                    unsafe_allow_html=True
+                )
                 st.write(pet["care"])
 
                 st.markdown("---")
