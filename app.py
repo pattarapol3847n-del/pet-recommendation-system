@@ -1,5 +1,6 @@
 import streamlit as st
 from neo4j import GraphDatabase
+from pathlib import Path
 
 
 # =========================================================
@@ -11,6 +12,36 @@ st.set_page_config(
     page_icon="🐾",
     layout="wide"
 )
+
+
+# =========================================================
+# IMAGE FOLDER
+# =========================================================
+
+IMAGE_DIR = Path(__file__).parent / "images"
+
+
+def get_pet_image(pet_name):
+    """
+    Find the image file for each pet.
+    Supports jpg, jpeg, png and webp.
+    """
+
+    extensions = [
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".webp"
+    ]
+
+    for extension in extensions:
+
+        image_path = IMAGE_DIR / (pet_name.lower() + extension)
+
+        if image_path.exists():
+            return image_path
+
+    return None
 
 
 # =========================================================
@@ -206,7 +237,7 @@ elif page == "🐾 Pet Guide":
     st.title("🐾 Pet Guide")
 
     st.write(
-        "Learn about different types of pets, "
+        "Explore different types of pets and learn about "
         "their personality, characteristics, and care needs."
     )
 
@@ -221,89 +252,140 @@ elif page == "🐾 Pet Guide":
 
         {
             "name": "Dog",
-            "emoji": "🐶",
             "personality": "Friendly and social",
-            "description": "Dogs are friendly, social, and active companions.",
-            "care": "Needs regular exercise, attention, and daily care."
+            "description": (
+                "Dogs are friendly and social companions. "
+                "They often enjoy spending time with people "
+                "and regular activities."
+            ),
+            "care": (
+                "Needs regular exercise, attention, "
+                "food, clean water, and health care."
+            )
         },
 
         {
             "name": "Cat",
-            "emoji": "🐱",
             "personality": "Independent and adaptable",
-            "description": "Cats are independent animals that can adapt well to different homes.",
-            "care": "Needs food, clean water, litter care, and regular health care."
+            "description": (
+                "Cats are independent animals that can "
+                "adapt well to different home environments."
+            ),
+            "care": (
+                "Needs food, clean water, litter care, "
+                "playtime, and regular health care."
+            )
         },
 
         {
             "name": "Bird",
-            "emoji": "🐦",
             "personality": "Social and active",
-            "description": "Birds are small companions that can be social and active.",
-            "care": "Needs a suitable cage, clean water, food, and social interaction."
+            "description": (
+                "Birds are small companions that can be "
+                "social, active, and enjoyable to observe."
+            ),
+            "care": (
+                "Needs a suitable cage, clean water, "
+                "proper food, and social interaction."
+            )
         },
 
         {
             "name": "Rabbit",
-            "emoji": "🐰",
             "personality": "Gentle and quiet",
-            "description": "Rabbits are gentle and relatively quiet small companions.",
-            "care": "Needs clean living space, proper food, and regular care."
+            "description": (
+                "Rabbits are gentle and relatively quiet "
+                "small companions."
+            ),
+            "care": (
+                "Needs a clean living space, suitable food, "
+                "fresh water, and regular care."
+            )
         },
 
         {
             "name": "Fish",
-            "emoji": "🐟",
             "personality": "Quiet and calm",
-            "description": "Fish are quiet aquatic pets that can be suitable for small living spaces.",
-            "care": "Needs a suitable aquarium, clean water, and regular feeding."
+            "description": (
+                "Fish are quiet aquatic pets that can be "
+                "suitable for small living spaces."
+            ),
+            "care": (
+                "Needs a suitable aquarium, clean water, "
+                "proper food, and regular tank maintenance."
+            )
         },
 
         {
             "name": "Hamster",
-            "emoji": "🐹",
             "personality": "Small and active",
-            "description": "Hamsters are small companions that are easy to observe and care for.",
-            "care": "Needs a clean enclosure, food, water, and suitable exercise equipment."
+            "description": (
+                "Hamsters are small companions that are "
+                "interesting to observe and care for."
+            ),
+            "care": (
+                "Needs a clean enclosure, suitable food, "
+                "fresh water, and exercise equipment."
+            )
         },
 
         {
             "name": "Duck",
-            "emoji": "🦆",
             "personality": "Social and active",
-            "description": "Ducks are social animals that need suitable outdoor space.",
-            "care": "Needs outdoor space, clean water, food, and regular care."
+            "description": (
+                "Ducks are social animals that are active "
+                "and need suitable outdoor space."
+            ),
+            "care": (
+                "Needs outdoor space, clean water, proper "
+                "food, shelter, and regular care."
+            )
         },
 
         {
             "name": "Sheep",
-            "emoji": "🐑",
             "personality": "Social and calm",
-            "description": "Sheep are social farm animals that require outdoor space.",
-            "care": "Needs suitable land, food, shelter, and regular animal care."
+            "description": (
+                "Sheep are social farm animals that live "
+                "well in suitable groups."
+            ),
+            "care": (
+                "Needs suitable land, food, shelter, "
+                "clean water, and regular animal care."
+            )
         },
 
         {
             "name": "Turtle",
-            "emoji": "🐢",
             "personality": "Quiet and calm",
-            "description": "Turtles are quiet animals and can have a long lifespan.",
-            "care": "Needs a suitable habitat, proper food, clean water, and regular care."
+            "description": (
+                "Turtles are quiet animals and can have "
+                "a long lifespan."
+            ),
+            "care": (
+                "Needs a suitable habitat, proper food, "
+                "clean water, and regular care."
+            )
         },
 
         {
             "name": "Horse",
-            "emoji": "🐴",
             "personality": "Active and energetic",
-            "description": "Horses are large active animals that need significant space.",
-            "care": "Needs large outdoor space, regular exercise, food, and extensive care."
+            "description": (
+                "Horses are large active animals that need "
+                "significant space and regular activity."
+            ),
+            "care": (
+                "Needs large outdoor space, regular exercise, "
+                "proper food, shelter, and extensive care."
+            )
         }
 
     ]
 
 
     # =====================================================
-    # DISPLAY PET CARDS
+    # PET CARDS
     # =====================================================
 
     for i in range(0, len(pets), 3):
@@ -312,59 +394,53 @@ elif page == "🐾 Pet Guide":
 
         for j, col in enumerate(columns):
 
-            if i + j < len(pets):
+            if i + j >= len(pets):
+                continue
 
-                pet = pets[i + j]
+            pet = pets[i + j]
 
-                with col:
+            with col:
 
-                    st.markdown(
-                        f"""
-                        <div style="
-                            border: 1px solid #444;
-                            border-radius: 15px;
-                            padding: 20px;
-                            margin-bottom: 20px;
-                            min-height: 300px;
-                            background-color: rgba(255,255,255,0.04);
-                        ">
-                            <div style="
-                                font-size: 70px;
-                                text-align: center;
-                            ">
-                                {pet["emoji"]}
-                            </div>
+                image_path = get_pet_image(
+                    pet["name"]
+                )
 
-                            <h2 style="
-                                text-align: center;
-                            ">
-                                {pet["name"]}
-                            </h2>
+                if image_path:
 
-                            <p>
-                                <b>Personality:</b>
-                                {pet["personality"]}
-                            </p>
-
-                            <p>
-                                <b>Description:</b>
-                                {pet["description"]}
-                            </p>
-
-                            <p>
-                                <b>Care:</b>
-                                {pet["care"]}
-                            </p>
-                        </div>
-                        """,
-                        unsafe_allow_html=True
+                    st.image(
+                        str(image_path),
+                        use_container_width=True
                     )
 
+                else:
 
-    st.markdown("---")
+                    st.warning(
+                        f"Image not found for {pet['name']}"
+                    )
+
+                st.subheader(
+                    f"🐾 {pet['name']}"
+                )
+
+                st.markdown(
+                    f"**Personality**  \n"
+                    f"{pet['personality']}"
+                )
+
+                st.markdown(
+                    f"**Description**  \n"
+                    f"{pet['description']}"
+                )
+
+                st.markdown(
+                    f"**Care**  \n"
+                    f"{pet['care']}"
+                )
+
+                st.markdown("---")
+
 
     st.info(
-        "💡 The information and images on this page "
-        "can be expanded later to provide more details "
-        "about each pet."
+        "💡 Choose a pet based on your living space, "
+        "budget, and available time."
     )
