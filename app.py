@@ -490,39 +490,29 @@ elif page == "🔐 ผู้ดูแลระบบ":
 
         st.subheader("🔑 เข้าสู่ระบบผู้ดูแล")
 
-        username = st.text_input(
-            "ชื่อผู้ใช้"
-        )
+        with st.form("admin_login_form"):
 
-        password = st.text_input(
-            "รหัสผ่าน",
-            type="password"
-        )
+            username = st.text_input("ชื่อผู้ใช้")
+            password = st.text_input("รหัสผ่าน", type="password")
 
-        if st.button("🔐 เข้าสู่ระบบ"):
+            login_submit = st.form_submit_button(
+                "🔐 เข้าสู่ระบบ",
+                use_container_width=True
+            )
+
+        if login_submit:
 
             # สำหรับงานส่ง/เดโม
             # Username: admin
             # Password: admin123
-
-            if (
-                username == "admin"
-                and password == "admin123"
-            ):
+            if username == "admin" and password == "admin123":
 
                 st.session_state.admin_logged_in = True
-
-                st.success(
-                    "เข้าสู่ระบบผู้ดูแลสำเร็จ"
-                )
-
+                st.success("เข้าสู่ระบบผู้ดูแลสำเร็จ")
                 st.rerun()
 
             else:
-
-                st.error(
-                    "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"
-                )
+                st.error("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง")
 
     # =====================================================
     # DASHBOARD
@@ -532,15 +522,51 @@ elif page == "🔐 ผู้ดูแลระบบ":
 
         st.title("🔧 แผงควบคุมผู้ดูแลระบบ")
 
-        st.success(
-            "เข้าสู่ระบบผู้ดูแลเรียบร้อยแล้ว"
-        )
+        top_col1, top_col2 = st.columns([4, 1])
 
-        if st.button("🚪 ออกจากระบบ"):
+        with top_col1:
+            st.success("เข้าสู่ระบบผู้ดูแลเรียบร้อยแล้ว")
 
-            st.session_state.admin_logged_in = False
+        with top_col2:
+            if st.button("🚪 ออกจากระบบ", use_container_width=True):
+                st.session_state.admin_logged_in = False
+                st.rerun()
 
-            st.rerun()
+        st.markdown("---")
+
+        # =================================================
+        # DATABASE CONNECTION / STATS
+        # =================================================
+
+        try:
+            driver = get_driver()
+
+            count_result = driver.execute_query(
+                "MATCH (p:Pet) RETURN count(p) AS total"
+            )
+            total_pets = count_result.records[0]["total"]
+
+            stat_col1, stat_col2, stat_col3 = st.columns(3)
+
+            with stat_col1:
+                st.metric("🐾 จำนวนสัตว์เลี้ยง", total_pets)
+
+            with stat_col2:
+                space_count = driver.execute_query(
+                    "MATCH (n:LivingSpace) RETURN count(n) AS total"
+                ).records[0]["total"]
+                st.metric("🏠 พื้นที่", space_count)
+
+            with stat_col3:
+                budget_count = driver.execute_query(
+                    "MATCH (n:Budget) RETURN count(n) AS total"
+                ).records[0]["total"]
+                st.metric("💰 ระดับงบประมาณ", budget_count)
+
+        except Exception as e:
+            st.error("ไม่สามารถเชื่อมต่อกับ Neo4j ได้")
+            st.write(str(e))
+            st.stop()
 
         st.markdown("---")
 
@@ -550,145 +576,108 @@ elif page == "🔐 ผู้ดูแลระบบ":
 
         st.subheader("➕ เพิ่มสัตว์เลี้ยง")
 
-        add_col1, add_col2 = st.columns(2)
+        with st.form("add_pet_form", clear_on_submit=True):
 
-        with add_col1:
+            add_col1, add_col2 = st.columns(2)
 
-            new_pet_name = st.text_input(
-                "ชื่อสัตว์เลี้ยง",
-                key="new_pet_name"
-            )
+            with add_col1:
+                new_pet_name = st.text_input("ชื่อสัตว์เลี้ยง")
 
-        with add_col2:
+            with add_col2:
+                new_pet_description = st.text_area("รายละเอียด")
 
-            new_pet_description = st.text_area(
-                "รายละเอียด",
-                key="new_pet_description"
-            )
+            add_col3, add_col4, add_col5 = st.columns(3)
 
-        add_col3, add_col4, add_col5 = st.columns(3)
-
-        with add_col3:
-
-            new_pet_space_th = st.selectbox(
-                "พื้นที่ที่เหมาะสม",
-                [
-                    "บ้าน",
-                    "คอนโด",
-                    "ฟาร์ม",
-                    "พื้นที่กลางแจ้ง"
-                ],
-                key="new_pet_space"
-            )
-
-            new_pet_space = {
-                "บ้าน": "House",
-                "คอนโด": "Condo",
-                "ฟาร์ม": "Farm",
-                "พื้นที่กลางแจ้ง": "Outdoor Space"
-            }[new_pet_space_th]
-
-        with add_col4:
-
-            new_pet_budget_th = st.selectbox(
-                "งบประมาณ",
-                [
-                    "ต่ำ",
-                    "ปานกลาง",
-                    "สูง"
-                ],
-                key="new_pet_budget"
-            )
-
-            new_pet_budget = {
-                "ต่ำ": "Low",
-                "ปานกลาง": "Medium",
-                "สูง": "High"
-            }[new_pet_budget_th]
-
-        with add_col5:
-
-            new_pet_time_th = st.selectbox(
-                "เวลาที่ใช้ดูแล",
-                [
-                    "น้อย",
-                    "ปานกลาง",
-                    "มาก"
-                ],
-                key="new_pet_time"
-            )
-
-            new_pet_time = {
-                "น้อย": "Low",
-                "ปานกลาง": "Medium",
-                "มาก": "High"
-            }[new_pet_time_th]
-
-        if st.button(
-            "➕ เพิ่มสัตว์เลี้ยง",
-            key="add_pet_button"
-        ):
-
-            if (
-                new_pet_name.strip() == ""
-                or new_pet_description.strip() == ""
-            ):
-
-                st.warning(
-                    "กรุณากรอกชื่อและรายละเอียดสัตว์เลี้ยง"
+            with add_col3:
+                new_pet_space_th = st.selectbox(
+                    "พื้นที่ที่เหมาะสม",
+                    ["บ้าน", "คอนโด", "ฟาร์ม", "พื้นที่กลางแจ้ง"]
                 )
 
+            with add_col4:
+                new_pet_budget_th = st.selectbox(
+                    "งบประมาณ",
+                    ["ต่ำ", "ปานกลาง", "สูง"]
+                )
+
+            with add_col5:
+                new_pet_time_th = st.selectbox(
+                    "เวลาที่ใช้ดูแล",
+                    ["น้อย", "ปานกลาง", "มาก"]
+                )
+
+            add_submit = st.form_submit_button(
+                "➕ เพิ่มสัตว์เลี้ยง",
+                use_container_width=True
+            )
+
+        space_to_db = {
+            "บ้าน": "House",
+            "คอนโด": "Condo",
+            "ฟาร์ม": "Farm",
+            "พื้นที่กลางแจ้ง": "Outdoor Space"
+        }
+
+        budget_to_db = {
+            "ต่ำ": "Low",
+            "ปานกลาง": "Medium",
+            "สูง": "High"
+        }
+
+        time_to_db = {
+            "น้อย": "Low",
+            "ปานกลาง": "Medium",
+            "มาก": "High"
+        }
+
+        if add_submit:
+
+            name = new_pet_name.strip()
+            description = new_pet_description.strip()
+
+            if not name or not description:
+                st.warning("กรุณากรอกชื่อและรายละเอียดสัตว์เลี้ยง")
+
             else:
-
                 try:
-
-                    driver = get_driver()
-
-                    driver.execute_query(
-                        """
-                        MERGE (p:Pet {name: $name})
-
-                        SET p.description = $description
-
-                        WITH p
-
-                        MERGE (space:LivingSpace {
-                            name: $space
-                        })
-
-                        MERGE (budget:Budget {
-                            name: $budget
-                        })
-
-                        MERGE (time:TimeAvailable {
-                            name: $time
-                        })
-
-                        MERGE (p)-[:SUITABLE_FOR]->(space)
-
-                        MERGE (p)-[:COST_LEVEL]->(budget)
-
-                        MERGE (p)-[:NEEDS_TIME]->(time)
-                        """,
-                        name=new_pet_name.strip(),
-                        description=new_pet_description.strip(),
-                        space=new_pet_space,
-                        budget=new_pet_budget,
-                        time=new_pet_time
+                    existing = driver.execute_query(
+                        "MATCH (p:Pet {name: $name}) RETURN p LIMIT 1",
+                        name=name
                     )
 
-                    st.success(
-                        f"เพิ่ม {new_pet_name} สำเร็จ"
-                    )
+                    if existing.records:
+                        st.warning(f"มีสัตว์เลี้ยงชื่อ {name} อยู่แล้ว ไม่สามารถเพิ่มชื่อซ้ำได้")
 
-                    st.rerun()
+                    else:
+                        driver.execute_query(
+                            """
+                            CREATE (p:Pet {
+                                name: $name,
+                                description: $description
+                            })
+
+                            WITH p
+
+                            MERGE (space:LivingSpace {name: $space})
+                            MERGE (budget:Budget {name: $budget})
+                            MERGE (time:TimeAvailable {name: $time})
+
+                            CREATE (p)-[:SUITABLE_FOR]->(space)
+                            CREATE (p)-[:COST_LEVEL]->(budget)
+                            CREATE (p)-[:NEEDS_TIME]->(time)
+                            """,
+                            name=name,
+                            description=description,
+                            space=space_to_db[new_pet_space_th],
+                            budget=budget_to_db[new_pet_budget_th],
+                            time=time_to_db[new_pet_time_th]
+                        )
+
+                        st.success(f"เพิ่ม {name} สำเร็จ")
+                        st.rerun()
 
                 except Exception as e:
-
-                    st.error(
-                        "ไม่สามารถเพิ่มข้อมูลได้"
-                    )
-
+                    st.error("ไม่สามารถเพิ่มข้อมูลได้")
                     st.write(str(e))
 
         st.markdown("---")
@@ -701,20 +690,13 @@ elif page == "🔐 ผู้ดูแลระบบ":
 
         try:
 
-            driver = get_driver()
-
             result = driver.execute_query(
                 """
                 MATCH (p:Pet)
 
-                OPTIONAL MATCH
-                    (p)-[:SUITABLE_FOR]->(space:LivingSpace)
-
-                OPTIONAL MATCH
-                    (p)-[:COST_LEVEL]->(budget:Budget)
-
-                OPTIONAL MATCH
-                    (p)-[:NEEDS_TIME]->(time:TimeAvailable)
+                OPTIONAL MATCH (p)-[:SUITABLE_FOR]->(space:LivingSpace)
+                OPTIONAL MATCH (p)-[:COST_LEVEL]->(budget:Budget)
+                OPTIONAL MATCH (p)-[:NEEDS_TIME]->(time:TimeAvailable)
 
                 RETURN
                     p.name AS name,
@@ -727,134 +709,95 @@ elif page == "🔐 ผู้ดูแลระบบ":
                 """
             )
 
-            if len(result.records) == 0:
+            if not result.records:
+                st.info("ยังไม่มีข้อมูลสัตว์เลี้ยงใน Neo4j")
 
-                st.info(
-                    "ยังไม่มีข้อมูลสัตว์เลี้ยงใน Neo4j"
-                )
+            db_to_space = {v: k for k, v in space_to_db.items()}
+            db_to_budget = {v: k for k, v in budget_to_db.items()}
+            db_to_time = {v: k for k, v in time_to_db.items()}
 
-            for record in result.records:
+            spaces = list(space_to_db.keys())
+            budgets = list(budget_to_db.keys())
+            times = list(time_to_db.keys())
+
+            for index, record in enumerate(result.records):
 
                 pet_name = record["name"]
 
-                with st.expander(
-                    f"🐾 {pet_name}"
-                ):
+                with st.expander(f"🐾 {pet_name}", expanded=False):
 
-                    st.markdown("### ✏️ แก้ไขข้อมูล")
+                    with st.form(f"edit_pet_form_{index}"):
 
-                    edit_name = st.text_input(
-                        "ชื่อสัตว์เลี้ยง",
-                        value=record["name"],
-                        key=f"edit_name_{pet_name}"
-                    )
-
-                    edit_description = st.text_area(
-                        "รายละเอียด",
-                        value=record["description"] or "",
-                        key=f"edit_description_{pet_name}"
-                    )
-
-                    spaces = [
-                        "บ้าน",
-                        "คอนโด",
-                        "ฟาร์ม",
-                        "พื้นที่กลางแจ้ง"
-                    ]
-
-                    budgets = [
-                        "ต่ำ",
-                        "ปานกลาง",
-                        "สูง"
-                    ]
-
-                    times = [
-                        "น้อย",
-                        "ปานกลาง",
-                        "มาก"
-                    ]
-
-                    space_to_db = {
-                        "บ้าน": "House",
-                        "คอนโด": "Condo",
-                        "ฟาร์ม": "Farm",
-                        "พื้นที่กลางแจ้ง": "Outdoor Space"
-                    }
-
-                    budget_to_db = {
-                        "ต่ำ": "Low",
-                        "ปานกลาง": "Medium",
-                        "สูง": "High"
-                    }
-
-                    time_to_db = {
-                        "น้อย": "Low",
-                        "ปานกลาง": "Medium",
-                        "มาก": "High"
-                    }
-
-                    db_to_space = {v: k for k, v in space_to_db.items()}
-                    db_to_budget = {v: k for k, v in budget_to_db.items()}
-                    db_to_time = {v: k for k, v in time_to_db.items()}
-
-                    current_space = db_to_space.get(record["space"], spaces[0])
-                    current_budget = db_to_budget.get(record["budget"], budgets[0])
-                    current_time = db_to_time.get(record["time"], times[0])
-
-                    edit_col1, edit_col2, edit_col3 = st.columns(3)
-
-                    with edit_col1:
-
-                        edit_space = st.selectbox(
-                            "พื้นที่",
-                            spaces,
-                            index=spaces.index(current_space),
-                            key=f"edit_space_{pet_name}"
+                        edit_name = st.text_input(
+                            "ชื่อสัตว์เลี้ยง",
+                            value=record["name"] or ""
                         )
 
-                    with edit_col2:
-
-                        edit_budget = st.selectbox(
-                            "งบประมาณ",
-                            budgets,
-                            index=budgets.index(current_budget),
-                            key=f"edit_budget_{pet_name}"
+                        edit_description = st.text_area(
+                            "รายละเอียด",
+                            value=record["description"] or ""
                         )
 
-                    with edit_col3:
+                        current_space = db_to_space.get(record["space"], spaces[0])
+                        current_budget = db_to_budget.get(record["budget"], budgets[0])
+                        current_time = db_to_time.get(record["time"], times[0])
 
-                        edit_time = st.selectbox(
-                            "เวลาที่ดูแล",
-                            times,
-                            index=times.index(current_time)
-                            ,
-                            key=f"edit_time_{pet_name}"
-                        )
+                        edit_col1, edit_col2, edit_col3 = st.columns(3)
 
-                    save_col, delete_col = st.columns(2)
+                        with edit_col1:
+                            edit_space = st.selectbox(
+                                "พื้นที่",
+                                spaces,
+                                index=spaces.index(current_space)
+                            )
 
-                    with save_col:
+                        with edit_col2:
+                            edit_budget = st.selectbox(
+                                "งบประมาณ",
+                                budgets,
+                                index=budgets.index(current_budget)
+                            )
 
-                        if st.button(
+                        with edit_col3:
+                            edit_time = st.selectbox(
+                                "เวลาที่ดูแล",
+                                times,
+                                index=times.index(current_time)
+                            )
+
+                        save_submit = st.form_submit_button(
                             "💾 บันทึกการแก้ไข",
-                            key=f"save_{pet_name}"
-                        ):
+                            use_container_width=True
+                        )
 
-                            if edit_name.strip() == "":
+                    if save_submit:
 
-                                st.warning(
-                                    "กรุณากรอกชื่อสัตว์เลี้ยง"
+                        new_name = edit_name.strip()
+                        new_description = edit_description.strip()
+
+                        if not new_name or not new_description:
+                            st.warning("กรุณากรอกชื่อและรายละเอียดให้ครบ")
+
+                        else:
+                            try:
+                                # ถ้าเปลี่ยนชื่อ ให้ตรวจสอบชื่อซ้ำก่อน
+                                duplicate = driver.execute_query(
+                                    """
+                                    MATCH (p:Pet {name: $name})
+                                    WHERE $old_name <> $name
+                                    RETURN p LIMIT 1
+                                    """,
+                                    old_name=record["name"],
+                                    name=new_name
                                 )
 
-                            else:
+                                if duplicate.records:
+                                    st.warning(f"มีสัตว์เลี้ยงชื่อ {new_name} อยู่แล้ว")
 
-                                try:
-
+                                else:
                                     driver.execute_query(
                                         """
-                                        MATCH (p:Pet {
-                                            name: $old_name
-                                        })
+                                        MATCH (p:Pet {name: $old_name})
 
                                         SET
                                             p.name = $name,
@@ -864,92 +807,64 @@ elif page == "🔐 ผู้ดูแลระบบ":
 
                                         OPTIONAL MATCH
                                             (p)-[r:SUITABLE_FOR|COST_LEVEL|NEEDS_TIME]->()
-
                                         DELETE r
 
                                         WITH p
 
-                                        MERGE (space:LivingSpace {
-                                            name: $space
-                                        })
+                                        MERGE (space:LivingSpace {name: $space})
+                                        MERGE (budget:Budget {name: $budget})
+                                        MERGE (time:TimeAvailable {name: $time})
 
-                                        MERGE (budget:Budget {
-                                            name: $budget
-                                        })
-
-                                        MERGE (time:TimeAvailable {
-                                            name: $time
-                                        })
-
-                                        MERGE
-                                            (p)-[:SUITABLE_FOR]->(space)
-
-                                        MERGE
-                                            (p)-[:COST_LEVEL]->(budget)
-
-                                        MERGE
-                                            (p)-[:NEEDS_TIME]->(time)
+                                        CREATE (p)-[:SUITABLE_FOR]->(space)
+                                        CREATE (p)-[:COST_LEVEL]->(budget)
+                                        CREATE (p)-[:NEEDS_TIME]->(time)
                                         """,
                                         old_name=record["name"],
-                                        name=edit_name.strip(),
-                                        description=edit_description.strip(),
+                                        name=new_name,
+                                        description=new_description,
                                         space=space_to_db[edit_space],
                                         budget=budget_to_db[edit_budget],
                                         time=time_to_db[edit_time]
                                     )
 
-                                    st.success(
-                                        f"แก้ไข {edit_name} สำเร็จ"
-                                    )
-
+                                    st.success(f"แก้ไข {new_name} สำเร็จ")
                                     st.rerun()
 
-                                except Exception as e:
-
-                                    st.error(
-                                        "ไม่สามารถแก้ไขข้อมูลได้"
-                                    )
-
-                                    st.write(str(e))
-
-                    with delete_col:
-
-                        if st.button(
-                            "🗑️ ลบ",
-                            key=f"delete_{pet_name}"
-                        ):
-
-                            try:
-
-                                driver.execute_query(
-                                    """
-                                    MATCH (p:Pet {
-                                        name: $name
-                                    })
-
-                                    DETACH DELETE p
-                                    """,
-                                    name=record["name"]
-                                )
-
-                                st.success(
-                                    f"ลบ {record['name']} สำเร็จ"
-                                )
-
-                                st.rerun()
-
                             except Exception as e:
-
-                                st.error(
-                                    "ไม่สามารถลบข้อมูลได้"
-                                )
-
+                                st.error("ไม่สามารถแก้ไขข้อมูลได้")
                                 st.write(str(e))
 
+                    st.markdown("---")
+                    st.markdown("**⚠️ การลบข้อมูล**")
+
+                    delete_confirm = st.checkbox(
+                        "ฉันยืนยันว่าต้องการลบสัตว์เลี้ยงตัวนี้",
+                        key=f"confirm_delete_{index}"
+                    )
+
+                    if st.button(
+                        "🗑️ ลบสัตว์เลี้ยง",
+                        key=f"delete_pet_{index}",
+                        disabled=not delete_confirm,
+                        use_container_width=True
+                    ):
+
+                        try:
+                            driver.execute_query(
+                                """
+                                MATCH (p:Pet {name: $name})
+                                DETACH DELETE p
+                                """,
+                                name=record["name"]
+                            )
+
+                            st.success(f"ลบ {record['name']} สำเร็จ")
+                            st.rerun()
+
+                        except Exception as e:
+                            st.error("ไม่สามารถลบข้อมูลได้")
+                            st.write(str(e))
+
         except Exception as e:
-
-            st.error(
-                "ไม่สามารถเชื่อมต่อกับ Neo4j ได้"
-            )
-
+            st.error("ไม่สามารถโหลดข้อมูลสัตว์เลี้ยงได้")
             st.write(str(e))
