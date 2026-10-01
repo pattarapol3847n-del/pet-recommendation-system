@@ -36,7 +36,9 @@ def get_pet_image(pet_name):
 
     for extension in extensions:
 
-        image_path = IMAGE_DIR / (pet_name.lower() + extension)
+        image_path = IMAGE_DIR / (
+            pet_name.lower() + extension
+        )
 
         if image_path.exists():
             return image_path
@@ -234,11 +236,11 @@ if page == "🏠 Home":
 
 elif page == "🐾 Pet Guide":
 
-    st.title("🐾 Pet Guide")
+    st.title("🐾 คู่มือแนะนำสัตว์เลี้ยง")
 
     st.write(
-        "Explore different types of pets and learn about "
-        "their personality, characteristics, and care needs."
+        "ทำความรู้จักกับสัตว์เลี้ยงแต่ละประเภท "
+        "ลักษณะนิสัย ลักษณะทั่วไป และการดูแลเบื้องต้น"
     )
 
     st.markdown("---")
@@ -252,133 +254,172 @@ elif page == "🐾 Pet Guide":
 
         {
             "name": "Dog",
-            "personality": "Friendly and social",
-            "description": (
-                "Dogs are friendly and social companions. "
-                "They often enjoy spending time with people "
-                "and regular activities."
-            ),
-            "care": (
-                "Needs regular exercise, attention, "
-                "food, clean water, and health care."
-            )
+            "title": "สุนัข",
+
+            "personality":
+                "เป็นมิตร เข้าสังคม และชอบทำกิจกรรม",
+
+            "description":
+                "สุนัขเป็นสัตว์เลี้ยงที่เป็นมิตรและชอบอยู่ร่วมกับผู้คน "
+                "เหมาะสำหรับผู้ที่มีเวลาในการดูแลและพาออกกำลังกาย",
+
+            "care":
+                "ต้องการอาหาร น้ำสะอาด การออกกำลังกาย "
+                "การดูแลสุขภาพ และการเอาใจใส่อย่างสม่ำเสมอ"
         },
+
 
         {
             "name": "Cat",
-            "personality": "Independent and adaptable",
-            "description": (
-                "Cats are independent animals that can "
-                "adapt well to different home environments."
-            ),
-            "care": (
-                "Needs food, clean water, litter care, "
-                "playtime, and regular health care."
-            )
+            "title": "แมว",
+
+            "personality":
+                "รักอิสระ ปรับตัวได้ดี และค่อนข้างสงบ",
+
+            "description":
+                "แมวเป็นสัตว์เลี้ยงที่รักอิสระและสามารถปรับตัว "
+                "ให้เข้ากับสภาพแวดล้อมภายในบ้านได้ดี",
+
+            "care":
+                "ต้องการอาหาร น้ำสะอาด กระบะทราย "
+                "พื้นที่สำหรับพักผ่อน และการดูแลสุขภาพอย่างสม่ำเสมอ"
         },
+
 
         {
             "name": "Bird",
-            "personality": "Social and active",
-            "description": (
-                "Birds are small companions that can be "
-                "social, active, and enjoyable to observe."
-            ),
-            "care": (
-                "Needs a suitable cage, clean water, "
-                "proper food, and social interaction."
-            )
+            "title": "นก",
+
+            "personality":
+                "ชอบเข้าสังคม กระตือรือร้น และร่าเริง",
+
+            "description":
+                "นกเป็นสัตว์เลี้ยงขนาดเล็กที่มีความกระตือรือร้น "
+                "และสามารถสร้างความเพลิดเพลินให้กับผู้เลี้ยงได้",
+
+            "care":
+                "ต้องการกรงที่เหมาะสม อาหาร น้ำสะอาด "
+                "และการดูแลความสะอาดของกรงอย่างสม่ำเสมอ"
         },
+
 
         {
             "name": "Rabbit",
-            "personality": "Gentle and quiet",
-            "description": (
-                "Rabbits are gentle and relatively quiet "
-                "small companions."
-            ),
-            "care": (
-                "Needs a clean living space, suitable food, "
-                "fresh water, and regular care."
-            )
+            "title": "กระต่าย",
+
+            "personality":
+                "อ่อนโยน สงบ และไม่ก้าวร้าว",
+
+            "description":
+                "กระต่ายเป็นสัตว์เลี้ยงขนาดเล็กที่มีนิสัยอ่อนโยน "
+                "และค่อนข้างเงียบ เหมาะสำหรับผู้ที่ชอบสัตว์เลี้ยงที่สงบ",
+
+            "care":
+                "ต้องการพื้นที่อยู่อาศัยที่สะอาด อาหารที่เหมาะสม "
+                "น้ำสะอาด และการดูแลสุขภาพอย่างสม่ำเสมอ"
         },
+
 
         {
             "name": "Fish",
-            "personality": "Quiet and calm",
-            "description": (
-                "Fish are quiet aquatic pets that can be "
-                "suitable for small living spaces."
-            ),
-            "care": (
-                "Needs a suitable aquarium, clean water, "
-                "proper food, and regular tank maintenance."
-            )
+            "title": "ปลา",
+
+            "personality":
+                "สงบ เงียบ และดูแลง่าย",
+
+            "description":
+                "ปลาเป็นสัตว์เลี้ยงที่เงียบและเหมาะสำหรับผู้ที่ต้องการ "
+                "สัตว์เลี้ยงที่ใช้พื้นที่ไม่มาก",
+
+            "care":
+                "ต้องการตู้ปลาที่เหมาะสม น้ำสะอาด "
+                "อาหารที่เหมาะสม และการดูแลคุณภาพน้ำเป็นประจำ"
         },
+
 
         {
             "name": "Hamster",
-            "personality": "Small and active",
-            "description": (
-                "Hamsters are small companions that are "
-                "interesting to observe and care for."
-            ),
-            "care": (
-                "Needs a clean enclosure, suitable food, "
-                "fresh water, and exercise equipment."
-            )
+            "title": "แฮมสเตอร์",
+
+            "personality":
+                "ตัวเล็ก กระตือรือร้น และชอบสำรวจ",
+
+            "description":
+                "แฮมสเตอร์เป็นสัตว์เลี้ยงขนาดเล็กที่สามารถเลี้ยง "
+                "ในพื้นที่จำกัด และมีพฤติกรรมที่น่าสนใจให้สังเกต",
+
+            "care":
+                "ต้องการกรงที่สะอาด อาหาร น้ำสะอาด "
+                "และอุปกรณ์สำหรับออกกำลังกายที่เหมาะสม"
         },
+
 
         {
             "name": "Duck",
-            "personality": "Social and active",
-            "description": (
-                "Ducks are social animals that are active "
-                "and need suitable outdoor space."
-            ),
-            "care": (
-                "Needs outdoor space, clean water, proper "
-                "food, shelter, and regular care."
-            )
+            "title": "เป็ด",
+
+            "personality":
+                "ชอบเข้าสังคม กระตือรือร้น และชอบอยู่รวมกัน",
+
+            "description":
+                "เป็ดเป็นสัตว์ที่ชอบอยู่รวมกันและต้องการพื้นที่ "
+                "สำหรับเดินเล่นและทำกิจกรรมกลางแจ้ง",
+
+            "care":
+                "ต้องการพื้นที่กลางแจ้ง น้ำสะอาด อาหารที่เหมาะสม "
+                "ที่พักอาศัย และการดูแลอย่างสม่ำเสมอ"
         },
+
 
         {
             "name": "Sheep",
-            "personality": "Social and calm",
-            "description": (
-                "Sheep are social farm animals that live "
-                "well in suitable groups."
-            ),
-            "care": (
-                "Needs suitable land, food, shelter, "
-                "clean water, and regular animal care."
-            )
+            "title": "แกะ",
+
+            "personality":
+                "รักสงบ ชอบอยู่รวมกัน และเข้าสังคมได้ดี",
+
+            "description":
+                "แกะเป็นสัตว์เลี้ยงในพื้นที่เกษตรที่มักอยู่รวมกันเป็นฝูง "
+                "และต้องการพื้นที่สำหรับใช้ชีวิตอย่างเหมาะสม",
+
+            "care":
+                "ต้องการพื้นที่สำหรับเลี้ยง อาหาร น้ำสะอาด "
+                "ที่พัก และการดูแลสุขภาพอย่างเหมาะสม"
         },
+
 
         {
             "name": "Turtle",
-            "personality": "Quiet and calm",
-            "description": (
-                "Turtles are quiet animals and can have "
-                "a long lifespan."
-            ),
-            "care": (
-                "Needs a suitable habitat, proper food, "
-                "clean water, and regular care."
-            )
+            "title": "เต่า",
+
+            "personality":
+                "สงบ เงียบ และเคลื่อนไหวช้า",
+
+            "description":
+                "เต่าเป็นสัตว์ที่ค่อนข้างสงบและเงียบ "
+                "เหมาะสำหรับผู้ที่ชอบสังเกตพฤติกรรมของสัตว์",
+
+            "care":
+                "ต้องการพื้นที่อยู่อาศัยที่เหมาะสม "
+                "อาหารที่เหมาะกับชนิดของเต่า น้ำสะอาด "
+                "และการดูแลสภาพแวดล้อมอย่างสม่ำเสมอ"
         },
+
 
         {
             "name": "Horse",
-            "personality": "Active and energetic",
-            "description": (
-                "Horses are large active animals that need "
-                "significant space and regular activity."
-            ),
-            "care": (
-                "Needs large outdoor space, regular exercise, "
-                "proper food, shelter, and extensive care."
-            )
+            "title": "ม้า",
+
+            "personality":
+                "กระตือรือร้น แข็งแรง และต้องการการเคลื่อนไหว",
+
+            "description":
+                "ม้าเป็นสัตว์ขนาดใหญ่ที่มีความกระตือรือร้น "
+                "และต้องการพื้นที่กว้างสำหรับการเคลื่อนไหวและออกกำลังกาย",
+
+            "care":
+                "ต้องการพื้นที่กลางแจ้งขนาดใหญ่ อาหาร น้ำสะอาด "
+                "การออกกำลังกาย และการดูแลสุขภาพอย่างสม่ำเสมอ"
         }
 
     ]
@@ -401,6 +442,10 @@ elif page == "🐾 Pet Guide":
 
             with col:
 
+                # -----------------------------------------
+                # PET IMAGE
+                # -----------------------------------------
+
                 image_path = get_pet_image(
                     pet["name"]
                 )
@@ -415,32 +460,67 @@ elif page == "🐾 Pet Guide":
                 else:
 
                     st.warning(
-                        f"Image not found for {pet['name']}"
+                        f"ไม่พบรูปของ {pet['title']}"
                     )
 
+
+                # -----------------------------------------
+                # PET NAME
+                # -----------------------------------------
+
                 st.subheader(
-                    f"🐾 {pet['name']}"
+                    f"🐾 {pet['title']}"
                 )
 
-                st.markdown(
-                    f"**Personality**  \n"
-                    f"{pet['personality']}"
-                )
+
+                # -----------------------------------------
+                # PERSONALITY
+                # -----------------------------------------
 
                 st.markdown(
-                    f"**Description**  \n"
-                    f"{pet['description']}"
+                    "**ลักษณะนิสัย**"
                 )
 
-                st.markdown(
-                    f"**Care**  \n"
-                    f"{pet['care']}"
+                st.write(
+                    pet["personality"]
                 )
+
+
+                # -----------------------------------------
+                # DESCRIPTION
+                # -----------------------------------------
+
+                st.markdown(
+                    "**ลักษณะทั่วไป**"
+                )
+
+                st.write(
+                    pet["description"]
+                )
+
+
+                # -----------------------------------------
+                # CARE
+                # -----------------------------------------
+
+                st.markdown(
+                    "**การดูแลเบื้องต้น**"
+                )
+
+                st.write(
+                    pet["care"]
+                )
+
 
                 st.markdown("---")
 
 
+    # =====================================================
+    # INFORMATION
+    # =====================================================
+
     st.info(
-        "💡 Choose a pet based on your living space, "
-        "budget, and available time."
+        "💡 ข้อมูลในหน้านี้ใช้สำหรับแนะนำลักษณะทั่วไปของสัตว์ "
+        "ส่วนการเลือกสัตว์ที่เหมาะสมกับผู้ใช้งาน "
+        "สามารถใช้ระบบแนะนำจากหน้า Home ได้"
     )
