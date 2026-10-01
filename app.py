@@ -22,6 +22,29 @@ st.markdown("""
     margin-top: 10px;
     margin-bottom: 5px;
 }
+
+/* ===== หน้าผลการแนะนำสัตว์ ===== */
+.pet-result-title {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.pet-result-description {
+    font-size: 21px;
+    line-height: 1.75;
+    margin-bottom: 18px;
+}
+
+.pet-detail {
+    font-size: 19px;
+    line-height: 1.7;
+    padding: 10px 0;
+}
+
+.pet-result-image img {
+    border-radius: 14px;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -284,28 +307,34 @@ if page == "🏠 หน้าหลัก":
                     "ยังไม่มีคำอธิบายภาษาไทยสำหรับสัตว์ชนิดนี้"
                 )
 
-                # แสดงรูปทางซ้าย และรายละเอียดทางขวา
-                image_col, info_col = st.columns([1, 3])
+                # แสดงรูปทางซ้าย และขยายรายละเอียดทางขวาให้อ่านง่ายขึ้น
+                image_col, info_col = st.columns([1.25, 3.75], gap="large")
 
                 with image_col:
                     image_path = get_pet_image(record["Pet"])
 
                     if image_path:
+                        st.markdown('<div class="pet-result-image">', unsafe_allow_html=True)
                         st.image(
                             str(image_path),
-                            width=180
+                            width=240
                         )
+                        st.markdown('</div>', unsafe_allow_html=True)
                     else:
                         st.info(f"ไม่พบรูปของ {pet_name}")
 
                 with info_col:
-                    st.subheader(
-                        f"🐾 {pet_name} — {record['Score']}/3"
+                    st.markdown(
+                        f'<div class="pet-result-title">🐾 {pet_name} — {record["Score"]}/3</div>',
+                        unsafe_allow_html=True
                     )
 
-                    st.write(description)
+                    st.markdown(
+                        f'<div class="pet-result-description">{description}</div>',
+                        unsafe_allow_html=True
+                    )
 
-                    col1, col2, col3 = st.columns(3)
+                    col1, col2, col3 = st.columns(3, gap="medium")
 
                     with col1:
                         suitable_spaces = [
@@ -313,21 +342,27 @@ if page == "🏠 หน้าหลัก":
                             for space in record["SuitableSpace"]
                         ]
 
-                        st.write(
-                            "🏠 พื้นที่ที่เหมาะสม: "
+                        st.markdown(
+                            '<div class="pet-detail">🏠 <b>พื้นที่ที่เหมาะสม</b><br>'
                             + ", ".join(suitable_spaces)
+                            + '</div>',
+                            unsafe_allow_html=True
                         )
 
                     with col2:
-                        st.write(
-                            f"💰 งบประมาณ: "
-                            f"{budget_display_map.get(record['Budget'], record['Budget'])}"
+                        st.markdown(
+                            '<div class="pet-detail">💰 <b>งบประมาณ</b><br>'
+                            + budget_display_map.get(record['Budget'], record['Budget'])
+                            + '</div>',
+                            unsafe_allow_html=True
                         )
 
                     with col3:
-                        st.write(
-                            f"⏰ เวลาที่ใช้ดูแล: "
-                            f"{time_display_map.get(record['TimeAvailable'], record['TimeAvailable'])}"
+                        st.markdown(
+                            '<div class="pet-detail">⏰ <b>เวลาที่ใช้ดูแล</b><br>'
+                            + time_display_map.get(record['TimeAvailable'], record['TimeAvailable'])
+                            + '</div>',
+                            unsafe_allow_html=True
                         )
 
         except Exception as e:
