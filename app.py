@@ -378,46 +378,47 @@ elif page == "🐾 Pet Guide":
 
             with col:
 
-                image_path = get_pet_image(
-                    pet["name"]
-                )
+                # กรอบแยกข้อมูลสัตว์แต่ละตัว
+                with st.container(border=True):
 
-                if image_path:
-
-                    st.image(
-                        str(image_path),
-                        use_container_width=True
+                    image_path = get_pet_image(
+                        pet["name"]
                     )
 
-                else:
+                    if image_path:
 
-                    st.warning(
-                        f"ไม่พบรูปของ {pet['title']}"
+                        st.image(
+                            str(image_path),
+                            use_container_width=True
+                        )
+
+                    else:
+
+                        st.warning(
+                            f"ไม่พบรูปของ {pet['title']}"
+                        )
+
+                    st.subheader(
+                        f"🐾 {pet['title']}"
                     )
 
-                st.subheader(
-                    f"🐾 {pet['title']}"
-                )
+                    st.markdown(
+                        '<div class="pet-section-title">ลักษณะนิสัย</div>',
+                        unsafe_allow_html=True
+                    )
+                    st.write(pet["personality"])
 
-                st.markdown(
-                    '<div class="pet-section-title">ลักษณะนิสัย</div>',
-                    unsafe_allow_html=True
-                )
-                st.write(pet["personality"])
+                    st.markdown(
+                        '<div class="pet-section-title">ลักษณะทั่วไป</div>',
+                        unsafe_allow_html=True
+                    )
+                    st.write(pet["description"])
 
-                st.markdown(
-                    '<div class="pet-section-title">ลักษณะทั่วไป</div>',
-                    unsafe_allow_html=True
-                )
-                st.write(pet["description"])
-
-                st.markdown(
-                    '<div class="pet-section-title">การดูแลเบื้องต้น</div>',
-                    unsafe_allow_html=True
-                )
-                st.write(pet["care"])
-
-                st.markdown("---")
+                    st.markdown(
+                        '<div class="pet-section-title">การดูแลเบื้องต้น</div>',
+                        unsafe_allow_html=True
+                    )
+                    st.write(pet["care"])
 
     st.info(
         "💡 ข้อมูลในหน้านี้ใช้สำหรับแนะนำลักษณะทั่วไปของสัตว์ "
