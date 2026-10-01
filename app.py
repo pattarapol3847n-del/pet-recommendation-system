@@ -22,7 +22,6 @@ st.markdown(
     """
     <style>
 
-    /* Main background */
     .stApp {
         background: linear-gradient(
             135deg,
@@ -32,14 +31,10 @@ st.markdown(
         );
     }
 
-
-    /* Sidebar */
     section[data-testid="stSidebar"] {
         background-color: #e8f5e9;
     }
 
-
-    /* Main title */
     .main-title {
         text-align: center;
         font-size: 42px;
@@ -48,8 +43,6 @@ st.markdown(
         margin-bottom: 5px;
     }
 
-
-    /* Subtitle */
     .main-subtitle {
         text-align: center;
         font-size: 18px;
@@ -57,48 +50,6 @@ st.markdown(
         margin-bottom: 30px;
     }
 
-
-    /* Pet card */
-    .pet-card {
-        background: rgba(255, 255, 255, 0.96);
-        border-radius: 18px;
-        padding: 18px;
-        margin-bottom: 25px;
-        border: 1px solid #d9eadc;
-        box-shadow: 0 5px 18px rgba(40, 80, 50, 0.10);
-        min-height: 570px;
-    }
-
-
-    /* Pet title */
-    .pet-title {
-        color: #236b3b;
-        font-size: 25px;
-        font-weight: 700;
-        margin-top: 12px;
-        margin-bottom: 15px;
-    }
-
-
-    /* Section title */
-    .pet-section {
-        color: #36764a;
-        font-weight: 700;
-        font-size: 16px;
-        margin-top: 12px;
-        margin-bottom: 4px;
-    }
-
-
-    /* Section text */
-    .pet-text {
-        color: #4e5d52;
-        font-size: 15px;
-        line-height: 1.65;
-    }
-
-
-    /* Home box */
     .welcome-box {
         background: rgba(255, 255, 255, 0.92);
         border-radius: 18px;
@@ -106,6 +57,27 @@ st.markdown(
         border: 1px solid #d9eadc;
         box-shadow: 0 5px 18px rgba(40, 80, 50, 0.08);
         margin-bottom: 25px;
+    }
+
+    .pet-title {
+        color: #236b3b;
+        font-size: 25px;
+        font-weight: 700;
+        margin-top: 10px;
+    }
+
+    .pet-section {
+        color: #36764a;
+        font-weight: 700;
+        font-size: 16px;
+        margin-top: 10px;
+        margin-bottom: 3px;
+    }
+
+    .pet-text {
+        color: #4e5d52;
+        font-size: 15px;
+        line-height: 1.6;
     }
 
     </style>
@@ -199,7 +171,6 @@ if page == "🏠 Home":
         unsafe_allow_html=True
     )
 
-
     st.markdown(
         """
         <div class="welcome-box">
@@ -218,9 +189,7 @@ if page == "🏠 Home":
         unsafe_allow_html=True
     )
 
-
     st.subheader("📋 ข้อมูลของคุณ")
-
 
     user_space = st.selectbox(
         "🏠 คุณอาศัยอยู่ในพื้นที่แบบใด?",
@@ -232,7 +201,6 @@ if page == "🏠 Home":
         ]
     )
 
-
     user_budget = st.selectbox(
         "💰 งบประมาณในการเลี้ยงสัตว์",
         [
@@ -241,7 +209,6 @@ if page == "🏠 Home":
             "High"
         ]
     )
-
 
     user_time = st.selectbox(
         "⏰ เวลาที่สามารถใช้ดูแลสัตว์เลี้ยง",
@@ -252,7 +219,6 @@ if page == "🏠 Home":
         ]
     )
 
-
     if st.button(
         "🐾 ค้นหาสัตว์เลี้ยงที่เหมาะกับฉัน",
         use_container_width=True
@@ -261,7 +227,6 @@ if page == "🏠 Home":
         try:
 
             driver = get_driver()
-
 
             result = driver.execute_query(
                 """
@@ -319,13 +284,11 @@ if page == "🏠 Home":
                 time=user_time
             )
 
-
             st.markdown("---")
 
             st.subheader(
                 "🐾 ผลการแนะนำสัตว์เลี้ยง"
             )
-
 
             for record in result.records:
 
@@ -340,9 +303,7 @@ if page == "🏠 Home":
                     record["Description"]
                 )
 
-
                 col1, col2, col3 = st.columns(3)
-
 
                 with col1:
 
@@ -353,7 +314,6 @@ if page == "🏠 Home":
                         )
                     )
 
-
                 with col2:
 
                     st.info(
@@ -361,14 +321,12 @@ if page == "🏠 Home":
                         f"{record['Budget']}"
                     )
 
-
                 with col3:
 
                     st.info(
                         f"⏰ ระดับเวลาในการดูแล\n\n"
                         f"{record['TimeAvailable']}"
                     )
-
 
         except Exception as e:
 
@@ -408,132 +366,81 @@ elif page == "🐾 Pet Guide":
         {
             "name": "Dog",
             "title": "สุนัข",
-            "personality":
-                "เป็นมิตร เข้าสังคม และชอบทำกิจกรรม",
-            "description":
-                "สุนัขเป็นสัตว์เลี้ยงที่เป็นมิตรและชอบอยู่ร่วมกับผู้คน "
-                "เหมาะสำหรับผู้ที่มีเวลาในการดูแลและพาออกกำลังกาย",
-            "care":
-                "ต้องการอาหาร น้ำสะอาด การออกกำลังกาย "
-                "การดูแลสุขภาพ และการเอาใจใส่อย่างสม่ำเสมอ"
+            "personality": "เป็นมิตร เข้าสังคม และชอบทำกิจกรรม",
+            "description": "สุนัขเป็นสัตว์เลี้ยงที่เป็นมิตรและชอบอยู่ร่วมกับผู้คน เหมาะสำหรับผู้ที่มีเวลาในการดูแลและพาออกกำลังกาย",
+            "care": "ต้องการอาหาร น้ำสะอาด การออกกำลังกาย การดูแลสุขภาพ และการเอาใจใส่อย่างสม่ำเสมอ"
         },
 
         {
             "name": "Cat",
             "title": "แมว",
-            "personality":
-                "รักอิสระ ปรับตัวได้ดี และค่อนข้างสงบ",
-            "description":
-                "แมวเป็นสัตว์เลี้ยงที่รักอิสระและสามารถปรับตัว "
-                "ให้เข้ากับสภาพแวดล้อมภายในบ้านได้ดี",
-            "care":
-                "ต้องการอาหาร น้ำสะอาด กระบะทราย "
-                "พื้นที่สำหรับพักผ่อน และการดูแลสุขภาพอย่างสม่ำเสมอ"
+            "personality": "รักอิสระ ปรับตัวได้ดี และค่อนข้างสงบ",
+            "description": "แมวเป็นสัตว์เลี้ยงที่รักอิสระและสามารถปรับตัวให้เข้ากับสภาพแวดล้อมภายในบ้านได้ดี",
+            "care": "ต้องการอาหาร น้ำสะอาด กระบะทราย พื้นที่สำหรับพักผ่อน และการดูแลสุขภาพอย่างสม่ำเสมอ"
         },
 
         {
             "name": "Bird",
             "title": "นก",
-            "personality":
-                "ชอบเข้าสังคม กระตือรือร้น และร่าเริง",
-            "description":
-                "นกเป็นสัตว์เลี้ยงขนาดเล็กที่มีความกระตือรือร้น "
-                "และสามารถสร้างความเพลิดเพลินให้กับผู้เลี้ยงได้",
-            "care":
-                "ต้องการกรงที่เหมาะสม อาหาร น้ำสะอาด "
-                "และการดูแลความสะอาดของกรงอย่างสม่ำเสมอ"
+            "personality": "ชอบเข้าสังคม กระตือรือร้น และร่าเริง",
+            "description": "นกเป็นสัตว์เลี้ยงขนาดเล็กที่มีความกระตือรือร้น และสามารถสร้างความเพลิดเพลินให้กับผู้เลี้ยงได้",
+            "care": "ต้องการกรงที่เหมาะสม อาหาร น้ำสะอาด และการดูแลความสะอาดของกรงอย่างสม่ำเสมอ"
         },
 
         {
             "name": "Rabbit",
             "title": "กระต่าย",
-            "personality":
-                "อ่อนโยน สงบ และไม่ก้าวร้าว",
-            "description":
-                "กระต่ายเป็นสัตว์เลี้ยงขนาดเล็กที่มีนิสัยอ่อนโยน "
-                "และค่อนข้างเงียบ เหมาะสำหรับผู้ที่ชอบสัตว์เลี้ยงที่สงบ",
-            "care":
-                "ต้องการพื้นที่อยู่อาศัยที่สะอาด อาหารที่เหมาะสม "
-                "น้ำสะอาด และการดูแลสุขภาพอย่างสม่ำเสมอ"
+            "personality": "อ่อนโยน สงบ และไม่ก้าวร้าว",
+            "description": "กระต่ายเป็นสัตว์เลี้ยงขนาดเล็กที่มีนิสัยอ่อนโยน และค่อนข้างเงียบ เหมาะสำหรับผู้ที่ชอบสัตว์เลี้ยงที่สงบ",
+            "care": "ต้องการพื้นที่อยู่อาศัยที่สะอาด อาหารที่เหมาะสม น้ำสะอาด และการดูแลสุขภาพอย่างสม่ำเสมอ"
         },
 
         {
             "name": "Fish",
             "title": "ปลา",
-            "personality":
-                "สงบ เงียบ และดูแลง่าย",
-            "description":
-                "ปลาเป็นสัตว์เลี้ยงที่เงียบและเหมาะสำหรับผู้ที่ต้องการ "
-                "สัตว์เลี้ยงที่ใช้พื้นที่ไม่มาก",
-            "care":
-                "ต้องการตู้ปลาที่เหมาะสม น้ำสะอาด "
-                "อาหารที่เหมาะสม และการดูแลคุณภาพน้ำเป็นประจำ"
+            "personality": "สงบ เงียบ และดูแลง่าย",
+            "description": "ปลาเป็นสัตว์เลี้ยงที่เงียบและเหมาะสำหรับผู้ที่ต้องการสัตว์เลี้ยงที่ใช้พื้นที่ไม่มาก",
+            "care": "ต้องการตู้ปลาที่เหมาะสม น้ำสะอาด อาหารที่เหมาะสม และการดูแลคุณภาพน้ำเป็นประจำ"
         },
 
         {
             "name": "Hamster",
             "title": "แฮมสเตอร์",
-            "personality":
-                "ตัวเล็ก กระตือรือร้น และชอบสำรวจ",
-            "description":
-                "แฮมสเตอร์เป็นสัตว์เลี้ยงขนาดเล็กที่สามารถเลี้ยง "
-                "ในพื้นที่จำกัด และมีพฤติกรรมที่น่าสนใจให้สังเกต",
-            "care":
-                "ต้องการกรงที่สะอาด อาหาร น้ำสะอาด "
-                "และอุปกรณ์สำหรับออกกำลังกายที่เหมาะสม"
+            "personality": "ตัวเล็ก กระตือรือร้น และชอบสำรวจ",
+            "description": "แฮมสเตอร์เป็นสัตว์เลี้ยงขนาดเล็กที่สามารถเลี้ยงในพื้นที่จำกัด และมีพฤติกรรมที่น่าสนใจให้สังเกต",
+            "care": "ต้องการกรงที่สะอาด อาหาร น้ำสะอาด และอุปกรณ์สำหรับออกกำลังกายที่เหมาะสม"
         },
 
         {
             "name": "Duck",
             "title": "เป็ด",
-            "personality":
-                "ชอบเข้าสังคม กระตือรือร้น และชอบอยู่รวมกัน",
-            "description":
-                "เป็ดเป็นสัตว์ที่ชอบอยู่รวมกันและต้องการพื้นที่ "
-                "สำหรับเดินเล่นและทำกิจกรรมกลางแจ้ง",
-            "care":
-                "ต้องการพื้นที่กลางแจ้ง น้ำสะอาด อาหารที่เหมาะสม "
-                "ที่พักอาศัย และการดูแลอย่างสม่ำเสมอ"
+            "personality": "ชอบเข้าสังคม กระตือรือร้น และชอบอยู่รวมกัน",
+            "description": "เป็ดเป็นสัตว์ที่ชอบอยู่รวมกันและต้องการพื้นที่สำหรับเดินเล่นและทำกิจกรรมกลางแจ้ง",
+            "care": "ต้องการพื้นที่กลางแจ้ง น้ำสะอาด อาหารที่เหมาะสม ที่พักอาศัย และการดูแลอย่างสม่ำเสมอ"
         },
 
         {
             "name": "Sheep",
             "title": "แกะ",
-            "personality":
-                "รักสงบ ชอบอยู่รวมกัน และเข้าสังคมได้ดี",
-            "description":
-                "แกะเป็นสัตว์เลี้ยงในพื้นที่เกษตรที่มักอยู่รวมกันเป็นฝูง "
-                "และต้องการพื้นที่สำหรับใช้ชีวิตอย่างเหมาะสม",
-            "care":
-                "ต้องการพื้นที่สำหรับเลี้ยง อาหาร น้ำสะอาด "
-                "ที่พัก และการดูแลสุขภาพอย่างเหมาะสม"
+            "personality": "รักสงบ ชอบอยู่รวมกัน และเข้าสังคมได้ดี",
+            "description": "แกะเป็นสัตว์เลี้ยงในพื้นที่เกษตรที่มักอยู่รวมกันเป็นฝูง และต้องการพื้นที่สำหรับใช้ชีวิตอย่างเหมาะสม",
+            "care": "ต้องการพื้นที่สำหรับเลี้ยง อาหาร น้ำสะอาด ที่พัก และการดูแลสุขภาพอย่างเหมาะสม"
         },
 
         {
             "name": "Turtle",
             "title": "เต่า",
-            "personality":
-                "สงบ เงียบ และเคลื่อนไหวช้า",
-            "description":
-                "เต่าเป็นสัตว์ที่ค่อนข้างสงบและเงียบ "
-                "เหมาะสำหรับผู้ที่ชอบสังเกตพฤติกรรมของสัตว์",
-            "care":
-                "ต้องการพื้นที่อยู่อาศัยที่เหมาะสม "
-                "อาหารที่เหมาะกับชนิดของเต่า น้ำสะอาด "
-                "และการดูแลสภาพแวดล้อมอย่างสม่ำเสมอ"
+            "personality": "สงบ เงียบ และเคลื่อนไหวช้า",
+            "description": "เต่าเป็นสัตว์ที่ค่อนข้างสงบและเงียบ เหมาะสำหรับผู้ที่ชอบสังเกตพฤติกรรมของสัตว์",
+            "care": "ต้องการพื้นที่อยู่อาศัยที่เหมาะสม อาหารที่เหมาะกับชนิดของเต่า น้ำสะอาด และการดูแลสภาพแวดล้อมอย่างสม่ำเสมอ"
         },
 
         {
             "name": "Horse",
             "title": "ม้า",
-            "personality":
-                "กระตือรือร้น แข็งแรง และต้องการการเคลื่อนไหว",
-            "description":
-                "ม้าเป็นสัตว์ขนาดใหญ่ที่มีความกระตือรือร้น "
-                "และต้องการพื้นที่กว้างสำหรับการเคลื่อนไหวและออกกำลังกาย",
-            "care":
-                "ต้องการพื้นที่กลางแจ้งขนาดใหญ่ อาหาร น้ำสะอาด "
-                "การออกกำลังกาย และการดูแลสุขภาพอย่างสม่ำเสมอ"
+            "personality": "กระตือรือร้น แข็งแรง และต้องการการเคลื่อนไหว",
+            "description": "ม้าเป็นสัตว์ขนาดใหญ่ที่มีความกระตือรือร้น และต้องการพื้นที่กว้างสำหรับการเคลื่อนไหวและออกกำลังกาย",
+            "care": "ต้องการพื้นที่กลางแจ้งขนาดใหญ่ อาหาร น้ำสะอาด การออกกำลังกาย และการดูแลสุขภาพอย่างสม่ำเสมอ"
         }
 
     ]
@@ -554,123 +461,94 @@ elif page == "🐾 Pet Guide":
 
             pet = pets[i + j]
 
-
             with col:
 
-                image_path = get_pet_image(
-                    pet["name"]
-                )
+                # ใช้ container ของ Streamlit แทน HTML div
+                with st.container(border=True):
 
-
-                # -----------------------------------------
-                # CARD START
-                # -----------------------------------------
-
-                st.markdown(
-                    '<div class="pet-card">',
-                    unsafe_allow_html=True
-                )
-
-
-                # -----------------------------------------
-                # IMAGE
-                # -----------------------------------------
-
-                if image_path:
-
-                    st.image(
-                        str(image_path),
-                        use_container_width=True
+                    image_path = get_pet_image(
+                        pet["name"]
                     )
 
-                else:
+                    if image_path:
 
-                    st.warning(
-                        f"ไม่พบรูปของ {pet['title']}"
+                        st.image(
+                            str(image_path),
+                            use_container_width=True
+                        )
+
+                    else:
+
+                        st.warning(
+                            f"ไม่พบรูปของ {pet['title']}"
+                        )
+
+                    st.markdown(
+                        f"""
+                        <div class="pet-title">
+                            🐾 {pet["title"]}
+                        </div>
+                        """,
+                        unsafe_allow_html=True
                     )
 
+                    st.markdown(
+                        """
+                        <div class="pet-section">
+                            💚 ลักษณะนิสัย
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
 
-                # -----------------------------------------
-                # NAME
-                # -----------------------------------------
+                    st.markdown(
+                        f"""
+                        <div class="pet-text">
+                            {pet["personality"]}
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
 
-                st.markdown(
-                    f'<div class="pet-title">'
-                    f'🐾 {pet["title"]}'
-                    f'</div>',
-                    unsafe_allow_html=True
-                )
+                    st.markdown(
+                        """
+                        <div class="pet-section">
+                            📖 ลักษณะทั่วไป
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
 
+                    st.markdown(
+                        f"""
+                        <div class="pet-text">
+                            {pet["description"]}
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
 
-                # -----------------------------------------
-                # PERSONALITY
-                # -----------------------------------------
+                    st.markdown(
+                        """
+                        <div class="pet-section">
+                            🧡 การดูแลเบื้องต้น
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
 
-                st.markdown(
-                    '<div class="pet-section">'
-                    '💚 ลักษณะนิสัย'
-                    '</div>',
-                    unsafe_allow_html=True
-                )
-
-                st.markdown(
-                    f'<div class="pet-text">'
-                    f'{pet["personality"]}'
-                    f'</div>',
-                    unsafe_allow_html=True
-                )
-
-
-                # -----------------------------------------
-                # DESCRIPTION
-                # -----------------------------------------
-
-                st.markdown(
-                    '<div class="pet-section">'
-                    '📖 ลักษณะทั่วไป'
-                    '</div>',
-                    unsafe_allow_html=True
-                )
-
-                st.markdown(
-                    f'<div class="pet-text">'
-                    f'{pet["description"]}'
-                    f'</div>',
-                    unsafe_allow_html=True
-                )
-
-
-                # -----------------------------------------
-                # CARE
-                # -----------------------------------------
-
-                st.markdown(
-                    '<div class="pet-section">'
-                    '🧡 การดูแลเบื้องต้น'
-                    '</div>',
-                    unsafe_allow_html=True
-                )
-
-                st.markdown(
-                    f'<div class="pet-text">'
-                    f'{pet["care"]}'
-                    f'</div>',
-                    unsafe_allow_html=True
-                )
-
-
-                # -----------------------------------------
-                # CARD END
-                # -----------------------------------------
-
-                st.markdown(
-                    '</div>',
-                    unsafe_allow_html=True
-                )
+                    st.markdown(
+                        f"""
+                        <div class="pet-text">
+                            {pet["care"]}
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
 
 
     # =====================================================
-    # FOOTER INFORMATION
+    # FOOTER
     # =====================================================
 
     st.markdown("---")
