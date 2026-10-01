@@ -230,34 +230,73 @@ if page == "🏠 หน้าหลัก":
                 "High": "มาก"
             }
 
+            # แปลงข้อมูลที่แสดงผลจาก Neo4j ให้เป็นภาษาไทย
+            pet_display_map = {
+                "Dog": "สุนัข",
+                "Cat": "แมว",
+                "Bird": "นก",
+                "Rabbit": "กระต่าย",
+                "Fish": "ปลา",
+                "Hamster": "แฮมสเตอร์",
+                "Duck": "เป็ด",
+                "Sheep": "แกะ",
+                "Turtle": "เต่า",
+                "Horse": "ม้า"
+            }
+
             for record in result.records:
 
                 st.markdown("---")
 
+                pet_name = pet_display_map.get(
+                    record["Pet"],
+                    record["Pet"]
+                )
+
+                description = record["Description"] or ""
+
+                # รองรับข้อมูลภาษาอังกฤษเดิมที่อยู่ใน Neo4j
+                description_display_map = {
+                    "Quiet aquatic pet that needs an aquarium":
+                        "สัตว์เลี้ยงในน้ำที่เงียบสงบและต้องการตู้ปลา"
+                }
+
+                description = description_display_map.get(
+                    description,
+                    description
+                )
+
                 st.subheader(
-                    f"🐾 {record['Pet']} — {record['Score']}/3"
+                    f"🐾 {pet_name} — {record['Score']}/3"
                 )
 
                 st.write(
-                    record["Description"]
+                    description
                 )
 
                 col1, col2, col3 = st.columns(3)
 
                 with col1:
+                    suitable_spaces = [
+                        space_display_map.get(space, space)
+                        for space in record["SuitableSpace"]
+                    ]
+
                     st.write(
-                        "🏠 Suitable Space: "
-                        + ", ".join(record["SuitableSpace"])
+                        "🏠 พื้นที่ที่เหมาะสม: "
+                        + ", ".join(suitable_spaces)
                     )
 
                 with col2:
                     st.write(
-                        f"💰 งบประมาณ: {budget_display_map.get(record['Budget'], record['Budget'])}"
+                        f"💰 งบประมาณ: "
+                        f"{budget_display_map.get(record['Budget'], record['Budget'])}"
                     )
 
                 with col3:
                     st.write(
-                        f"⏰ เวลาที่ใช้ดูแล: {time_display_map.get(record['TimeAvailable'], record['TimeAvailable'])}"
+                        f"⏰ เวลาที่ใช้ดูแล: "
+                        f"{time_display_map.get(record['TimeAvailable'], record['TimeAvailable'])}"
                     )
 
         except Exception as e:
