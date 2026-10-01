@@ -15,6 +15,52 @@ st.set_page_config(
 
 st.markdown("""
 <style>
+/* ===== ขยายตัวหนังสือและช่องกรอกของหน้าหลัก ===== */
+[data-testid="stAppViewContainer"] {
+    font-size: 20px;
+}
+
+[data-testid="stSidebar"] {
+    font-size: 21px;
+}
+
+[data-testid="stSidebar"] h1,
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3 {
+    font-size: 27px !important;
+}
+
+[data-testid="stMarkdownContainer"] p,
+[data-testid="stMarkdownContainer"] li {
+    font-size: 20px;
+    line-height: 1.7;
+}
+
+[data-testid="stWidgetLabel"] p {
+    font-size: 20px !important;
+    font-weight: 600 !important;
+}
+
+[data-baseweb="select"] {
+    min-height: 58px !important;
+}
+
+[data-baseweb="select"] > div {
+    min-height: 58px !important;
+    font-size: 20px !important;
+}
+
+[data-baseweb="select"] input {
+    font-size: 20px !important;
+}
+
+[data-testid="stButton"] button {
+    font-size: 20px !important;
+    min-height: 52px !important;
+    padding: 10px 22px !important;
+}
+
+/* ===== หน้าผลการแนะนำสัตว์ ===== */
 .pet-section-title {
     color: #D4A017;
     font-weight: bold;
@@ -25,13 +71,13 @@ st.markdown("""
 
 /* ===== หน้าผลการแนะนำสัตว์ ===== */
 .pet-result-title {
-    font-size: 30px;
+    font-size: 34px;
     font-weight: 700;
     margin-bottom: 12px;
 }
 
 .pet-result-description {
-    font-size: 21px;
+    font-size: 23px;
     line-height: 1.75;
     margin-bottom: 18px;
 }
