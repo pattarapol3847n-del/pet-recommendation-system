@@ -8,7 +8,7 @@ from pathlib import Path
 # =========================================================
 
 st.set_page_config(
-    page_title="Pet Recommendation System",
+    page_title="ระบบแนะนำสัตว์เลี้ยง",
     page_icon="🐾",
     layout="wide"
 )
@@ -49,14 +49,14 @@ def get_pet_image(pet_name):
 # SIDEBAR MENU
 # =========================================================
 
-st.sidebar.title("🐾 Pet Recommendation")
+st.sidebar.title("🐾 ระบบแนะนำสัตว์เลี้ยง")
 
 page = st.sidebar.radio(
-    "Menu",
+    "เมนู",
     [
-        "🏠 Home",
-        "🐾 Pet Guide",
-        "🔐 Admin"
+        "🏠 หน้าหลัก",
+        "🐾 คู่มือสัตว์เลี้ยง",
+        "🔐 ผู้ดูแลระบบ"
     ]
 )
 
@@ -85,45 +85,70 @@ def get_driver():
 # HOME PAGE
 # =========================================================
 
-if page == "🏠 Home":
+if page == "🏠 หน้าหลัก":
 
-    st.title("🐾 Pet Recommendation System")
+    st.title("🐾 ระบบแนะนำสัตว์เลี้ยง")
 
     st.write(
-        "Find a pet that matches your lifestyle."
+        "ค้นหาสัตว์เลี้ยงที่เหมาะกับไลฟ์สไตล์ของคุณ"
     )
 
-    st.subheader("Tell us about your lifestyle")
+    st.subheader("ข้อมูลเกี่ยวกับไลฟ์สไตล์ของคุณ")
 
-    user_space = st.selectbox(
-        "Where do you live?",
+    user_space_th = st.selectbox(
+        "คุณอาศัยอยู่ที่ไหน?",
         [
-            "House",
-            "Condo",
-            "Farm",
-            "Outdoor Space"
+            "บ้าน",
+            "คอนโด",
+            "ฟาร์ม",
+            "พื้นที่กลางแจ้ง"
         ]
     )
 
-    user_budget = st.selectbox(
-        "What is your pet budget?",
+    space_map = {
+        "บ้าน": "House",
+        "คอนโด": "Condo",
+        "ฟาร์ม": "Farm",
+        "พื้นที่กลางแจ้ง": "Outdoor Space"
+    }
+
+    user_space = space_map[user_space_th]
+
+    user_budget_th = st.selectbox(
+        "งบประมาณสำหรับสัตว์เลี้ยงของคุณ?",
         [
-            "Low",
-            "Medium",
-            "High"
+            "ต่ำ",
+            "ปานกลาง",
+            "สูง"
         ]
     )
 
-    user_time = st.selectbox(
-        "How much time can you spend caring for a pet?",
+    budget_map = {
+        "ต่ำ": "Low",
+        "ปานกลาง": "Medium",
+        "สูง": "High"
+    }
+
+    user_budget = budget_map[user_budget_th]
+
+    user_time_th = st.selectbox(
+        "คุณมีเวลาในการดูแลสัตว์เลี้ยงมากแค่ไหน?",
         [
-            "Low",
-            "Medium",
-            "High"
+            "น้อย",
+            "ปานกลาง",
+            "มาก"
         ]
     )
 
-    if st.button("🐾 Recommend Pets"):
+    time_map = {
+        "น้อย": "Low",
+        "ปานกลาง": "Medium",
+        "มาก": "High"
+    }
+
+    user_time = time_map[user_time_th]
+
+    if st.button("🐾 แนะนำสัตว์เลี้ยง"):
 
         try:
 
@@ -184,7 +209,26 @@ if page == "🏠 Home":
                 time=user_time
             )
 
-            st.subheader("🐾 Recommended Pets")
+            st.subheader("🐾 สัตว์เลี้ยงที่แนะนำ")
+
+            space_display_map = {
+                "House": "บ้าน",
+                "Condo": "คอนโด",
+                "Farm": "ฟาร์ม",
+                "Outdoor Space": "พื้นที่กลางแจ้ง"
+            }
+
+            budget_display_map = {
+                "Low": "ต่ำ",
+                "Medium": "ปานกลาง",
+                "High": "สูง"
+            }
+
+            time_display_map = {
+                "Low": "น้อย",
+                "Medium": "ปานกลาง",
+                "High": "มาก"
+            }
 
             for record in result.records:
 
@@ -208,18 +252,18 @@ if page == "🏠 Home":
 
                 with col2:
                     st.write(
-                        f"💰 Budget: {record['Budget']}"
+                        f"💰 งบประมาณ: {budget_display_map.get(record['Budget'], record['Budget'])}"
                     )
 
                 with col3:
                     st.write(
-                        f"⏰ Time: {record['TimeAvailable']}"
+                        f"⏰ เวลาที่ใช้ดูแล: {time_display_map.get(record['TimeAvailable'], record['TimeAvailable'])}"
                     )
 
         except Exception as e:
 
             st.error(
-                "Unable to connect to Neo4j."
+                "ไม่สามารถเชื่อมต่อกับ Neo4j ได้"
             )
 
             st.write(str(e))
@@ -229,7 +273,7 @@ if page == "🏠 Home":
 # PET GUIDE PAGE
 # =========================================================
 
-elif page == "🐾 Pet Guide":
+elif page == "🐾 คู่มือสัตว์เลี้ยง":
 
     st.title("🐾 คู่มือแนะนำสัตว์เลี้ยง")
 
@@ -431,9 +475,9 @@ elif page == "🐾 Pet Guide":
 # ADMIN PAGE
 # =========================================================
 
-elif page == "🔐 Admin":
+elif page == "🔐 ผู้ดูแลระบบ":
 
-    st.title("🔐 Admin")
+    st.title("🔐 ผู้ดูแลระบบ")
 
     if "admin_logged_in" not in st.session_state:
         st.session_state.admin_logged_in = False
@@ -444,18 +488,18 @@ elif page == "🔐 Admin":
 
     if not st.session_state.admin_logged_in:
 
-        st.subheader("🔑 Admin Login")
+        st.subheader("🔑 เข้าสู่ระบบผู้ดูแล")
 
         username = st.text_input(
-            "Username"
+            "ชื่อผู้ใช้"
         )
 
         password = st.text_input(
-            "Password",
+            "รหัสผ่าน",
             type="password"
         )
 
-        if st.button("🔐 Login"):
+        if st.button("🔐 เข้าสู่ระบบ"):
 
             # สำหรับงานส่ง/เดโม
             # Username: admin
@@ -469,7 +513,7 @@ elif page == "🔐 Admin":
                 st.session_state.admin_logged_in = True
 
                 st.success(
-                    "เข้าสู่ระบบ Admin สำเร็จ"
+                    "เข้าสู่ระบบผู้ดูแลสำเร็จ"
                 )
 
                 st.rerun()
@@ -477,7 +521,7 @@ elif page == "🔐 Admin":
             else:
 
                 st.error(
-                    "Username หรือ Password ไม่ถูกต้อง"
+                    "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"
                 )
 
     # =====================================================
@@ -486,13 +530,13 @@ elif page == "🔐 Admin":
 
     else:
 
-        st.title("🔧 Admin Dashboard")
+        st.title("🔧 แผงควบคุมผู้ดูแลระบบ")
 
         st.success(
-            "เข้าสู่ระบบ Admin แล้ว"
+            "เข้าสู่ระบบผู้ดูแลเรียบร้อยแล้ว"
         )
 
-        if st.button("🚪 Logout"):
+        if st.button("🚪 ออกจากระบบ"):
 
             st.session_state.admin_logged_in = False
 
@@ -526,43 +570,62 @@ elif page == "🔐 Admin":
 
         with add_col3:
 
-            new_pet_space = st.selectbox(
+            new_pet_space_th = st.selectbox(
                 "พื้นที่ที่เหมาะสม",
                 [
-                    "House",
-                    "Condo",
-                    "Farm",
-                    "Outdoor Space"
+                    "บ้าน",
+                    "คอนโด",
+                    "ฟาร์ม",
+                    "พื้นที่กลางแจ้ง"
                 ],
                 key="new_pet_space"
             )
 
+            new_pet_space = {
+                "บ้าน": "House",
+                "คอนโด": "Condo",
+                "ฟาร์ม": "Farm",
+                "พื้นที่กลางแจ้ง": "Outdoor Space"
+            }[new_pet_space_th]
+
         with add_col4:
 
-            new_pet_budget = st.selectbox(
+            new_pet_budget_th = st.selectbox(
                 "งบประมาณ",
                 [
-                    "Low",
-                    "Medium",
-                    "High"
+                    "ต่ำ",
+                    "ปานกลาง",
+                    "สูง"
                 ],
                 key="new_pet_budget"
             )
 
+            new_pet_budget = {
+                "ต่ำ": "Low",
+                "ปานกลาง": "Medium",
+                "สูง": "High"
+            }[new_pet_budget_th]
+
         with add_col5:
 
-            new_pet_time = st.selectbox(
+            new_pet_time_th = st.selectbox(
                 "เวลาที่ใช้ดูแล",
                 [
-                    "Low",
-                    "Medium",
-                    "High"
+                    "น้อย",
+                    "ปานกลาง",
+                    "มาก"
                 ],
                 key="new_pet_time"
             )
 
+            new_pet_time = {
+                "น้อย": "Low",
+                "ปานกลาง": "Medium",
+                "มาก": "High"
+            }[new_pet_time_th]
+
         if st.button(
-            "➕ Add Pet",
+            "➕ เพิ่มสัตว์เลี้ยง",
             key="add_pet_button"
         ):
 
@@ -693,41 +756,50 @@ elif page == "🔐 Admin":
                     )
 
                     spaces = [
-                        "House",
-                        "Condo",
-                        "Farm",
-                        "Outdoor Space"
+                        "บ้าน",
+                        "คอนโด",
+                        "ฟาร์ม",
+                        "พื้นที่กลางแจ้ง"
                     ]
 
                     budgets = [
-                        "Low",
-                        "Medium",
-                        "High"
+                        "ต่ำ",
+                        "ปานกลาง",
+                        "สูง"
                     ]
 
                     times = [
-                        "Low",
-                        "Medium",
-                        "High"
+                        "น้อย",
+                        "ปานกลาง",
+                        "มาก"
                     ]
 
-                    current_space = (
-                        record["space"]
-                        if record["space"] in spaces
-                        else spaces[0]
-                    )
+                    space_to_db = {
+                        "บ้าน": "House",
+                        "คอนโด": "Condo",
+                        "ฟาร์ม": "Farm",
+                        "พื้นที่กลางแจ้ง": "Outdoor Space"
+                    }
 
-                    current_budget = (
-                        record["budget"]
-                        if record["budget"] in budgets
-                        else budgets[0]
-                    )
+                    budget_to_db = {
+                        "ต่ำ": "Low",
+                        "ปานกลาง": "Medium",
+                        "สูง": "High"
+                    }
 
-                    current_time = (
-                        record["time"]
-                        if record["time"] in times
-                        else times[0]
-                    )
+                    time_to_db = {
+                        "น้อย": "Low",
+                        "ปานกลาง": "Medium",
+                        "มาก": "High"
+                    }
+
+                    db_to_space = {v: k for k, v in space_to_db.items()}
+                    db_to_budget = {v: k for k, v in budget_to_db.items()}
+                    db_to_time = {v: k for k, v in time_to_db.items()}
+
+                    current_space = db_to_space.get(record["space"], spaces[0])
+                    current_budget = db_to_budget.get(record["budget"], budgets[0])
+                    current_time = db_to_time.get(record["time"], times[0])
 
                     edit_col1, edit_col2, edit_col3 = st.columns(3)
 
@@ -764,7 +836,7 @@ elif page == "🔐 Admin":
                     with save_col:
 
                         if st.button(
-                            "💾 Save Changes",
+                            "💾 บันทึกการแก้ไข",
                             key=f"save_{pet_name}"
                         ):
 
@@ -821,9 +893,9 @@ elif page == "🔐 Admin":
                                         old_name=record["name"],
                                         name=edit_name.strip(),
                                         description=edit_description.strip(),
-                                        space=edit_space,
-                                        budget=edit_budget,
-                                        time=edit_time
+                                        space=space_to_db[edit_space],
+                                        budget=budget_to_db[edit_budget],
+                                        time=time_to_db[edit_time]
                                     )
 
                                     st.success(
@@ -843,7 +915,7 @@ elif page == "🔐 Admin":
                     with delete_col:
 
                         if st.button(
-                            "🗑️ Delete",
+                            "🗑️ ลบ",
                             key=f"delete_{pet_name}"
                         ):
 
@@ -877,7 +949,7 @@ elif page == "🔐 Admin":
         except Exception as e:
 
             st.error(
-                "Unable to connect to Neo4j."
+                "ไม่สามารถเชื่อมต่อกับ Neo4j ได้"
             )
 
             st.write(str(e))
