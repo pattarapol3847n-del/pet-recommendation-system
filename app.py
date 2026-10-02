@@ -162,7 +162,45 @@ if page == "🏠 หน้าหลัก":
         "ค้นหาสัตว์เลี้ยงที่เหมาะกับไลฟ์สไตล์ของคุณ"
     )
 
-    st.subheader("ข้อมูลเกี่ยวกับไลฟ์สไตล์ของคุณ")
+    st.subheader("👤 ข้อมูลผู้ใช้งาน")
+
+    # รายชื่อผู้ใช้งานตัวอย่าง 10 คน
+    user_names = [
+        "มิน",
+        "น้ำ",
+        "สา",
+        "กร",
+        "กุล",
+        "นน",
+        "ปิ่น",
+        "สุข",
+        "ยิ้ม",
+        "จ๋า"
+    ]
+
+    selected_user = st.selectbox(
+        "ชื่อของคุณ",
+        user_names
+    )
+
+    # เลือกเพื่อนจากรายชื่อที่เหลือ โดยไม่ให้เลือกตัวเอง
+    friend_options = [name for name in user_names if name != selected_user]
+
+    selected_friends = st.multiselect(
+        "คุณเป็นเพื่อนกับใคร?",
+        friend_options,
+        placeholder="เลือกชื่อเพื่อนของคุณ"
+    )
+
+    if selected_friends:
+        st.info(
+            f"👥 {selected_user} เป็นเพื่อนกับ "
+            + ", ".join(selected_friends)
+        )
+    else:
+        st.caption("ยังไม่ได้เลือกเพื่อน สามารถเลือกได้หลายคน")
+
+    st.subheader("🏠 ข้อมูลเกี่ยวกับไลฟ์สไตล์ของคุณ")
 
     user_space_th = st.selectbox(
         "คุณอาศัยอยู่ที่ไหน?",
