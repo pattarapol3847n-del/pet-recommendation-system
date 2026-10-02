@@ -1,3 +1,476 @@
+
+วันนี้ 6:02
+
+โค้ดที่วาง (1)py(2)
+ไฟล์
+ตรงการให้ตรงคำอธิบายเป็นไทยทั้งหมดตรงที่เป็นอังกิตเห็นป่ะ แล้วขยับให้ข้างหน้าใส่รูปสัตว์ได้
+
+c3685fdc-73ac-4972-b39b-530f4b3ba5ea.png
+เหมือนเดิมเลย ตามภาพมันเล็กปรับให้หน่อยนะ
+
+วันนี้ 13:59
+28d5e28e-b749-4dbb-be29-7741b93216b7.png
+ช่วยเพิ่มกราฟแบบนี้ที
+
+ได้ครับ เห็นภาพที่ส่งมาแล้ว — คุณต้องการ Graph Explorer แบบกราฟโหนดเชื่อมกัน คล้ายที่เห็นใน Neo4j ไม่ใช่กราฟแท่งธรรมดา
+
+ผมเพิ่มให้ในโค้ดแล้ว โดยเพิ่มเมนูใหม่ในแถบซ้าย:
+
+🕸️ Graph Explorer
+
+เมื่อกดเข้าไป จะเห็นข้อมูลจาก Neo4j เป็นกราฟความสัมพันธ์ เช่น
+
+             🐶 สุนัข
+                │
+        SUITABLE_FOR
+                ↓
+              🏠 บ้าน
+                │
+           COST_LEVEL
+                ↓
+             💰 ต่ำ
+และกราฟสามารถ:
+
+🖱️ ลากโหนดไปมาได้
+
+🔍 ซูมเข้า–ออกได้
+
+↔️ เห็นเส้นความสัมพันธ์ระหว่างข้อมูล
+
+➡️ มีลูกศรบอกทิศทางความสัมพันธ์
+
+🏷️ แสดงชื่อสัตว์และประเภท Node
+
+🖱️ ดับเบิลคลิกโหนดเพื่อโฟกัส
+
+ดึงข้อมูล จริงจาก Neo4j ไม่ได้ใส่ข้อมูลหลอก
+
+ผมตรวจ Python syntax ให้แล้ว ไม่มี error
+
+ไฟล์ที่เพิ่ม Graph Explorer แล้ว
+ดาวน์โหลดโค้ดเพิ่มกราฟ
+
+เอาไฟล์นี้ไปแทนไฟล์เดิมได้เลยครับ แล้วเปิด Streamlit ใหม่ จะเห็น 🕸️ Graph Explorer เพิ่มในเมนูด้านซ้ายครับ.
+
+
+โค้ดเพิ่มกราฟ.py
+โค้ด
+
+
+e3dbb53f-ea67-48fb-8c19-0d7e77e26c29.png
+เพิ่มแล้วส่วนนี้ไม่ขึ้น
+
+อ๋อ เห็นแล้วครับ จากรูป ตอนนี้คุณเปิด README.md อยู่ ไม่ใช่หน้าตัวโปรแกรม app.py เลยทำให้เห็นข้อความว่า Graph Explorer มีอยู่ แต่ยังไม่เห็นเมนูกราฟจริง ๆ
+
+ที่สำคัญ ผมตรวจไฟล์ที่เราเพิ่มให้แล้ว พบว่าในโค้ดมีส่วนนี้อยู่จริง:
+
+page = st.sidebar.radio(
+    "เมนู",
+    [
+        "🏠 หน้าหลัก",
+        "🐾 คู่มือสัตว์เลี้ยง",
+        "🕸️ Graph Explorer",
+        "🔐 ผู้ดูแลระบบ"
+    ]
+)
+และมีหน้า:
+
+elif page == "🕸️ Graph Explorer":
+ดังนั้น โค้ดกราฟไม่ได้หาย ครับ
+
+ให้ทำแบบนี้
+ใน VS Code ด้านซ้าย ให้เปิด:
+
+app.py
+
+ไม่ใช่ README.md
+
+แล้วตรวจว่าตรงเมนูมี:
+
+"🕸️ Graph Explorer",
+ถ้าไม่มี แสดงว่า app.py ของคุณยังเป็นไฟล์เก่า ให้เอาไฟล์นี้ไปแทน app.py:
+
+ดาวน์โหลด app.py เวอร์ชันที่มี Graph Explorer
+
+จากนั้นรัน:
+
+streamlit run app.py
+แล้วหน้าเว็บด้านซ้ายควรมี:
+
+🐾 ระบบแนะนำสัตว์เลี้ยง
+
+เมนู
+🔴 🏠 หน้าหลัก
+⚪ 🐾 คู่มือสัตว์เลี้ยง
+⚪ 🕸️ Graph Explorer
+⚪ 🔐 ผู้ดูแลระบบ
+กด 🕸️ Graph Explorer แล้วจึงจะเห็นกราฟ Neo4j แบบที่เราทำไว้
+
+หมายเหตุ: ผมตรวจ syntax ของไฟล์ Graph Explorer แล้ว ผ่านครับ ไม่มี Python syntax error
+
+ถ้าคุณเปิด app.py แล้ว ยังไม่มี 🕸️ Graph Explorer ส่งรูปหน้า app.py มาได้เลย เดี๋ยวผมบอกให้ตรงบรรทัดว่าต้องใส่ตรงไหนครับ.
+
+
+โค้ดเพิ่มกราฟ.py
+โค้ด
+
+
+# GraphBook Recommendation System
+
+โปรเจ็คตัวอย่างระดับปริญญาตรีสำหรับรายวิชา Graph Database / Advanced Database
+
+พัฒนาด้วย **Streamlit + Neo4j Aura + Cypher** และออกแบบให้ deploy ผ่าน **GitHub → Streamlit Community Cloud** ได้โดยตรง
+
+## 1. แนวคิดของระบบ
+
+ระบบใช้ Property Graph ดังนี้
+
+```text
+
+(Student)-[:FRIEND_OF]-(Student)
+
+(Student)-[:BORROWED {borrow_date, rating}]->(Book)
+
+(Student)-[:INTERESTED_IN]->(Category)
+
+(Book)-[:IN_CATEGORY]->(Category)
+
+(Author)-[:WROTE]->(Book)
+
+```
+
+จุดเด่นคือคำแนะนำอธิบายได้ (Explainable Recommendation) ว่าหนังสือถูกแนะนำเพราะ
+
+1. เพื่อนของผู้ใช้เคยยืม
+
+2. หมวดหนังสือตรงกับความสนใจ
+
+3. หนังสือได้รับความนิยม
+
+4. หนังสือมีคะแนนเฉลี่ยดี
+
+ตัวอย่างคะแนน Hybrid:
+
+```text
+
+score = friend_count*3
+
+      + interest_matches*2
+
+      + popularity*0.20
+
+      + average_rating*0.50
+
+```
+
+สูตรนี้เป็น heuristic เพื่อการเรียนการสอน ไม่ใช่โมเดล ML ที่ผ่านการ optimize
+
+## 2. โครงสร้างไฟล์
+
+```text
+
+book_graph_recommender/
+
+├── app.py
+
+├── neo4j_service.py
+
+├── requirements.txt
+
+├── .gitignore
+
+├── .streamlit/
+
+│   └── secrets.toml.example
+
+└── cypher/
+
+    └── schema.cypher
+
+```
+
+## 3. สร้าง Neo4j Aura
+
+1. สร้าง AuraDB instance
+
+2. เก็บค่า Connection URI, username และ password
+
+3. URI ของ Aura โดยทั่วไปอยู่ในรูป `neo4j+s://...databases.neo4j.io`
+
+4. อย่านำ password ไปใส่ในไฟล์ที่ commit ขึ้น GitHub
+
+## 4. รันในเครื่อง
+
+```bash
+
+python -m venv .venv
+
+# Windows
+
+.venv\Scripts\activate
+
+# macOS/Linux
+
+source .venv/bin/activate
+
+pip install -r requirements.txt
+
+```
+
+คัดลอกไฟล์ตัวอย่าง secrets
+
+```bash
+
+cp .streamlit/secrets.toml.example .streamlit/secrets.toml
+
+```
+
+จากนั้นใส่ credential จริง แล้วรัน
+
+```bash
+
+streamlit run app.py
+
+```
+
+## 5. ครั้งแรกที่เปิดระบบ
+
+1. เข้าเมนู **Admin / Setup**
+
+2. กด **สร้าง Constraint + Demo Data**
+
+3. ระบบใช้ `MERGE` จึงกดซ้ำได้โดยไม่สร้าง node ซ้ำจาก key เดิม
+
+4. จากนั้นทดลอง Dashboard, Recommendations, Search, Borrow/Rate และ Graph Explorer
+
+## 6. Deploy GitHub → Streamlit Community Cloud
+
+1. สร้าง GitHub repository ใหม่
+
+2. push ไฟล์ทั้งหมดขึ้น GitHub **ยกเว้น `.streamlit/secrets.toml`**
+
+3. เข้า Streamlit Community Cloud แล้วเลือก Create app
+
+4. เลือก repository, branch และ entrypoint = `app.py`
+
+5. ใน Advanced settings → Secrets ใส่
+
+```toml
+
+[neo4j]
+
+uri = "neo4j+s://YOUR_INSTANCE.databases.neo4j.io"
+
+username = "neo4j"
+
+password = "YOUR_PASSWORD"
+
+database = "neo4j"
+
+```
+
+6. Deploy
+
+## 7. ประเด็น Graph Database ที่นักศึกษาจะได้ฝึก
+
+- Node, Label, Property
+
+- Relationship และ Direction
+
+- Constraint และ Unique Key
+
+- `MATCH`, `MERGE`, `OPTIONAL MATCH`, `WITH`, `UNWIND`
+
+- Graph traversal ผ่านเพื่อน → หนังสือ
+
+- Aggregation เช่น `count`, `avg`, `collect`
+
+- Recommendation จาก topology ของกราฟ
+
+- Parameterized Cypher
+
+- Python Driver และ connection pooling
+
+- Streamlit UI
+
+- Secrets และ cloud deployment
+
+## 8. สิ่งที่ปรับปรุงจาก notebook ต้นแบบ
+
+- ใช้ label `Student` ให้สอดคล้องทั้งระบบ แทนการปะปน `Student2`/`Student`
+
+- ใช้ `MERGE` ใน seed data เพื่อรองรับการรันซ้ำ
+
+- เพิ่ม Unique Constraints
+
+- ใช้ parameterized Cypher แทนการต่อ string จาก input
+
+- มอง `FRIEND_OF` เป็นความสัมพันธ์เชิงสมมาตรตอน query ด้วย `-[:FRIEND_OF]-`
+
+- เพิ่ม Author, Category และ Interest เพื่อให้ recommendation มีมิติด้าน content
+
+- เพิ่ม rating และ popularity เพื่อสร้าง Hybrid Score
+
+- แยก database layer (`neo4j_service.py`) ออกจาก UI (`app.py`)
+
+- ใช้ Streamlit Secrets แทนการ hardcode Aura credential
+
+## 9. แนวทางต่อยอดเป็นโครงงานนักศึกษา
+
+สามารถเพิ่ม Login, Favorite/Wishlist, การคืนหนังสือ, due date, collaborative filtering, Graph Data Science similarity, PageRank, community detection, evaluation metrics เช่น Precision@K/Recall@K และระบบผู้ดูแลได้
+
+ต้้องการกราฟตามโค้ดนี้ แต่เปลี่ยนเนื้อหาฉัน
+
+
+ใช่ครับ เข้าใจที่คุณต้องการแล้ว — เอาแนวคิด Graph ของตัวอย่าง GraphBook มาใช้กับโปรเจกต์สัตว์เลี้ยงของคุณ แต่เปลี่ยน Node / Relationship / เนื้อหาทั้งหมดให้เป็นระบบสัตว์เลี้ยงของคุณ
+
+ผมแก้ไฟล์ให้แล้ว โดย Graph Explorer ตอนนี้ใช้โครงสร้างของโปรเจกต์คุณโดยตรง:
+
+(Pet)-[:SUITABLE_FOR]->(LivingSpace)
+
+(Pet)-[:COST_LEVEL]->(Budget)
+
+(Pet)-[:NEEDS_TIME]->(TimeAvailable)
+ตัวอย่างกราฟจะเป็นประมาณนี้:
+
+                 🏠 บ้าน
+                    ↑
+             เหมาะกับพื้นที่
+                    │
+🐾 สุนัข ───────────┼──────────→ 💰 ต่ำ
+                    │             ระดับงบประมาณ
+                    ↓
+              ⏰ น้อย
+             เวลาที่ใช้ดูแล
+และผมปรับ Graph Explorer เพิ่มให้ด้วย:
+
+🐾 Node สัตว์เลี้ยงแยกจาก Node ประเภทอื่น
+
+🏠 พื้นที่
+
+💰 งบประมาณ
+
+⏰ เวลาที่ใช้ดูแล
+
+ชื่อ Relationship เป็น ภาษาไทย
+
+มีลูกศรแสดงทิศทางความสัมพันธ์
+
+ลาก Node ได้
+
+ซูมได้
+
+ดับเบิลคลิกเพื่อโฟกัส
+
+เอาเมาส์วางบน Node เพื่อดูประเภทและรายละเอียด
+
+ดึงข้อมูลจาก Neo4j จริง
+
+ถ้าไม่มีข้อมูล จะแจ้งให้เข้า Admin เพื่อเพิ่มข้อมูลก่อน
+
+ผมตรวจ Python syntax แล้ว ผ่าน ไม่มี syntax error
+
+ไฟล์ที่แก้แล้ว
+ดาวน์โหลดโค้ด Graph Explorer สำหรับระบบสัตว์เลี้ยง
+
+เอาไฟล์นี้ไปแทน app.py ในโปรเจกต์ แล้วรัน:
+
+streamlit run app.py
+จากนั้นเลือกเมนู:
+
+🕸️ Graph Explorer
+
+ก็จะเป็นกราฟของ สัตว์เลี้ยง ไม่ใช่กราฟหนังสือครับ
+
+
+โค้ดเพิ่มกราฟ.py
+โค้ด
+
+
+ไลบรารี
+/
+โค้ดเพิ่มกราฟ.py
+
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
 import streamlit as st
 from neo4j import GraphDatabase
 from pathlib import Path
@@ -77,3812 +550,3 @@ st.markdown("""
     font-size: 34px;
     font-weight: 700;
     margin-bottom: 12px;
-}
-
-.pet-result-description {
-    font-size: 23px;
-    line-height: 1.75;
-    margin-bottom: 18px;
-}
-
-.pet-detail {
-    font-size: 19px;
-    line-height: 1.7;
-    padding: 10px 0;
-}
-
-.pet-result-image img {
-    border-radius: 14px;
-}
-</style>
-""", unsafe_allow_html=True)
-
-
-# =========================================================
-# IMAGE FOLDER
-# =========================================================
-
-IMAGE_DIR = Path(__file__).parent / "images"
-
-
-def get_pet_image(pet_name):
-    extensions = [".jpg", ".jpeg", ".png", ".webp"]
-
-    for extension in extensions:
-        image_path = IMAGE_DIR / (pet_name.lower() + extension)
-
-        if image_path.exists():
-            return image_path
-
-    return None
-
-
-# =========================================================
-# SIDEBAR MENU
-# =========================================================
-
-st.sidebar.title("🐾 ระบบแนะนำสัตว์เลี้ยง")
-
-page = st.sidebar.radio(
-    "เมนู",
-    [
-        "🏠 หน้าหลัก",
-        "🐾 คู่มือสัตว์เลี้ยง",
-        "🕸️ Graph Explorer",
-        "🔐 ผู้ดูแลระบบ"
-    ]
-)
-
-
-# =========================================================
-# NEO4J CONNECTION
-# =========================================================
-
-@st.cache_resource
-def get_driver():
-
-    driver = GraphDatabase.driver(
-        st.secrets["NEO4J_URI"],
-        auth=(
-            st.secrets["NEO4J_USERNAME"],
-            st.secrets["NEO4J_PASSWORD"]
-        )
-    )
-
-    driver.verify_connectivity()
-
-    return driver
-
-
-# =========================================================
-# HOME PAGE
-# =========================================================
-
-if page == "🏠 หน้าหลัก":
-
-    st.title("🐾 ระบบแนะนำสัตว์เลี้ยง")
-
-    st.write(
-        "ค้นหาสัตว์เลี้ยงที่เหมาะกับไลฟ์สไตล์ของคุณ"
-    )
-
-    st.subheader("ข้อมูลเกี่ยวกับไลฟ์สไตล์ของคุณ")
-
-    user_space_th = st.selectbox(
-        "คุณอาศัยอยู่ที่ไหน?",
-        [
-            "บ้าน",
-            "คอนโด",
-            "ฟาร์ม",
-            "พื้นที่กลางแจ้ง"
-        ]
-    )
-
-    space_map = {
-        "บ้าน": "House",
-        "คอนโด": "Condo",
-        "ฟาร์ม": "Farm",
-        "พื้นที่กลางแจ้ง": "Outdoor Space"
-    }
-
-    user_space = space_map[user_space_th]
-
-    user_budget_th = st.selectbox(
-        "งบประมาณสำหรับสัตว์เลี้ยงของคุณ?",
-        [
-            "ต่ำ",
-            "ปานกลาง",
-            "สูง"
-        ]
-    )
-
-    budget_map = {
-        "ต่ำ": "Low",
-        "ปานกลาง": "Medium",
-        "สูง": "High"
-    }
-
-    user_budget = budget_map[user_budget_th]
-
-    user_time_th = st.selectbox(
-        "คุณมีเวลาในการดูแลสัตว์เลี้ยงมากแค่ไหน?",
-        [
-            "น้อย",
-            "ปานกลาง",
-            "มาก"
-        ]
-    )
-
-    time_map = {
-        "น้อย": "Low",
-        "ปานกลาง": "Medium",
-        "มาก": "High"
-    }
-
-    user_time = time_map[user_time_th]
-
-    if st.button("🐾 แนะนำสัตว์เลี้ยง"):
-
-        try:
-
-            driver = get_driver()
-
-            result = driver.execute_query(
-                """
-                MATCH (p:Pet)
-
-                OPTIONAL MATCH
-                    (p)-[:SUITABLE_FOR]->(space:LivingSpace)
-
-                OPTIONAL MATCH
-                    (p)-[:COST_LEVEL]->(budget:Budget)
-
-                OPTIONAL MATCH
-                    (p)-[:NEEDS_TIME]->(time:TimeAvailable)
-
-                WITH
-                    p,
-                    collect(DISTINCT space.name) AS spaces,
-                    collect(DISTINCT budget.name)[0] AS budget,
-                    collect(DISTINCT time.name)[0] AS time
-
-                WITH
-                    p,
-                    spaces,
-                    budget,
-                    time,
-
-                    CASE
-                        WHEN $space IN spaces THEN 1
-                        ELSE 0
-                    END +
-
-                    CASE
-                        WHEN budget = $budget THEN 1
-                        ELSE 0
-                    END +
-
-                    CASE
-                        WHEN time = $time THEN 1
-                        ELSE 0
-                    END AS score
-
-                RETURN
-                    p.name AS Pet,
-                    p.description AS Description,
-                    score AS Score,
-                    spaces AS SuitableSpace,
-                    budget AS Budget,
-                    time AS TimeAvailable
-
-                ORDER BY Score DESC, Pet
-                """,
-                space=user_space,
-                budget=user_budget,
-                time=user_time
-            )
-
-            st.subheader("🐾 สัตว์เลี้ยงที่แนะนำ")
-
-            space_display_map = {
-                "House": "บ้าน",
-                "Condo": "คอนโด",
-                "Farm": "ฟาร์ม",
-                "Outdoor Space": "พื้นที่กลางแจ้ง"
-            }
-
-            budget_display_map = {
-                "Low": "ต่ำ",
-                "Medium": "ปานกลาง",
-                "High": "สูง"
-            }
-
-            time_display_map = {
-                "Low": "น้อย",
-                "Medium": "ปานกลาง",
-                "High": "มาก"
-            }
-
-            # แปลงข้อมูลที่แสดงผลจาก Neo4j ให้เป็นภาษาไทย
-            pet_display_map = {
-                "Dog": "สุนัข",
-                "Cat": "แมว",
-                "Bird": "นก",
-                "Rabbit": "กระต่าย",
-                "Fish": "ปลา",
-                "Hamster": "แฮมสเตอร์",
-                "Duck": "เป็ด",
-                "Sheep": "แกะ",
-                "Turtle": "เต่า",
-                "Horse": "ม้า"
-            }
-
-            # คำอธิบายภาษาไทยสำหรับสัตว์แต่ละชนิด
-            description_display_map = {
-                "Dog":
-                    "สุนัขเป็นสัตว์เลี้ยงที่เป็นมิตรและชอบอยู่ร่วมกับผู้คน เหมาะสำหรับผู้ที่มีเวลาในการดูแลและพาออกกำลังกาย",
-                "Cat":
-                    "แมวเป็นสัตว์เลี้ยงที่รักอิสระและสามารถปรับตัวให้เข้ากับสภาพแวดล้อมภายในบ้านได้ดี",
-                "Bird":
-                    "นกเป็นสัตว์เลี้ยงขนาดเล็กที่มีความกระตือรือร้นและสามารถสร้างความเพลิดเพลินให้กับผู้เลี้ยงได้",
-                "Rabbit":
-                    "กระต่ายเป็นสัตว์เลี้ยงขนาดเล็กที่มีนิสัยอ่อนโยนและค่อนข้างเงียบ เหมาะสำหรับผู้ที่ชอบสัตว์เลี้ยงที่สงบ",
-                "Fish":
-                    "ปลาเป็นสัตว์เลี้ยงที่เงียบและเหมาะสำหรับผู้ที่ต้องการสัตว์เลี้ยงที่ใช้พื้นที่ไม่มาก",
-                "Hamster":
-                    "แฮมสเตอร์เป็นสัตว์เลี้ยงขนาดเล็กที่สามารถเลี้ยงในพื้นที่จำกัด และมีพฤติกรรมที่น่าสนใจให้สังเกต",
-                "Duck":
-                    "เป็ดเป็นสัตว์ที่ชอบอยู่รวมกันและต้องการพื้นที่สำหรับเดินเล่นและทำกิจกรรมกลางแจ้ง",
-                "Sheep":
-                    "แกะเป็นสัตว์เลี้ยงในพื้นที่เกษตรที่มักอยู่รวมกันเป็นฝูง และต้องการพื้นที่สำหรับใช้ชีวิตอย่างเหมาะสม",
-                "Turtle":
-                    "เต่าเป็นสัตว์ที่ค่อนข้างสงบและเงียบ เหมาะสำหรับผู้ที่ชอบสังเกตพฤติกรรมของสัตว์",
-                "Horse":
-                    "ม้าเป็นสัตว์ขนาดใหญ่ที่มีความกระตือรือร้น และต้องการพื้นที่กว้างสำหรับการเคลื่อนไหวและออกกำลังกาย"
-            }
-
-            for record in result.records:
-
-                st.markdown("---")
-
-                pet_name = pet_display_map.get(
-                    record["Pet"],
-                    record["Pet"]
-                )
-
-                # ใช้คำอธิบายภาษาไทยที่กำหนดไว้เสมอ
-                # เพื่อไม่ให้ข้อความภาษาอังกฤษจาก Neo4j แสดงบนหน้าจอ
-                description = description_display_map.get(
-                    record["Pet"],
-                    "ยังไม่มีคำอธิบายภาษาไทยสำหรับสัตว์ชนิดนี้"
-                )
-
-                # แสดงรูปทางซ้าย และขยายรายละเอียดทางขวาให้อ่านง่ายขึ้น
-                image_col, info_col = st.columns([1.25, 3.75], gap="large")
-
-                with image_col:
-                    image_path = get_pet_image(record["Pet"])
-
-                    if image_path:
-                        st.markdown('<div class="pet-result-image">', unsafe_allow_html=True)
-                        st.image(
-                            str(image_path),
-                            width=240
-                        )
-                        st.markdown('</div>', unsafe_allow_html=True)
-                    else:
-                        st.info(f"ไม่พบรูปของ {pet_name}")
-
-                with info_col:
-                    st.markdown(
-                        f'<div class="pet-result-title">🐾 {pet_name} — {record["Score"]}/3</div>',
-                        unsafe_allow_html=True
-                    )
-
-                    st.markdown(
-                        f'<div class="pet-result-description">{description}</div>',
-                        unsafe_allow_html=True
-                    )
-
-                    col1, col2, col3 = st.columns(3, gap="medium")
-
-                    with col1:
-                        suitable_spaces = [
-                            space_display_map.get(space, space)
-                            for space in record["SuitableSpace"]
-                        ]
-
-                        st.markdown(
-                            '<div class="pet-detail">🏠 <b>พื้นที่ที่เหมาะสม</b><br>'
-                            + ", ".join(suitable_spaces)
-                            + '</div>',
-                            unsafe_allow_html=True
-                        )
-
-                    with col2:
-                        st.markdown(
-                            '<div class="pet-detail">💰 <b>งบประมาณ</b><br>'
-                            + budget_display_map.get(record['Budget'], record['Budget'])
-                            + '</div>',
-                            unsafe_allow_html=True
-                        )
-
-                    with col3:
-                        st.markdown(
-                            '<div class="pet-detail">⏰ <b>เวลาที่ใช้ดูแล</b><br>'
-                            + time_display_map.get(record['TimeAvailable'], record['TimeAvailable'])
-                            + '</div>',
-                            unsafe_allow_html=True
-                        )
-
-        except Exception as e:
-
-            st.error(
-                "ไม่สามารถเชื่อมต่อกับ Neo4j ได้"
-            )
-
-            st.write(str(e))
-
-
-# =========================================================
-# PET GUIDE PAGE
-# =========================================================
-
-elif page == "🐾 คู่มือสัตว์เลี้ยง":
-
-    st.title("🐾 คู่มือแนะนำสัตว์เลี้ยง")
-
-    st.write(
-        "ทำความรู้จักกับสัตว์เลี้ยงแต่ละประเภท "
-        "ลักษณะนิสัย ลักษณะทั่วไป และการดูแลเบื้องต้น"
-    )
-
-    st.markdown("---")
-
-    pets = [
-
-        {
-            "name": "Dog",
-            "title": "สุนัข",
-            "personality": "เป็นมิตร เข้าสังคม และชอบทำกิจกรรม",
-            "description":
-                "สุนัขเป็นสัตว์เลี้ยงที่เป็นมิตรและชอบอยู่ร่วมกับผู้คน "
-                "เหมาะสำหรับผู้ที่มีเวลาในการดูแลและพาออกกำลังกาย",
-            "care":
-                "ต้องการอาหาร น้ำสะอาด การออกกำลังกาย "
-                "การดูแลสุขภาพ และการเอาใจใส่อย่างสม่ำเสมอ"
-        },
-
-        {
-            "name": "Cat",
-            "title": "แมว",
-            "personality": "รักอิสระ ปรับตัวได้ดี และค่อนข้างสงบ",
-            "description":
-                "แมวเป็นสัตว์เลี้ยงที่รักอิสระและสามารถปรับตัว "
-                "ให้เข้ากับสภาพแวดล้อมภายในบ้านได้ดี",
-            "care":
-                "ต้องการอาหาร น้ำสะอาด กระบะทราย "
-                "พื้นที่สำหรับพักผ่อน และการดูแลสุขภาพอย่างสม่ำเสมอ"
-        },
-
-        {
-            "name": "Bird",
-            "title": "นก",
-            "personality": "ชอบเข้าสังคม กระตือรือร้น และร่าเริง",
-            "description":
-                "นกเป็นสัตว์เลี้ยงขนาดเล็กที่มีความกระตือรือร้น "
-                "และสามารถสร้างความเพลิดเพลินให้กับผู้เลี้ยงได้",
-            "care":
-                "ต้องการกรงที่เหมาะสม อาหาร น้ำสะอาด "
-                "และการดูแลความสะอาดของกรงอย่างสม่ำเสมอ"
-        },
-
-        {
-            "name": "Rabbit",
-            "title": "กระต่าย",
-            "personality": "อ่อนโยน สงบ และไม่ก้าวร้าว",
-            "description":
-                "กระต่ายเป็นสัตว์เลี้ยงขนาดเล็กที่มีนิสัยอ่อนโยน "
-                "และค่อนข้างเงียบ เหมาะสำหรับผู้ที่ชอบสัตว์เลี้ยงที่สงบ",
-            "care":
-                "ต้องการพื้นที่อยู่อาศัยที่สะอาด อาหารที่เหมาะสม "
-                "น้ำสะอาด และการดูแลสุขภาพอย่างสม่ำเสมอ"
-        },
-
-        {
-            "name": "Fish",
-            "title": "ปลา",
-            "personality": "สงบ เงียบ และดูแลง่าย",
-            "description":
-                "ปลาเป็นสัตว์เลี้ยงที่เงียบและเหมาะสำหรับผู้ที่ต้องการ "
-                "สัตว์เลี้ยงที่ใช้พื้นที่ไม่มาก",
-            "care":
-                "ต้องการตู้ปลาที่เหมาะสม น้ำสะอาด "
-                "อาหารที่เหมาะสม และการดูแลคุณภาพน้ำเป็นประจำ"
-        },
-
-        {
-            "name": "Hamster",
-            "title": "แฮมสเตอร์",
-            "personality": "ตัวเล็ก กระตือรือร้น และชอบสำรวจ",
-            "description":
-                "แฮมสเตอร์เป็นสัตว์เลี้ยงขนาดเล็กที่สามารถเลี้ยง "
-                "ในพื้นที่จำกัด และมีพฤติกรรมที่น่าสนใจให้สังเกต",
-            "care":
-                "ต้องการกรงที่สะอาด อาหาร น้ำสะอาด "
-                "และอุปกรณ์สำหรับออกกำลังกายที่เหมาะสม"
-        },
-
-        {
-            "name": "Duck",
-            "title": "เป็ด",
-            "personality": "ชอบเข้าสังคม กระตือรือร้น และชอบอยู่รวมกัน",
-            "description":
-                "เป็ดเป็นสัตว์ที่ชอบอยู่รวมกันและต้องการพื้นที่ "
-                "สำหรับเดินเล่นและทำกิจกรรมกลางแจ้ง",
-            "care":
-                "ต้องการพื้นที่กลางแจ้ง น้ำสะอาด อาหารที่เหมาะสม "
-                "ที่พักอาศัย และการดูแลอย่างสม่ำเสมอ"
-        },
-
-        {
-            "name": "Sheep",
-            "title": "แกะ",
-            "personality": "รักสงบ ชอบอยู่รวมกัน และเข้าสังคมได้ดี",
-            "description":
-                "แกะเป็นสัตว์เลี้ยงในพื้นที่เกษตรที่มักอยู่รวมกันเป็นฝูง "
-                "และต้องการพื้นที่สำหรับใช้ชีวิตอย่างเหมาะสม",
-            "care":
-                "ต้องการพื้นที่สำหรับเลี้ยง อาหาร น้ำสะอาด "
-                "ที่พัก และการดูแลสุขภาพอย่างเหมาะสม"
-        },
-
-        {
-            "name": "Turtle",
-            "title": "เต่า",
-            "personality": "สงบ เงียบ และเคลื่อนไหวช้า",
-            "description":
-                "เต่าเป็นสัตว์ที่ค่อนข้างสงบและเงียบ "
-                "เหมาะสำหรับผู้ที่ชอบสังเกตพฤติกรรมของสัตว์",
-            "care":
-                "ต้องการพื้นที่อยู่อาศัยที่เหมาะสม "
-                "อาหารที่เหมาะกับชนิดของเต่า น้ำสะอาด "
-                "และการดูแลสภาพแวดล้อมอย่างสม่ำเสมอ"
-        },
-
-        {
-            "name": "Horse",
-            "title": "ม้า",
-            "personality": "กระตือรือร้น แข็งแรง และต้องการการเคลื่อนไหว",
-            "description":
-                "ม้าเป็นสัตว์ขนาดใหญ่ที่มีความกระตือรือร้น "
-                "และต้องการพื้นที่กว้างสำหรับการเคลื่อนไหวและออกกำลังกาย",
-            "care":
-                "ต้องการพื้นที่กลางแจ้งขนาดใหญ่ อาหาร น้ำสะอาด "
-                "การออกกำลังกาย และการดูแลสุขภาพอย่างสม่ำเสมอ"
-        }
-
-    ]
-
-    for i in range(0, len(pets), 3):
-
-        columns = st.columns(3)
-
-        for j, col in enumerate(columns):
-
-            if i + j >= len(pets):
-                continue
-
-            pet = pets[i + j]
-
-            with col:
-
-                # กรอบแยกข้อมูลสัตว์แต่ละตัว
-                with st.container(border=True):
-
-                    image_path = get_pet_image(
-                        pet["name"]
-                    )
-
-                    if image_path:
-
-                        st.image(
-                            str(image_path),
-                            use_container_width=True
-                        )
-
-                    else:
-
-                        st.warning(
-                            f"ไม่พบรูปของ {pet['title']}"
-                        )
-
-                    st.subheader(
-                        f"🐾 {pet['title']}"
-                    )
-
-                    st.markdown(
-                        '<div class="pet-section-title">ลักษณะนิสัย</div>',
-                        unsafe_allow_html=True
-                    )
-                    st.write(pet["personality"])
-
-                    st.markdown(
-                        '<div class="pet-section-title">ลักษณะทั่วไป</div>',
-                        unsafe_allow_html=True
-                    )
-                    st.write(pet["description"])
-
-                    st.markdown(
-                        '<div class="pet-section-title">การดูแลเบื้องต้น</div>',
-                        unsafe_allow_html=True
-                    )
-                    st.write(pet["care"])
-
-    st.info(
-        "💡 ข้อมูลในหน้านี้ใช้สำหรับแนะนำลักษณะทั่วไปของสัตว์ "
-        "ส่วนการเลือกสัตว์ที่เหมาะสมกับผู้ใช้งาน "
-        "สามารถใช้ระบบแนะนำจากหน้า Home ได้"
-    )
-
-
-# =========================================================
-# GRAPH EXPLORER PAGE
-# =========================================================
-
-elif page == "🕸️ Graph Explorer":
-
-    st.title("🕸️ Graph Explorer")
-    st.write("แสดงโครงสร้าง Graph Database ของระบบแนะนำสัตว์เลี้ยงจาก Neo4j")
-
-    # โครงสร้างกราฟของโปรเจกต์นี้
-    st.markdown("""
-    <div style="font-size:20px; line-height:1.8; margin-bottom:18px;">
-        <b>โครงสร้างความสัมพันธ์</b><br>
-        🐾 สัตว์เลี้ยง → 🏠 พื้นที่ที่เหมาะสม<br>
-        🐾 สัตว์เลี้ยง → 💰 ระดับงบประมาณ<br>
-        🐾 สัตว์เลี้ยง → ⏰ เวลาที่ใช้ดูแล
-    </div>
-    """, unsafe_allow_html=True)
-
-    try:
-        driver = get_driver()
-
-        # ดึงเฉพาะ Graph Schema ของระบบสัตว์เลี้ยง
-        # ไม่ใช้ MATCH (n)-[r]->(m) แบบกว้าง เพื่อให้กราฟตรงกับโดเมนของโปรเจกต์
-        graph_result = driver.execute_query(
-            """
-            MATCH (p:Pet)
-            OPTIONAL MATCH (p)-[r1:SUITABLE_FOR]->(space:LivingSpace)
-            OPTIONAL MATCH (p)-[r2:COST_LEVEL]->(budget:Budget)
-            OPTIONAL MATCH (p)-[r3:NEEDS_TIME]->(time:TimeAvailable)
-
-            WITH p,
-                 collect(DISTINCT {
-                     target: space,
-                     rel: CASE WHEN space IS NULL THEN NULL ELSE 'เหมาะกับพื้นที่' END
-                 }) AS spaces,
-                 collect(DISTINCT {
-                     target: budget,
-                     rel: CASE WHEN budget IS NULL THEN NULL ELSE 'ระดับงบประมาณ' END
-                 }) AS budgets,
-                 collect(DISTINCT {
-                     target: time,
-                     rel: CASE WHEN time IS NULL THEN NULL ELSE 'เวลาที่ใช้ดูแล' END
-                 }) AS times
-
-            UNWIND (
-                [x IN spaces WHERE x.target IS NOT NULL] +
-                [x IN budgets WHERE x.target IS NOT NULL] +
-                [x IN times WHERE x.target IS NOT NULL]
-            ) AS x
-
-            RETURN
-                elementId(p) AS source_id,
-                coalesce(p.name, 'สัตว์เลี้ยง') AS source,
-                'Pet' AS source_label,
-                elementId(x.target) AS target_id,
-                coalesce(x.target.name, 'ข้อมูล') AS target,
-                CASE
-                    WHEN x.target:LivingSpace THEN 'LivingSpace'
-                    WHEN x.target:Budget THEN 'Budget'
-                    WHEN x.target:TimeAvailable THEN 'TimeAvailable'
-                    ELSE 'Node'
-                END AS target_label,
-                x.rel AS relationship
-            ORDER BY source
-            LIMIT 500
-            """
-        )
-
-        nodes = {}
-        edges = []
-
-        # ชื่อประเภท Node เป็นภาษาไทยสำหรับแสดงในกราฟ
-        label_th = {
-            "Pet": "สัตว์เลี้ยง",
-            "LivingSpace": "พื้นที่",
-            "Budget": "งบประมาณ",
-            "TimeAvailable": "เวลา"
-        }
-
-        for record in graph_result.records:
-            source_id = str(record["source_id"])
-            target_id = str(record["target_id"])
-
-            source_name = str(record["source"])
-            target_name = str(record["target"])
-            source_label = str(record["source_label"])
-            target_label = str(record["target_label"])
-
-            if source_id not in nodes:
-                nodes[source_id] = {
-                    "id": source_id,
-                    "label": source_name,
-                    "title": f"ประเภท: {label_th.get(source_label, source_label)}<br>ชื่อ: {html.escape(source_name)}",
-                    "group": source_label
-                }
-
-            if target_id not in nodes:
-                nodes[target_id] = {
-                    "id": target_id,
-                    "label": target_name,
-                    "title": f"ประเภท: {label_th.get(target_label, target_label)}<br>ชื่อ: {html.escape(target_name)}",
-                    "group": target_label
-                }
-
-            edges.append({
-                "from": source_id,
-                "to": target_id,
-                "label": str(record["relationship"]),
-                "arrows": "to"
-            })
-
-        if not nodes:
-            st.warning("ยังไม่มีข้อมูล Graph สำหรับแสดงผล")
-            st.info("ให้เข้าเมนู 🔐 ผู้ดูแลระบบ แล้วเพิ่ม/สร้างข้อมูลสัตว์เลี้ยงใน Neo4j ก่อน")
-        else:
-            st.caption(f"พบ {len(nodes)} โหนด และ {len(edges)} ความสัมพันธ์")
-
-            # Legend
-            st.markdown("""
-            <div style="display:flex; gap:12px; flex-wrap:wrap; margin:8px 0 14px 0; font-size:16px;">
-                <span>🐾 สัตว์เลี้ยง</span>
-                <span>🏠 พื้นที่</span>
-                <span>💰 งบประมาณ</span>
-                <span>⏰ เวลา</span>
-            </div>
-            """, unsafe_allow_html=True)
-
-            graph_nodes = json.dumps(list(nodes.values()), ensure_ascii=False)
-            graph_edges = json.dumps(edges, ensure_ascii=False)
-
-            graph_html = f"""
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <meta charset="utf-8">
-                <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
-                <style>
-                    html, body {{
-                        margin: 0;
-                        padding: 0;
-                        width: 100%;
-                        height: 100%;
-                        overflow: hidden;
-                        background: #0e1117;
-                        font-family: Arial, sans-serif;
-                    }}
-                    #graph {{
-                        width: 100%;
-                        height: 700px;
-                        border: 1px solid #3a3d49;
-                        border-radius: 14px;
-                        background: #0e1117;
-                    }}
-                    #hint {{
-                        position: absolute;
-                        top: 14px;
-                        left: 14px;
-                        padding: 9px 13px;
-                        color: #ffffff;
-                        background: rgba(25,27,35,.94);
-                        border: 1px solid #555a6b;
-                        border-radius: 9px;
-                        font-size: 15px;
-                        z-index: 5;
-                    }}
-                </style>
-            </head>
-            <body>
-                <div id="hint">ลากโหนด • เลื่อนเมาส์เพื่อซูม • ดับเบิลคลิกเพื่อโฟกัส • วางเมาส์เพื่อดูรายละเอียด</div>
-                <div id="graph"></div>
-                <script>
-                    const nodes = new vis.DataSet({graph_nodes});
-                    const edges = new vis.DataSet({graph_edges});
-                    const container = document.getElementById('graph');
-                    const data = {{ nodes: nodes, edges: edges }};
-
-                    const options = {{
-                        autoResize: true,
-                        physics: {{
-                            enabled: true,
-                            stabilization: {{ iterations: 250 }},
-                            barnesHut: {{
-                                gravitationalConstant: -6000,
-                                centralGravity: 0.18,
-                                springLength: 190,
-                                springConstant: 0.045,
-                                damping: 0.28
-                            }}
-                        }},
-                        interaction: {{
-                            hover: true,
-                            navigationButtons: true,
-                            keyboard: true,
-                            zoomView: true,
-                            dragView: true,
-                            tooltipDelay: 80
-                        }},
-                        nodes: {{
-                            shape: 'dot',
-                            size: 30,
-                            borderWidth: 2,
-                            font: {{
-                                color: '#ffffff',
-                                size: 19,
-                                face: 'Arial',
-                                strokeWidth: 4,
-                                strokeColor: '#0e1117'
-                            }},
-                            color: {{
-                                background: '#6c63ff',
-                                border: '#a69cff',
-                                highlight: {{ background: '#ffb84d', border: '#ffd27a' }}
-                            }}
-                        }},
-                        groups: {{
-                            Pet: {{
-                                color: {{ background: '#6c63ff', border: '#b0a8ff', highlight: {{ background: '#8a82ff', border: '#ffffff' }} }},
-                                size: 34
-                            }},
-                            LivingSpace: {{
-                                color: {{ background: '#2e9d67', border: '#76d39d', highlight: {{ background: '#42bf83', border: '#ffffff' }} }},
-                                size: 28
-                            }},
-                            Budget: {{
-                                color: {{ background: '#d48b25', border: '#ffc56b', highlight: {{ background: '#f0a63c', border: '#ffffff' }} }},
-                                size: 28
-                            }},
-                            TimeAvailable: {{
-                                color: {{ background: '#287eb8', border: '#75c6f2', highlight: {{ background: '#3c9bd5', border: '#ffffff' }} }},
-                                size: 28
-                            }}
-                        }},
-                        edges: {{
-                            width: 2,
-                            color: {{ color: '#777d8f', highlight: '#ffffff' }},
-                            arrows: {{ to: {{ enabled: true, scaleFactor: 0.75 }} }},
-                            font: {{
-                                color: '#e7e8ee',
-                                size: 15,
-                                align: 'middle',
-                                strokeWidth: 4,
-                                strokeColor: '#0e1117'
-                            }},
-                            smooth: {{ type: 'dynamic' }}
-                        }}
-                    }};
-
-                    const network = new vis.Network(container, data, options);
-
-                    network.once('stabilizationIterationsDone', function() {{
-                        network.fit({{ animation: {{ duration: 600, easingFunction: 'easeInOutQuad' }} }});
-                    }});
-
-                    network.on('doubleClick', function(params) {{
-                        if (params.nodes.length > 0) {{
-                            network.focus(params.nodes[0], {{ scale: 1.35, animation: true }});
-                        }}
-                    }});
-                </script>
-            </body>
-            </html>
-            """
-
-            components.html(graph_html, height=730, scrolling=False)
-
-    except Exception as e:
-        st.error("ไม่สามารถโหลด Graph Explorer จาก Neo4j ได้")
-        st.write(str(e))
-
-
-# =========================================================
-# ADMIN PAGE
-# =========================================================
-
-elif page == "🔐 ผู้ดูแลระบบ":
-
-    st.title("🔐 ผู้ดูแลระบบ")
-
-    if "admin_logged_in" not in st.session_state:
-        st.session_state.admin_logged_in = False
-
-    # =====================================================
-    # LOGIN
-    # =====================================================
-
-    if not st.session_state.admin_logged_in:
-
-        st.subheader("🔑 เข้าสู่ระบบผู้ดูแล")
-
-        with st.form("admin_login_form"):
-
-            username = st.text_input("ชื่อผู้ใช้")
-            password = st.text_input("รหัสผ่าน", type="password")
-
-            login_submit = st.form_submit_button(
-                "🔐 เข้าสู่ระบบ",
-                use_container_width=True
-            )
-
-        if login_submit:
-
-            # สำหรับงานส่ง/เดโม
-            # Username: admin
-            # Password: admin123
-            if username == "admin" and password == "admin123":
-
-                st.session_state.admin_logged_in = True
-                st.success("เข้าสู่ระบบผู้ดูแลสำเร็จ")
-                st.rerun()
-
-            else:
-                st.error("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง")
-
-    # =====================================================
-    # DASHBOARD
-    # =====================================================
-
-    else:
-
-        st.title("🔧 แผงควบคุมผู้ดูแลระบบ")
-
-        top_col1, top_col2 = st.columns([4, 1])
-
-        with top_col1:
-            st.success("เข้าสู่ระบบผู้ดูแลเรียบร้อยแล้ว")
-
-        with top_col2:
-            if st.button("🚪 ออกจากระบบ", use_container_width=True):
-                st.session_state.admin_logged_in = False
-                st.rerun()
-
-        st.markdown("---")
-
-        # =================================================
-        # DATABASE CONNECTION / STATS
-        # =================================================
-
-        try:
-            driver = get_driver()
-
-            count_result = driver.execute_query(
-                "MATCH (p:Pet) RETURN count(p) AS total"
-            )
-            total_pets = count_result.records[0]["total"]
-
-            stat_col1, stat_col2, stat_col3 = st.columns(3)
-
-            with stat_col1:
-                st.metric("🐾 จำนวนสัตว์เลี้ยง", total_pets)
-
-            with stat_col2:
-                space_count = driver.execute_query(
-                    "MATCH (n:LivingSpace) RETURN count(n) AS total"
-                ).records[0]["total"]
-                st.metric("🏠 พื้นที่", space_count)
-
-            with stat_col3:
-                budget_count = driver.execute_query(
-                    "MATCH (n:Budget) RETURN count(n) AS total"
-                ).records[0]["total"]
-                st.metric("💰 ระดับงบประมาณ", budget_count)
-
-        except Exception as e:
-            st.error("ไม่สามารถเชื่อมต่อกับ Neo4j ได้")
-            st.write(str(e))
-            st.stop()
-
-        st.markdown("---")
-
-        # =================================================
-        # ADD PET
-        # =================================================
-
-        st.subheader("➕ เพิ่มสัตว์เลี้ยง")
-
-        with st.form("add_pet_form", clear_on_submit=True):
-
-            add_col1, add_col2 = st.columns(2)
-
-            with add_col1:
-                new_pet_name = st.text_input("ชื่อสัตว์เลี้ยง")
-
-            with add_col2:
-                new_pet_description = st.text_area("รายละเอียด")
-
-            add_col3, add_col4, add_col5 = st.columns(3)
-
-            with add_col3:
-                new_pet_space_th = st.selectbox(
-                    "พื้นที่ที่เหมาะสม",
-                    ["บ้าน", "คอนโด", "ฟาร์ม", "พื้นที่กลางแจ้ง"]
-                )
-
-            with add_col4:
-                new_pet_budget_th = st.selectbox(
-                    "งบประมาณ",
-                    ["ต่ำ", "ปานกลาง", "สูง"]
-                )
-
-            with add_col5:
-                new_pet_time_th = st.selectbox(
-                    "เวลาที่ใช้ดูแล",
-                    ["น้อย", "ปานกลาง", "มาก"]
-                )
-
-            add_submit = st.form_submit_button(
-                "➕ เพิ่มสัตว์เลี้ยง",
-                use_container_width=True
-            )
-
-        space_to_db = {
-            "บ้าน": "House",
-            "คอนโด": "Condo",
-            "ฟาร์ม": "Farm",
-            "พื้นที่กลางแจ้ง": "Outdoor Space"
-        }
-
-        budget_to_db = {
-            "ต่ำ": "Low",
-            "ปานกลาง": "Medium",
-            "สูง": "High"
-        }
-
-        time_to_db = {
-            "น้อย": "Low",
-            "ปานกลาง": "Medium",
-            "มาก": "High"
-        }
-
-        if add_submit:
-
-            name = new_pet_name.strip()
-            description = new_pet_description.strip()
-
-            if not name or not description:
-                st.warning("กรุณากรอกชื่อและรายละเอียดสัตว์เลี้ยง")
-
-            else:
-                try:
-                    existing = driver.execute_query(
-                        "MATCH (p:Pet {name: $name}) RETURN p LIMIT 1",
-                        name=name
-                    )
-
-                    if existing.records:
-                        st.warning(f"มีสัตว์เลี้ยงชื่อ {name} อยู่แล้ว ไม่สามารถเพิ่มชื่อซ้ำได้")
-
-                    else:
-                        driver.execute_query(
-                            """
-                            CREATE (p:Pet {
-                                name: $name,
-                                description: $description
-                            })
-
-                            WITH p
-
-                            MERGE (space:LivingSpace {name: $space})
-                            MERGE (budget:Budget {name: $budget})
-                            MERGE (time:TimeAvailable {name: $time})
-
-                            CREATE (p)-[:SUITABLE_FOR]->(space)
-                            CREATE (p)-[:COST_LEVEL]->(budget)
-                            CREATE (p)-[:NEEDS_TIME]->(time)
-                            """,
-                            name=name,
-                            description=description,
-                            space=space_to_db[new_pet_space_th],
-                            budget=budget_to_db[new_pet_budget_th],
-                            time=time_to_db[new_pet_time_th]
-                        )
-
-                        st.success(f"เพิ่ม {name} สำเร็จ")
-                        st.rerun()
-
-                except Exception as e:
-                    st.error("ไม่สามารถเพิ่มข้อมูลได้")
-                    st.write(str(e))
-
-        st.markdown("---")
-
-        # =================================================
-        # MANAGE PETS
-        # =================================================
-
-        st.subheader("🐾 จัดการข้อมูลสัตว์เลี้ยง")
-
-        try:
-
-            result = driver.execute_query(
-                """
-                MATCH (p:Pet)
-
-                OPTIONAL MATCH (p)-[:SUITABLE_FOR]->(space:LivingSpace)
-                OPTIONAL MATCH (p)-[:COST_LEVEL]->(budget:Budget)
-                OPTIONAL MATCH (p)-[:NEEDS_TIME]->(time:TimeAvailable)
-
-                RETURN
-                    p.name AS name,
-                    p.description AS description,
-                    collect(DISTINCT space.name)[0] AS space,
-                    collect(DISTINCT budget.name)[0] AS budget,
-                    collect(DISTINCT time.name)[0] AS time
-
-                ORDER BY name
-                """
-            )
-
-            if not result.records:
-                st.info("ยังไม่มีข้อมูลสัตว์เลี้ยงใน Neo4j")
-
-            db_to_space = {v: k for k, v in space_to_db.items()}
-            db_to_budget = {v: k for k, v in budget_to_db.items()}
-            db_to_time = {v: k for k, v in time_to_db.items()}
-
-            spaces = list(space_to_db.keys())
-            budgets = list(budget_to_db.keys())
-            times = list(time_to_db.keys())
-
-            for index, record in enumerate(result.records):
-
-                pet_name = record["name"]
-
-                with st.expander(f"🐾 {pet_name}", expanded=False):
-
-                    with st.form(f"edit_pet_form_{index}"):
-
-                        edit_name = st.text_input(
-                            "ชื่อสัตว์เลี้ยง",
-                            value=record["name"] or ""
-                        )
-
-                        edit_description = st.text_area(
-                            "รายละเอียด",
-                            value=record["description"] or ""
-                        )
-
-                        current_space = db_to_space.get(record["space"], spaces[0])
-                        current_budget = db_to_budget.get(record["budget"], budgets[0])
-                        current_time = db_to_time.get(record["time"], times[0])
-
-                        edit_col1, edit_col2, edit_col3 = st.columns(3)
-
-                        with edit_col1:
-                            edit_space = st.selectbox(
-                                "พื้นที่",
-                                spaces,
-                                index=spaces.index(current_space)
-                            )
-
-                        with edit_col2:
-                            edit_budget = st.selectbox(
-                                "งบประมาณ",
-                                budgets,
-                                index=budgets.index(current_budget)
-                            )
-
-                        with edit_col3:
-                            edit_time = st.selectbox(
-                                "เวลาที่ดูแล",
-                                times,
-                                index=times.index(current_time)
-                            )
-
-                        save_submit = st.form_submit_button(
-                            "💾 บันทึกการแก้ไข",
-                            use_container_width=True
-                        )
-
-                    if save_submit:
-
-                        new_name = edit_name.strip()
-                        new_description = edit_description.strip()
-
-                        if not new_name or not new_description:
-                            st.warning("กรุณากรอกชื่อและรายละเอียดให้ครบ")
-
-                        else:
-                            try:
-                                # ถ้าเปลี่ยนชื่อ ให้ตรวจสอบชื่อซ้ำก่อน
-                                duplicate = driver.execute_query(
-                                    """
-                                    MATCH (p:Pet {name: $name})
-                                    WHERE $old_name <> $name
-                                    RETURN p LIMIT 1
-                                    """,
-                                    old_name=record["name"],
-                                    name=new_name
-                                )
-
-                                if duplicate.records:
-                                    st.warning(f"มีสัตว์เลี้ยงชื่อ {new_name} อยู่แล้ว")
-
-                                else:
-                                    driver.execute_query(
-                                        """
-                                        MATCH (p:Pet {name: $old_name})
-
-                                        SET
-                                            p.name = $name,
-                                            p.description = $description
-
-                                        WITH p
-
-                                        OPTIONAL MATCH
-                                            (p)-[r:SUITABLE_FOR|COST_LEVEL|NEEDS_TIME]->()
-                                        DELETE r
-
-                                        WITH p
-
-                                        MERGE (space:LivingSpace {name: $space})
-                                        MERGE (budget:Budget {name: $budget})
-                                        MERGE (time:TimeAvailable {name: $time})
-
-                                        CREATE (p)-[:SUITABLE_FOR]->(space)
-                                        CREATE (p)-[:COST_LEVEL]->(budget)
-                                        CREATE (p)-[:NEEDS_TIME]->(time)
-                                        """,
-                                        old_name=record["name"],
-                                        name=new_name,
-                                        description=new_description,
-                                        space=space_to_db[edit_space],
-                                        budget=budget_to_db[edit_budget],
-                                        time=time_to_db[edit_time]
-                                    )
-
-                                    st.success(f"แก้ไข {new_name} สำเร็จ")
-                                    st.rerun()
-
-                            except Exception as e:
-                                st.error("ไม่สามารถแก้ไขข้อมูลได้")
-                                st.write(str(e))
-
-                    st.markdown("---")
-                    st.markdown("**⚠️ การลบข้อมูล**")
-
-                    delete_confirm = st.checkbox(
-                        "ฉันยืนยันว่าต้องการลบสัตว์เลี้ยงตัวนี้",
-                        key=f"confirm_delete_{index}"
-                    )
-
-                    if st.button(
-                        "🗑️ ลบสัตว์เลี้ยง",
-                        key=f"delete_pet_{index}",
-                        disabled=not delete_confirm,
-                        use_container_width=True
-                    ):
-
-                        try:
-                            driver.execute_query(
-                                """
-                                MATCH (p:Pet {name: $name})
-                                DETACH DELETE p
-                                """,
-                                name=record["name"]
-                            )
-
-                            st.success(f"ลบ {record['name']} สำเร็จ")
-                            st.rerun()
-
-                        except Exception as e:
-                            st.error("ไม่สามารถลบข้อมูลได้")
-                            st.write(str(e))
-
-        except Exception as e:
-            st.error("ไม่สามารถโหลดข้อมูลสัตว์เลี้ยงได้")
-            st.write(str(e))
-import streamlit as st
-from neo4j import GraphDatabase
-from pathlib import Path
-import streamlit.components.v1 as components
-import json
-import html
-
-
-# =========================================================
-# PAGE CONFIG
-# =========================================================
-
-st.set_page_config(
-    page_title="ระบบแนะนำสัตว์เลี้ยง",
-    page_icon="🐾",
-    layout="wide"
-)
-
-st.markdown("""
-<style>
-/* ===== ขยายตัวหนังสือและช่องกรอกของหน้าหลัก ===== */
-[data-testid="stAppViewContainer"] {
-    font-size: 20px;
-}
-
-[data-testid="stSidebar"] {
-    font-size: 21px;
-}
-
-[data-testid="stSidebar"] h1,
-[data-testid="stSidebar"] h2,
-[data-testid="stSidebar"] h3 {
-    font-size: 27px !important;
-}
-
-[data-testid="stMarkdownContainer"] p,
-[data-testid="stMarkdownContainer"] li {
-    font-size: 20px;
-    line-height: 1.7;
-}
-
-[data-testid="stWidgetLabel"] p {
-    font-size: 20px !important;
-    font-weight: 600 !important;
-}
-
-[data-baseweb="select"] {
-    min-height: 58px !important;
-}
-
-[data-baseweb="select"] > div {
-    min-height: 58px !important;
-    font-size: 20px !important;
-}
-
-[data-baseweb="select"] input {
-    font-size: 20px !important;
-}
-
-[data-testid="stButton"] button {
-    font-size: 20px !important;
-    min-height: 52px !important;
-    padding: 10px 22px !important;
-}
-
-/* ===== หน้าผลการแนะนำสัตว์ ===== */
-.pet-section-title {
-    color: #D4A017;
-    font-weight: bold;
-    font-size: 18px;
-    margin-top: 10px;
-    margin-bottom: 5px;
-}
-
-/* ===== หน้าผลการแนะนำสัตว์ ===== */
-.pet-result-title {
-    font-size: 34px;
-    font-weight: 700;
-    margin-bottom: 12px;
-}
-
-.pet-result-description {
-    font-size: 23px;
-    line-height: 1.75;
-    margin-bottom: 18px;
-}
-
-.pet-detail {
-    font-size: 19px;
-    line-height: 1.7;
-    padding: 10px 0;
-}
-
-.pet-result-image img {
-    border-radius: 14px;
-}
-</style>
-""", unsafe_allow_html=True)
-
-
-# =========================================================
-# IMAGE FOLDER
-# =========================================================
-
-IMAGE_DIR = Path(__file__).parent / "images"
-
-
-def get_pet_image(pet_name):
-    extensions = [".jpg", ".jpeg", ".png", ".webp"]
-
-    for extension in extensions:
-        image_path = IMAGE_DIR / (pet_name.lower() + extension)
-
-        if image_path.exists():
-            return image_path
-
-    return None
-
-
-# =========================================================
-# SIDEBAR MENU
-# =========================================================
-
-st.sidebar.title("🐾 ระบบแนะนำสัตว์เลี้ยง")
-
-page = st.sidebar.radio(
-    "เมนู",
-    [
-        "🏠 หน้าหลัก",
-        "🐾 คู่มือสัตว์เลี้ยง",
-        "🕸️ Graph Explorer",
-        "🔐 ผู้ดูแลระบบ"
-    ]
-)
-
-
-# =========================================================
-# NEO4J CONNECTION
-# =========================================================
-
-@st.cache_resource
-def get_driver():
-
-    driver = GraphDatabase.driver(
-        st.secrets["NEO4J_URI"],
-        auth=(
-            st.secrets["NEO4J_USERNAME"],
-            st.secrets["NEO4J_PASSWORD"]
-        )
-    )
-
-    driver.verify_connectivity()
-
-    return driver
-
-
-# =========================================================
-# HOME PAGE
-# =========================================================
-
-if page == "🏠 หน้าหลัก":
-
-    st.title("🐾 ระบบแนะนำสัตว์เลี้ยง")
-
-    st.write(
-        "ค้นหาสัตว์เลี้ยงที่เหมาะกับไลฟ์สไตล์ของคุณ"
-    )
-
-    st.subheader("ข้อมูลเกี่ยวกับไลฟ์สไตล์ของคุณ")
-
-    user_space_th = st.selectbox(
-        "คุณอาศัยอยู่ที่ไหน?",
-        [
-            "บ้าน",
-            "คอนโด",
-            "ฟาร์ม",
-            "พื้นที่กลางแจ้ง"
-        ]
-    )
-
-    space_map = {
-        "บ้าน": "House",
-        "คอนโด": "Condo",
-        "ฟาร์ม": "Farm",
-        "พื้นที่กลางแจ้ง": "Outdoor Space"
-    }
-
-    user_space = space_map[user_space_th]
-
-    user_budget_th = st.selectbox(
-        "งบประมาณสำหรับสัตว์เลี้ยงของคุณ?",
-        [
-            "ต่ำ",
-            "ปานกลาง",
-            "สูง"
-        ]
-    )
-
-    budget_map = {
-        "ต่ำ": "Low",
-        "ปานกลาง": "Medium",
-        "สูง": "High"
-    }
-
-    user_budget = budget_map[user_budget_th]
-
-    user_time_th = st.selectbox(
-        "คุณมีเวลาในการดูแลสัตว์เลี้ยงมากแค่ไหน?",
-        [
-            "น้อย",
-            "ปานกลาง",
-            "มาก"
-        ]
-    )
-
-    time_map = {
-        "น้อย": "Low",
-        "ปานกลาง": "Medium",
-        "มาก": "High"
-    }
-
-    user_time = time_map[user_time_th]
-
-    if st.button("🐾 แนะนำสัตว์เลี้ยง"):
-
-        try:
-
-            driver = get_driver()
-
-            result = driver.execute_query(
-                """
-                MATCH (p:Pet)
-
-                OPTIONAL MATCH
-                    (p)-[:SUITABLE_FOR]->(space:LivingSpace)
-
-                OPTIONAL MATCH
-                    (p)-[:COST_LEVEL]->(budget:Budget)
-
-                OPTIONAL MATCH
-                    (p)-[:NEEDS_TIME]->(time:TimeAvailable)
-
-                WITH
-                    p,
-                    collect(DISTINCT space.name) AS spaces,
-                    collect(DISTINCT budget.name)[0] AS budget,
-                    collect(DISTINCT time.name)[0] AS time
-
-                WITH
-                    p,
-                    spaces,
-                    budget,
-                    time,
-
-                    CASE
-                        WHEN $space IN spaces THEN 1
-                        ELSE 0
-                    END +
-
-                    CASE
-                        WHEN budget = $budget THEN 1
-                        ELSE 0
-                    END +
-
-                    CASE
-                        WHEN time = $time THEN 1
-                        ELSE 0
-                    END AS score
-
-                RETURN
-                    p.name AS Pet,
-                    p.description AS Description,
-                    score AS Score,
-                    spaces AS SuitableSpace,
-                    budget AS Budget,
-                    time AS TimeAvailable
-
-                ORDER BY Score DESC, Pet
-                """,
-                space=user_space,
-                budget=user_budget,
-                time=user_time
-            )
-
-            st.subheader("🐾 สัตว์เลี้ยงที่แนะนำ")
-
-            space_display_map = {
-                "House": "บ้าน",
-                "Condo": "คอนโด",
-                "Farm": "ฟาร์ม",
-                "Outdoor Space": "พื้นที่กลางแจ้ง"
-            }
-
-            budget_display_map = {
-                "Low": "ต่ำ",
-                "Medium": "ปานกลาง",
-                "High": "สูง"
-            }
-
-            time_display_map = {
-                "Low": "น้อย",
-                "Medium": "ปานกลาง",
-                "High": "มาก"
-            }
-
-            # แปลงข้อมูลที่แสดงผลจาก Neo4j ให้เป็นภาษาไทย
-            pet_display_map = {
-                "Dog": "สุนัข",
-                "Cat": "แมว",
-                "Bird": "นก",
-                "Rabbit": "กระต่าย",
-                "Fish": "ปลา",
-                "Hamster": "แฮมสเตอร์",
-                "Duck": "เป็ด",
-                "Sheep": "แกะ",
-                "Turtle": "เต่า",
-                "Horse": "ม้า"
-            }
-
-            # คำอธิบายภาษาไทยสำหรับสัตว์แต่ละชนิด
-            description_display_map = {
-                "Dog":
-                    "สุนัขเป็นสัตว์เลี้ยงที่เป็นมิตรและชอบอยู่ร่วมกับผู้คน เหมาะสำหรับผู้ที่มีเวลาในการดูแลและพาออกกำลังกาย",
-                "Cat":
-                    "แมวเป็นสัตว์เลี้ยงที่รักอิสระและสามารถปรับตัวให้เข้ากับสภาพแวดล้อมภายในบ้านได้ดี",
-                "Bird":
-                    "นกเป็นสัตว์เลี้ยงขนาดเล็กที่มีความกระตือรือร้นและสามารถสร้างความเพลิดเพลินให้กับผู้เลี้ยงได้",
-                "Rabbit":
-                    "กระต่ายเป็นสัตว์เลี้ยงขนาดเล็กที่มีนิสัยอ่อนโยนและค่อนข้างเงียบ เหมาะสำหรับผู้ที่ชอบสัตว์เลี้ยงที่สงบ",
-                "Fish":
-                    "ปลาเป็นสัตว์เลี้ยงที่เงียบและเหมาะสำหรับผู้ที่ต้องการสัตว์เลี้ยงที่ใช้พื้นที่ไม่มาก",
-                "Hamster":
-                    "แฮมสเตอร์เป็นสัตว์เลี้ยงขนาดเล็กที่สามารถเลี้ยงในพื้นที่จำกัด และมีพฤติกรรมที่น่าสนใจให้สังเกต",
-                "Duck":
-                    "เป็ดเป็นสัตว์ที่ชอบอยู่รวมกันและต้องการพื้นที่สำหรับเดินเล่นและทำกิจกรรมกลางแจ้ง",
-                "Sheep":
-                    "แกะเป็นสัตว์เลี้ยงในพื้นที่เกษตรที่มักอยู่รวมกันเป็นฝูง และต้องการพื้นที่สำหรับใช้ชีวิตอย่างเหมาะสม",
-                "Turtle":
-                    "เต่าเป็นสัตว์ที่ค่อนข้างสงบและเงียบ เหมาะสำหรับผู้ที่ชอบสังเกตพฤติกรรมของสัตว์",
-                "Horse":
-                    "ม้าเป็นสัตว์ขนาดใหญ่ที่มีความกระตือรือร้น และต้องการพื้นที่กว้างสำหรับการเคลื่อนไหวและออกกำลังกาย"
-            }
-
-            for record in result.records:
-
-                st.markdown("---")
-
-                pet_name = pet_display_map.get(
-                    record["Pet"],
-                    record["Pet"]
-                )
-
-                # ใช้คำอธิบายภาษาไทยที่กำหนดไว้เสมอ
-                # เพื่อไม่ให้ข้อความภาษาอังกฤษจาก Neo4j แสดงบนหน้าจอ
-                description = description_display_map.get(
-                    record["Pet"],
-                    "ยังไม่มีคำอธิบายภาษาไทยสำหรับสัตว์ชนิดนี้"
-                )
-
-                # แสดงรูปทางซ้าย และขยายรายละเอียดทางขวาให้อ่านง่ายขึ้น
-                image_col, info_col = st.columns([1.25, 3.75], gap="large")
-
-                with image_col:
-                    image_path = get_pet_image(record["Pet"])
-
-                    if image_path:
-                        st.markdown('<div class="pet-result-image">', unsafe_allow_html=True)
-                        st.image(
-                            str(image_path),
-                            width=240
-                        )
-                        st.markdown('</div>', unsafe_allow_html=True)
-                    else:
-                        st.info(f"ไม่พบรูปของ {pet_name}")
-
-                with info_col:
-                    st.markdown(
-                        f'<div class="pet-result-title">🐾 {pet_name} — {record["Score"]}/3</div>',
-                        unsafe_allow_html=True
-                    )
-
-                    st.markdown(
-                        f'<div class="pet-result-description">{description}</div>',
-                        unsafe_allow_html=True
-                    )
-
-                    col1, col2, col3 = st.columns(3, gap="medium")
-
-                    with col1:
-                        suitable_spaces = [
-                            space_display_map.get(space, space)
-                            for space in record["SuitableSpace"]
-                        ]
-
-                        st.markdown(
-                            '<div class="pet-detail">🏠 <b>พื้นที่ที่เหมาะสม</b><br>'
-                            + ", ".join(suitable_spaces)
-                            + '</div>',
-                            unsafe_allow_html=True
-                        )
-
-                    with col2:
-                        st.markdown(
-                            '<div class="pet-detail">💰 <b>งบประมาณ</b><br>'
-                            + budget_display_map.get(record['Budget'], record['Budget'])
-                            + '</div>',
-                            unsafe_allow_html=True
-                        )
-
-                    with col3:
-                        st.markdown(
-                            '<div class="pet-detail">⏰ <b>เวลาที่ใช้ดูแล</b><br>'
-                            + time_display_map.get(record['TimeAvailable'], record['TimeAvailable'])
-                            + '</div>',
-                            unsafe_allow_html=True
-                        )
-
-        except Exception as e:
-
-            st.error(
-                "ไม่สามารถเชื่อมต่อกับ Neo4j ได้"
-            )
-
-            st.write(str(e))
-
-
-# =========================================================
-# PET GUIDE PAGE
-# =========================================================
-
-elif page == "🐾 คู่มือสัตว์เลี้ยง":
-
-    st.title("🐾 คู่มือแนะนำสัตว์เลี้ยง")
-
-    st.write(
-        "ทำความรู้จักกับสัตว์เลี้ยงแต่ละประเภท "
-        "ลักษณะนิสัย ลักษณะทั่วไป และการดูแลเบื้องต้น"
-    )
-
-    st.markdown("---")
-
-    pets = [
-
-        {
-            "name": "Dog",
-            "title": "สุนัข",
-            "personality": "เป็นมิตร เข้าสังคม และชอบทำกิจกรรม",
-            "description":
-                "สุนัขเป็นสัตว์เลี้ยงที่เป็นมิตรและชอบอยู่ร่วมกับผู้คน "
-                "เหมาะสำหรับผู้ที่มีเวลาในการดูแลและพาออกกำลังกาย",
-            "care":
-                "ต้องการอาหาร น้ำสะอาด การออกกำลังกาย "
-                "การดูแลสุขภาพ และการเอาใจใส่อย่างสม่ำเสมอ"
-        },
-
-        {
-            "name": "Cat",
-            "title": "แมว",
-            "personality": "รักอิสระ ปรับตัวได้ดี และค่อนข้างสงบ",
-            "description":
-                "แมวเป็นสัตว์เลี้ยงที่รักอิสระและสามารถปรับตัว "
-                "ให้เข้ากับสภาพแวดล้อมภายในบ้านได้ดี",
-            "care":
-                "ต้องการอาหาร น้ำสะอาด กระบะทราย "
-                "พื้นที่สำหรับพักผ่อน และการดูแลสุขภาพอย่างสม่ำเสมอ"
-        },
-
-        {
-            "name": "Bird",
-            "title": "นก",
-            "personality": "ชอบเข้าสังคม กระตือรือร้น และร่าเริง",
-            "description":
-                "นกเป็นสัตว์เลี้ยงขนาดเล็กที่มีความกระตือรือร้น "
-                "และสามารถสร้างความเพลิดเพลินให้กับผู้เลี้ยงได้",
-            "care":
-                "ต้องการกรงที่เหมาะสม อาหาร น้ำสะอาด "
-                "และการดูแลความสะอาดของกรงอย่างสม่ำเสมอ"
-        },
-
-        {
-            "name": "Rabbit",
-            "title": "กระต่าย",
-            "personality": "อ่อนโยน สงบ และไม่ก้าวร้าว",
-            "description":
-                "กระต่ายเป็นสัตว์เลี้ยงขนาดเล็กที่มีนิสัยอ่อนโยน "
-                "และค่อนข้างเงียบ เหมาะสำหรับผู้ที่ชอบสัตว์เลี้ยงที่สงบ",
-            "care":
-                "ต้องการพื้นที่อยู่อาศัยที่สะอาด อาหารที่เหมาะสม "
-                "น้ำสะอาด และการดูแลสุขภาพอย่างสม่ำเสมอ"
-        },
-
-        {
-            "name": "Fish",
-            "title": "ปลา",
-            "personality": "สงบ เงียบ และดูแลง่าย",
-            "description":
-                "ปลาเป็นสัตว์เลี้ยงที่เงียบและเหมาะสำหรับผู้ที่ต้องการ "
-                "สัตว์เลี้ยงที่ใช้พื้นที่ไม่มาก",
-            "care":
-                "ต้องการตู้ปลาที่เหมาะสม น้ำสะอาด "
-                "อาหารที่เหมาะสม และการดูแลคุณภาพน้ำเป็นประจำ"
-        },
-
-        {
-            "name": "Hamster",
-            "title": "แฮมสเตอร์",
-            "personality": "ตัวเล็ก กระตือรือร้น และชอบสำรวจ",
-            "description":
-                "แฮมสเตอร์เป็นสัตว์เลี้ยงขนาดเล็กที่สามารถเลี้ยง "
-                "ในพื้นที่จำกัด และมีพฤติกรรมที่น่าสนใจให้สังเกต",
-            "care":
-                "ต้องการกรงที่สะอาด อาหาร น้ำสะอาด "
-                "และอุปกรณ์สำหรับออกกำลังกายที่เหมาะสม"
-        },
-
-        {
-            "name": "Duck",
-            "title": "เป็ด",
-            "personality": "ชอบเข้าสังคม กระตือรือร้น และชอบอยู่รวมกัน",
-            "description":
-                "เป็ดเป็นสัตว์ที่ชอบอยู่รวมกันและต้องการพื้นที่ "
-                "สำหรับเดินเล่นและทำกิจกรรมกลางแจ้ง",
-            "care":
-                "ต้องการพื้นที่กลางแจ้ง น้ำสะอาด อาหารที่เหมาะสม "
-                "ที่พักอาศัย และการดูแลอย่างสม่ำเสมอ"
-        },
-
-        {
-            "name": "Sheep",
-            "title": "แกะ",
-            "personality": "รักสงบ ชอบอยู่รวมกัน และเข้าสังคมได้ดี",
-            "description":
-                "แกะเป็นสัตว์เลี้ยงในพื้นที่เกษตรที่มักอยู่รวมกันเป็นฝูง "
-                "และต้องการพื้นที่สำหรับใช้ชีวิตอย่างเหมาะสม",
-            "care":
-                "ต้องการพื้นที่สำหรับเลี้ยง อาหาร น้ำสะอาด "
-                "ที่พัก และการดูแลสุขภาพอย่างเหมาะสม"
-        },
-
-        {
-            "name": "Turtle",
-            "title": "เต่า",
-            "personality": "สงบ เงียบ และเคลื่อนไหวช้า",
-            "description":
-                "เต่าเป็นสัตว์ที่ค่อนข้างสงบและเงียบ "
-                "เหมาะสำหรับผู้ที่ชอบสังเกตพฤติกรรมของสัตว์",
-            "care":
-                "ต้องการพื้นที่อยู่อาศัยที่เหมาะสม "
-                "อาหารที่เหมาะกับชนิดของเต่า น้ำสะอาด "
-                "และการดูแลสภาพแวดล้อมอย่างสม่ำเสมอ"
-        },
-
-        {
-            "name": "Horse",
-            "title": "ม้า",
-            "personality": "กระตือรือร้น แข็งแรง และต้องการการเคลื่อนไหว",
-            "description":
-                "ม้าเป็นสัตว์ขนาดใหญ่ที่มีความกระตือรือร้น "
-                "และต้องการพื้นที่กว้างสำหรับการเคลื่อนไหวและออกกำลังกาย",
-            "care":
-                "ต้องการพื้นที่กลางแจ้งขนาดใหญ่ อาหาร น้ำสะอาด "
-                "การออกกำลังกาย และการดูแลสุขภาพอย่างสม่ำเสมอ"
-        }
-
-    ]
-
-    for i in range(0, len(pets), 3):
-
-        columns = st.columns(3)
-
-        for j, col in enumerate(columns):
-
-            if i + j >= len(pets):
-                continue
-
-            pet = pets[i + j]
-
-            with col:
-
-                # กรอบแยกข้อมูลสัตว์แต่ละตัว
-                with st.container(border=True):
-
-                    image_path = get_pet_image(
-                        pet["name"]
-                    )
-
-                    if image_path:
-
-                        st.image(
-                            str(image_path),
-                            use_container_width=True
-                        )
-
-                    else:
-
-                        st.warning(
-                            f"ไม่พบรูปของ {pet['title']}"
-                        )
-
-                    st.subheader(
-                        f"🐾 {pet['title']}"
-                    )
-
-                    st.markdown(
-                        '<div class="pet-section-title">ลักษณะนิสัย</div>',
-                        unsafe_allow_html=True
-                    )
-                    st.write(pet["personality"])
-
-                    st.markdown(
-                        '<div class="pet-section-title">ลักษณะทั่วไป</div>',
-                        unsafe_allow_html=True
-                    )
-                    st.write(pet["description"])
-
-                    st.markdown(
-                        '<div class="pet-section-title">การดูแลเบื้องต้น</div>',
-                        unsafe_allow_html=True
-                    )
-                    st.write(pet["care"])
-
-    st.info(
-        "💡 ข้อมูลในหน้านี้ใช้สำหรับแนะนำลักษณะทั่วไปของสัตว์ "
-        "ส่วนการเลือกสัตว์ที่เหมาะสมกับผู้ใช้งาน "
-        "สามารถใช้ระบบแนะนำจากหน้า Home ได้"
-    )
-
-
-# =========================================================
-# GRAPH EXPLORER PAGE
-# =========================================================
-
-elif page == "🕸️ Graph Explorer":
-
-    st.title("🕸️ Graph Explorer")
-    st.write("แสดงโครงสร้าง Graph Database ของระบบแนะนำสัตว์เลี้ยงจาก Neo4j")
-
-    # โครงสร้างกราฟของโปรเจกต์นี้
-    st.markdown("""
-    <div style="font-size:20px; line-height:1.8; margin-bottom:18px;">
-        <b>โครงสร้างความสัมพันธ์</b><br>
-        🐾 สัตว์เลี้ยง → 🏠 พื้นที่ที่เหมาะสม<br>
-        🐾 สัตว์เลี้ยง → 💰 ระดับงบประมาณ<br>
-        🐾 สัตว์เลี้ยง → ⏰ เวลาที่ใช้ดูแล
-    </div>
-    """, unsafe_allow_html=True)
-
-    try:
-        driver = get_driver()
-
-        # ดึงเฉพาะ Graph Schema ของระบบสัตว์เลี้ยง
-        # ไม่ใช้ MATCH (n)-[r]->(m) แบบกว้าง เพื่อให้กราฟตรงกับโดเมนของโปรเจกต์
-        graph_result = driver.execute_query(
-            """
-            MATCH (p:Pet)
-            OPTIONAL MATCH (p)-[r1:SUITABLE_FOR]->(space:LivingSpace)
-            OPTIONAL MATCH (p)-[r2:COST_LEVEL]->(budget:Budget)
-            OPTIONAL MATCH (p)-[r3:NEEDS_TIME]->(time:TimeAvailable)
-
-            WITH p,
-                 collect(DISTINCT {
-                     target: space,
-                     rel: CASE WHEN space IS NULL THEN NULL ELSE 'เหมาะกับพื้นที่' END
-                 }) AS spaces,
-                 collect(DISTINCT {
-                     target: budget,
-                     rel: CASE WHEN budget IS NULL THEN NULL ELSE 'ระดับงบประมาณ' END
-                 }) AS budgets,
-                 collect(DISTINCT {
-                     target: time,
-                     rel: CASE WHEN time IS NULL THEN NULL ELSE 'เวลาที่ใช้ดูแล' END
-                 }) AS times
-
-            UNWIND (
-                [x IN spaces WHERE x.target IS NOT NULL] +
-                [x IN budgets WHERE x.target IS NOT NULL] +
-                [x IN times WHERE x.target IS NOT NULL]
-            ) AS x
-
-            RETURN
-                elementId(p) AS source_id,
-                coalesce(p.name, 'สัตว์เลี้ยง') AS source,
-                'Pet' AS source_label,
-                elementId(x.target) AS target_id,
-                coalesce(x.target.name, 'ข้อมูล') AS target,
-                CASE
-                    WHEN x.target:LivingSpace THEN 'LivingSpace'
-                    WHEN x.target:Budget THEN 'Budget'
-                    WHEN x.target:TimeAvailable THEN 'TimeAvailable'
-                    ELSE 'Node'
-                END AS target_label,
-                x.rel AS relationship
-            ORDER BY source
-            LIMIT 500
-            """
-        )
-
-        nodes = {}
-        edges = []
-
-        # ชื่อประเภท Node เป็นภาษาไทยสำหรับแสดงในกราฟ
-        label_th = {
-            "Pet": "สัตว์เลี้ยง",
-            "LivingSpace": "พื้นที่",
-            "Budget": "งบประมาณ",
-            "TimeAvailable": "เวลา"
-        }
-
-        for record in graph_result.records:
-            source_id = str(record["source_id"])
-            target_id = str(record["target_id"])
-
-            source_name = str(record["source"])
-            target_name = str(record["target"])
-            source_label = str(record["source_label"])
-            target_label = str(record["target_label"])
-
-            if source_id not in nodes:
-                nodes[source_id] = {
-                    "id": source_id,
-                    "label": source_name,
-                    "title": f"ประเภท: {label_th.get(source_label, source_label)}<br>ชื่อ: {html.escape(source_name)}",
-                    "group": source_label
-                }
-
-            if target_id not in nodes:
-                nodes[target_id] = {
-                    "id": target_id,
-                    "label": target_name,
-                    "title": f"ประเภท: {label_th.get(target_label, target_label)}<br>ชื่อ: {html.escape(target_name)}",
-                    "group": target_label
-                }
-
-            edges.append({
-                "from": source_id,
-                "to": target_id,
-                "label": str(record["relationship"]),
-                "arrows": "to"
-            })
-
-        if not nodes:
-            st.warning("ยังไม่มีข้อมูล Graph สำหรับแสดงผล")
-            st.info("ให้เข้าเมนู 🔐 ผู้ดูแลระบบ แล้วเพิ่ม/สร้างข้อมูลสัตว์เลี้ยงใน Neo4j ก่อน")
-        else:
-            st.caption(f"พบ {len(nodes)} โหนด และ {len(edges)} ความสัมพันธ์")
-
-            # Legend
-            st.markdown("""
-            <div style="display:flex; gap:12px; flex-wrap:wrap; margin:8px 0 14px 0; font-size:16px;">
-                <span>🐾 สัตว์เลี้ยง</span>
-                <span>🏠 พื้นที่</span>
-                <span>💰 งบประมาณ</span>
-                <span>⏰ เวลา</span>
-            </div>
-            """, unsafe_allow_html=True)
-
-            graph_nodes = json.dumps(list(nodes.values()), ensure_ascii=False)
-            graph_edges = json.dumps(edges, ensure_ascii=False)
-
-            graph_html = f"""
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <meta charset="utf-8">
-                <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
-                <style>
-                    html, body {{
-                        margin: 0;
-                        padding: 0;
-                        width: 100%;
-                        height: 100%;
-                        overflow: hidden;
-                        background: #0e1117;
-                        font-family: Arial, sans-serif;
-                    }}
-                    #graph {{
-                        width: 100%;
-                        height: 700px;
-                        border: 1px solid #3a3d49;
-                        border-radius: 14px;
-                        background: #0e1117;
-                    }}
-                    #hint {{
-                        position: absolute;
-                        top: 14px;
-                        left: 14px;
-                        padding: 9px 13px;
-                        color: #ffffff;
-                        background: rgba(25,27,35,.94);
-                        border: 1px solid #555a6b;
-                        border-radius: 9px;
-                        font-size: 15px;
-                        z-index: 5;
-                    }}
-                </style>
-            </head>
-            <body>
-                <div id="hint">ลากโหนด • เลื่อนเมาส์เพื่อซูม • ดับเบิลคลิกเพื่อโฟกัส • วางเมาส์เพื่อดูรายละเอียด</div>
-                <div id="graph"></div>
-                <script>
-                    const nodes = new vis.DataSet({graph_nodes});
-                    const edges = new vis.DataSet({graph_edges});
-                    const container = document.getElementById('graph');
-                    const data = {{ nodes: nodes, edges: edges }};
-
-                    const options = {{
-                        autoResize: true,
-                        physics: {{
-                            enabled: true,
-                            stabilization: {{ iterations: 250 }},
-                            barnesHut: {{
-                                gravitationalConstant: -6000,
-                                centralGravity: 0.18,
-                                springLength: 190,
-                                springConstant: 0.045,
-                                damping: 0.28
-                            }}
-                        }},
-                        interaction: {{
-                            hover: true,
-                            navigationButtons: true,
-                            keyboard: true,
-                            zoomView: true,
-                            dragView: true,
-                            tooltipDelay: 80
-                        }},
-                        nodes: {{
-                            shape: 'dot',
-                            size: 30,
-                            borderWidth: 2,
-                            font: {{
-                                color: '#ffffff',
-                                size: 19,
-                                face: 'Arial',
-                                strokeWidth: 4,
-                                strokeColor: '#0e1117'
-                            }},
-                            color: {{
-                                background: '#6c63ff',
-                                border: '#a69cff',
-                                highlight: {{ background: '#ffb84d', border: '#ffd27a' }}
-                            }}
-                        }},
-                        groups: {{
-                            Pet: {{
-                                color: {{ background: '#6c63ff', border: '#b0a8ff', highlight: {{ background: '#8a82ff', border: '#ffffff' }} }},
-                                size: 34
-                            }},
-                            LivingSpace: {{
-                                color: {{ background: '#2e9d67', border: '#76d39d', highlight: {{ background: '#42bf83', border: '#ffffff' }} }},
-                                size: 28
-                            }},
-                            Budget: {{
-                                color: {{ background: '#d48b25', border: '#ffc56b', highlight: {{ background: '#f0a63c', border: '#ffffff' }} }},
-                                size: 28
-                            }},
-                            TimeAvailable: {{
-                                color: {{ background: '#287eb8', border: '#75c6f2', highlight: {{ background: '#3c9bd5', border: '#ffffff' }} }},
-                                size: 28
-                            }}
-                        }},
-                        edges: {{
-                            width: 2,
-                            color: {{ color: '#777d8f', highlight: '#ffffff' }},
-                            arrows: {{ to: {{ enabled: true, scaleFactor: 0.75 }} }},
-                            font: {{
-                                color: '#e7e8ee',
-                                size: 15,
-                                align: 'middle',
-                                strokeWidth: 4,
-                                strokeColor: '#0e1117'
-                            }},
-                            smooth: {{ type: 'dynamic' }}
-                        }}
-                    }};
-
-                    const network = new vis.Network(container, data, options);
-
-                    network.once('stabilizationIterationsDone', function() {{
-                        network.fit({{ animation: {{ duration: 600, easingFunction: 'easeInOutQuad' }} }});
-                    }});
-
-                    network.on('doubleClick', function(params) {{
-                        if (params.nodes.length > 0) {{
-                            network.focus(params.nodes[0], {{ scale: 1.35, animation: true }});
-                        }}
-                    }});
-                </script>
-            </body>
-            </html>
-            """
-
-            components.html(graph_html, height=730, scrolling=False)
-
-    except Exception as e:
-        st.error("ไม่สามารถโหลด Graph Explorer จาก Neo4j ได้")
-        st.write(str(e))
-
-
-# =========================================================
-# ADMIN PAGE
-# =========================================================
-
-elif page == "🔐 ผู้ดูแลระบบ":
-
-    st.title("🔐 ผู้ดูแลระบบ")
-
-    if "admin_logged_in" not in st.session_state:
-        st.session_state.admin_logged_in = False
-
-    # =====================================================
-    # LOGIN
-    # =====================================================
-
-    if not st.session_state.admin_logged_in:
-
-        st.subheader("🔑 เข้าสู่ระบบผู้ดูแล")
-
-        with st.form("admin_login_form"):
-
-            username = st.text_input("ชื่อผู้ใช้")
-            password = st.text_input("รหัสผ่าน", type="password")
-
-            login_submit = st.form_submit_button(
-                "🔐 เข้าสู่ระบบ",
-                use_container_width=True
-            )
-
-        if login_submit:
-
-            # สำหรับงานส่ง/เดโม
-            # Username: admin
-            # Password: admin123
-            if username == "admin" and password == "admin123":
-
-                st.session_state.admin_logged_in = True
-                st.success("เข้าสู่ระบบผู้ดูแลสำเร็จ")
-                st.rerun()
-
-            else:
-                st.error("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง")
-
-    # =====================================================
-    # DASHBOARD
-    # =====================================================
-
-    else:
-
-        st.title("🔧 แผงควบคุมผู้ดูแลระบบ")
-
-        top_col1, top_col2 = st.columns([4, 1])
-
-        with top_col1:
-            st.success("เข้าสู่ระบบผู้ดูแลเรียบร้อยแล้ว")
-
-        with top_col2:
-            if st.button("🚪 ออกจากระบบ", use_container_width=True):
-                st.session_state.admin_logged_in = False
-                st.rerun()
-
-        st.markdown("---")
-
-        # =================================================
-        # DATABASE CONNECTION / STATS
-        # =================================================
-
-        try:
-            driver = get_driver()
-
-            count_result = driver.execute_query(
-                "MATCH (p:Pet) RETURN count(p) AS total"
-            )
-            total_pets = count_result.records[0]["total"]
-
-            stat_col1, stat_col2, stat_col3 = st.columns(3)
-
-            with stat_col1:
-                st.metric("🐾 จำนวนสัตว์เลี้ยง", total_pets)
-
-            with stat_col2:
-                space_count = driver.execute_query(
-                    "MATCH (n:LivingSpace) RETURN count(n) AS total"
-                ).records[0]["total"]
-                st.metric("🏠 พื้นที่", space_count)
-
-            with stat_col3:
-                budget_count = driver.execute_query(
-                    "MATCH (n:Budget) RETURN count(n) AS total"
-                ).records[0]["total"]
-                st.metric("💰 ระดับงบประมาณ", budget_count)
-
-        except Exception as e:
-            st.error("ไม่สามารถเชื่อมต่อกับ Neo4j ได้")
-            st.write(str(e))
-            st.stop()
-
-        st.markdown("---")
-
-        # =================================================
-        # ADD PET
-        # =================================================
-
-        st.subheader("➕ เพิ่มสัตว์เลี้ยง")
-
-        with st.form("add_pet_form", clear_on_submit=True):
-
-            add_col1, add_col2 = st.columns(2)
-
-            with add_col1:
-                new_pet_name = st.text_input("ชื่อสัตว์เลี้ยง")
-
-            with add_col2:
-                new_pet_description = st.text_area("รายละเอียด")
-
-            add_col3, add_col4, add_col5 = st.columns(3)
-
-            with add_col3:
-                new_pet_space_th = st.selectbox(
-                    "พื้นที่ที่เหมาะสม",
-                    ["บ้าน", "คอนโด", "ฟาร์ม", "พื้นที่กลางแจ้ง"]
-                )
-
-            with add_col4:
-                new_pet_budget_th = st.selectbox(
-                    "งบประมาณ",
-                    ["ต่ำ", "ปานกลาง", "สูง"]
-                )
-
-            with add_col5:
-                new_pet_time_th = st.selectbox(
-                    "เวลาที่ใช้ดูแล",
-                    ["น้อย", "ปานกลาง", "มาก"]
-                )
-
-            add_submit = st.form_submit_button(
-                "➕ เพิ่มสัตว์เลี้ยง",
-                use_container_width=True
-            )
-
-        space_to_db = {
-            "บ้าน": "House",
-            "คอนโด": "Condo",
-            "ฟาร์ม": "Farm",
-            "พื้นที่กลางแจ้ง": "Outdoor Space"
-        }
-
-        budget_to_db = {
-            "ต่ำ": "Low",
-            "ปานกลาง": "Medium",
-            "สูง": "High"
-        }
-
-        time_to_db = {
-            "น้อย": "Low",
-            "ปานกลาง": "Medium",
-            "มาก": "High"
-        }
-
-        if add_submit:
-
-            name = new_pet_name.strip()
-            description = new_pet_description.strip()
-
-            if not name or not description:
-                st.warning("กรุณากรอกชื่อและรายละเอียดสัตว์เลี้ยง")
-
-            else:
-                try:
-                    existing = driver.execute_query(
-                        "MATCH (p:Pet {name: $name}) RETURN p LIMIT 1",
-                        name=name
-                    )
-
-                    if existing.records:
-                        st.warning(f"มีสัตว์เลี้ยงชื่อ {name} อยู่แล้ว ไม่สามารถเพิ่มชื่อซ้ำได้")
-
-                    else:
-                        driver.execute_query(
-                            """
-                            CREATE (p:Pet {
-                                name: $name,
-                                description: $description
-                            })
-
-                            WITH p
-
-                            MERGE (space:LivingSpace {name: $space})
-                            MERGE (budget:Budget {name: $budget})
-                            MERGE (time:TimeAvailable {name: $time})
-
-                            CREATE (p)-[:SUITABLE_FOR]->(space)
-                            CREATE (p)-[:COST_LEVEL]->(budget)
-                            CREATE (p)-[:NEEDS_TIME]->(time)
-                            """,
-                            name=name,
-                            description=description,
-                            space=space_to_db[new_pet_space_th],
-                            budget=budget_to_db[new_pet_budget_th],
-                            time=time_to_db[new_pet_time_th]
-                        )
-
-                        st.success(f"เพิ่ม {name} สำเร็จ")
-                        st.rerun()
-
-                except Exception as e:
-                    st.error("ไม่สามารถเพิ่มข้อมูลได้")
-                    st.write(str(e))
-
-        st.markdown("---")
-
-        # =================================================
-        # MANAGE PETS
-        # =================================================
-
-        st.subheader("🐾 จัดการข้อมูลสัตว์เลี้ยง")
-
-        try:
-
-            result = driver.execute_query(
-                """
-                MATCH (p:Pet)
-
-                OPTIONAL MATCH (p)-[:SUITABLE_FOR]->(space:LivingSpace)
-                OPTIONAL MATCH (p)-[:COST_LEVEL]->(budget:Budget)
-                OPTIONAL MATCH (p)-[:NEEDS_TIME]->(time:TimeAvailable)
-
-                RETURN
-                    p.name AS name,
-                    p.description AS description,
-                    collect(DISTINCT space.name)[0] AS space,
-                    collect(DISTINCT budget.name)[0] AS budget,
-                    collect(DISTINCT time.name)[0] AS time
-
-                ORDER BY name
-                """
-            )
-
-            if not result.records:
-                st.info("ยังไม่มีข้อมูลสัตว์เลี้ยงใน Neo4j")
-
-            db_to_space = {v: k for k, v in space_to_db.items()}
-            db_to_budget = {v: k for k, v in budget_to_db.items()}
-            db_to_time = {v: k for k, v in time_to_db.items()}
-
-            spaces = list(space_to_db.keys())
-            budgets = list(budget_to_db.keys())
-            times = list(time_to_db.keys())
-
-            for index, record in enumerate(result.records):
-
-                pet_name = record["name"]
-
-                with st.expander(f"🐾 {pet_name}", expanded=False):
-
-                    with st.form(f"edit_pet_form_{index}"):
-
-                        edit_name = st.text_input(
-                            "ชื่อสัตว์เลี้ยง",
-                            value=record["name"] or ""
-                        )
-
-                        edit_description = st.text_area(
-                            "รายละเอียด",
-                            value=record["description"] or ""
-                        )
-
-                        current_space = db_to_space.get(record["space"], spaces[0])
-                        current_budget = db_to_budget.get(record["budget"], budgets[0])
-                        current_time = db_to_time.get(record["time"], times[0])
-
-                        edit_col1, edit_col2, edit_col3 = st.columns(3)
-
-                        with edit_col1:
-                            edit_space = st.selectbox(
-                                "พื้นที่",
-                                spaces,
-                                index=spaces.index(current_space)
-                            )
-
-                        with edit_col2:
-                            edit_budget = st.selectbox(
-                                "งบประมาณ",
-                                budgets,
-                                index=budgets.index(current_budget)
-                            )
-
-                        with edit_col3:
-                            edit_time = st.selectbox(
-                                "เวลาที่ดูแล",
-                                times,
-                                index=times.index(current_time)
-                            )
-
-                        save_submit = st.form_submit_button(
-                            "💾 บันทึกการแก้ไข",
-                            use_container_width=True
-                        )
-
-                    if save_submit:
-
-                        new_name = edit_name.strip()
-                        new_description = edit_description.strip()
-
-                        if not new_name or not new_description:
-                            st.warning("กรุณากรอกชื่อและรายละเอียดให้ครบ")
-
-                        else:
-                            try:
-                                # ถ้าเปลี่ยนชื่อ ให้ตรวจสอบชื่อซ้ำก่อน
-                                duplicate = driver.execute_query(
-                                    """
-                                    MATCH (p:Pet {name: $name})
-                                    WHERE $old_name <> $name
-                                    RETURN p LIMIT 1
-                                    """,
-                                    old_name=record["name"],
-                                    name=new_name
-                                )
-
-                                if duplicate.records:
-                                    st.warning(f"มีสัตว์เลี้ยงชื่อ {new_name} อยู่แล้ว")
-
-                                else:
-                                    driver.execute_query(
-                                        """
-                                        MATCH (p:Pet {name: $old_name})
-
-                                        SET
-                                            p.name = $name,
-                                            p.description = $description
-
-                                        WITH p
-
-                                        OPTIONAL MATCH
-                                            (p)-[r:SUITABLE_FOR|COST_LEVEL|NEEDS_TIME]->()
-                                        DELETE r
-
-                                        WITH p
-
-                                        MERGE (space:LivingSpace {name: $space})
-                                        MERGE (budget:Budget {name: $budget})
-                                        MERGE (time:TimeAvailable {name: $time})
-
-                                        CREATE (p)-[:SUITABLE_FOR]->(space)
-                                        CREATE (p)-[:COST_LEVEL]->(budget)
-                                        CREATE (p)-[:NEEDS_TIME]->(time)
-                                        """,
-                                        old_name=record["name"],
-                                        name=new_name,
-                                        description=new_description,
-                                        space=space_to_db[edit_space],
-                                        budget=budget_to_db[edit_budget],
-                                        time=time_to_db[edit_time]
-                                    )
-
-                                    st.success(f"แก้ไข {new_name} สำเร็จ")
-                                    st.rerun()
-
-                            except Exception as e:
-                                st.error("ไม่สามารถแก้ไขข้อมูลได้")
-                                st.write(str(e))
-
-                    st.markdown("---")
-                    st.markdown("**⚠️ การลบข้อมูล**")
-
-                    delete_confirm = st.checkbox(
-                        "ฉันยืนยันว่าต้องการลบสัตว์เลี้ยงตัวนี้",
-                        key=f"confirm_delete_{index}"
-                    )
-
-                    if st.button(
-                        "🗑️ ลบสัตว์เลี้ยง",
-                        key=f"delete_pet_{index}",
-                        disabled=not delete_confirm,
-                        use_container_width=True
-                    ):
-
-                        try:
-                            driver.execute_query(
-                                """
-                                MATCH (p:Pet {name: $name})
-                                DETACH DELETE p
-                                """,
-                                name=record["name"]
-                            )
-
-                            st.success(f"ลบ {record['name']} สำเร็จ")
-                            st.rerun()
-
-                        except Exception as e:
-                            st.error("ไม่สามารถลบข้อมูลได้")
-                            st.write(str(e))
-
-        except Exception as e:
-            st.error("ไม่สามารถโหลดข้อมูลสัตว์เลี้ยงได้")
-            st.write(str(e))
-import streamlit as st
-from neo4j import GraphDatabase
-from pathlib import Path
-import streamlit.components.v1 as components
-import json
-import html
-
-
-# =========================================================
-# PAGE CONFIG
-# =========================================================
-
-st.set_page_config(
-    page_title="ระบบแนะนำสัตว์เลี้ยง",
-    page_icon="🐾",
-    layout="wide"
-)
-
-st.markdown("""
-<style>
-/* ===== ขยายตัวหนังสือและช่องกรอกของหน้าหลัก ===== */
-[data-testid="stAppViewContainer"] {
-    font-size: 20px;
-}
-
-[data-testid="stSidebar"] {
-    font-size: 21px;
-}
-
-[data-testid="stSidebar"] h1,
-[data-testid="stSidebar"] h2,
-[data-testid="stSidebar"] h3 {
-    font-size: 27px !important;
-}
-
-[data-testid="stMarkdownContainer"] p,
-[data-testid="stMarkdownContainer"] li {
-    font-size: 20px;
-    line-height: 1.7;
-}
-
-[data-testid="stWidgetLabel"] p {
-    font-size: 20px !important;
-    font-weight: 600 !important;
-}
-
-[data-baseweb="select"] {
-    min-height: 58px !important;
-}
-
-[data-baseweb="select"] > div {
-    min-height: 58px !important;
-    font-size: 20px !important;
-}
-
-[data-baseweb="select"] input {
-    font-size: 20px !important;
-}
-
-[data-testid="stButton"] button {
-    font-size: 20px !important;
-    min-height: 52px !important;
-    padding: 10px 22px !important;
-}
-
-/* ===== หน้าผลการแนะนำสัตว์ ===== */
-.pet-section-title {
-    color: #D4A017;
-    font-weight: bold;
-    font-size: 18px;
-    margin-top: 10px;
-    margin-bottom: 5px;
-}
-
-/* ===== หน้าผลการแนะนำสัตว์ ===== */
-.pet-result-title {
-    font-size: 34px;
-    font-weight: 700;
-    margin-bottom: 12px;
-}
-
-.pet-result-description {
-    font-size: 23px;
-    line-height: 1.75;
-    margin-bottom: 18px;
-}
-
-.pet-detail {
-    font-size: 19px;
-    line-height: 1.7;
-    padding: 10px 0;
-}
-
-.pet-result-image img {
-    border-radius: 14px;
-}
-</style>
-""", unsafe_allow_html=True)
-
-
-# =========================================================
-# IMAGE FOLDER
-# =========================================================
-
-IMAGE_DIR = Path(__file__).parent / "images"
-
-
-def get_pet_image(pet_name):
-    extensions = [".jpg", ".jpeg", ".png", ".webp"]
-
-    for extension in extensions:
-        image_path = IMAGE_DIR / (pet_name.lower() + extension)
-
-        if image_path.exists():
-            return image_path
-
-    return None
-
-
-# =========================================================
-# SIDEBAR MENU
-# =========================================================
-
-st.sidebar.title("🐾 ระบบแนะนำสัตว์เลี้ยง")
-
-page = st.sidebar.radio(
-    "เมนู",
-    [
-        "🏠 หน้าหลัก",
-        "🐾 คู่มือสัตว์เลี้ยง",
-        "🕸️ Graph Explorer",
-        "🔐 ผู้ดูแลระบบ"
-    ]
-)
-
-
-# =========================================================
-# NEO4J CONNECTION
-# =========================================================
-
-@st.cache_resource
-def get_driver():
-
-    driver = GraphDatabase.driver(
-        st.secrets["NEO4J_URI"],
-        auth=(
-            st.secrets["NEO4J_USERNAME"],
-            st.secrets["NEO4J_PASSWORD"]
-        )
-    )
-
-    driver.verify_connectivity()
-
-    return driver
-
-
-# =========================================================
-# HOME PAGE
-# =========================================================
-
-if page == "🏠 หน้าหลัก":
-
-    st.title("🐾 ระบบแนะนำสัตว์เลี้ยง")
-
-    st.write(
-        "ค้นหาสัตว์เลี้ยงที่เหมาะกับไลฟ์สไตล์ของคุณ"
-    )
-
-    st.subheader("ข้อมูลเกี่ยวกับไลฟ์สไตล์ของคุณ")
-
-    user_space_th = st.selectbox(
-        "คุณอาศัยอยู่ที่ไหน?",
-        [
-            "บ้าน",
-            "คอนโด",
-            "ฟาร์ม",
-            "พื้นที่กลางแจ้ง"
-        ]
-    )
-
-    space_map = {
-        "บ้าน": "House",
-        "คอนโด": "Condo",
-        "ฟาร์ม": "Farm",
-        "พื้นที่กลางแจ้ง": "Outdoor Space"
-    }
-
-    user_space = space_map[user_space_th]
-
-    user_budget_th = st.selectbox(
-        "งบประมาณสำหรับสัตว์เลี้ยงของคุณ?",
-        [
-            "ต่ำ",
-            "ปานกลาง",
-            "สูง"
-        ]
-    )
-
-    budget_map = {
-        "ต่ำ": "Low",
-        "ปานกลาง": "Medium",
-        "สูง": "High"
-    }
-
-    user_budget = budget_map[user_budget_th]
-
-    user_time_th = st.selectbox(
-        "คุณมีเวลาในการดูแลสัตว์เลี้ยงมากแค่ไหน?",
-        [
-            "น้อย",
-            "ปานกลาง",
-            "มาก"
-        ]
-    )
-
-    time_map = {
-        "น้อย": "Low",
-        "ปานกลาง": "Medium",
-        "มาก": "High"
-    }
-
-    user_time = time_map[user_time_th]
-
-    if st.button("🐾 แนะนำสัตว์เลี้ยง"):
-
-        try:
-
-            driver = get_driver()
-
-            result = driver.execute_query(
-                """
-                MATCH (p:Pet)
-
-                OPTIONAL MATCH
-                    (p)-[:SUITABLE_FOR]->(space:LivingSpace)
-
-                OPTIONAL MATCH
-                    (p)-[:COST_LEVEL]->(budget:Budget)
-
-                OPTIONAL MATCH
-                    (p)-[:NEEDS_TIME]->(time:TimeAvailable)
-
-                WITH
-                    p,
-                    collect(DISTINCT space.name) AS spaces,
-                    collect(DISTINCT budget.name)[0] AS budget,
-                    collect(DISTINCT time.name)[0] AS time
-
-                WITH
-                    p,
-                    spaces,
-                    budget,
-                    time,
-
-                    CASE
-                        WHEN $space IN spaces THEN 1
-                        ELSE 0
-                    END +
-
-                    CASE
-                        WHEN budget = $budget THEN 1
-                        ELSE 0
-                    END +
-
-                    CASE
-                        WHEN time = $time THEN 1
-                        ELSE 0
-                    END AS score
-
-                RETURN
-                    p.name AS Pet,
-                    p.description AS Description,
-                    score AS Score,
-                    spaces AS SuitableSpace,
-                    budget AS Budget,
-                    time AS TimeAvailable
-
-                ORDER BY Score DESC, Pet
-                """,
-                space=user_space,
-                budget=user_budget,
-                time=user_time
-            )
-
-            st.subheader("🐾 สัตว์เลี้ยงที่แนะนำ")
-
-            space_display_map = {
-                "House": "บ้าน",
-                "Condo": "คอนโด",
-                "Farm": "ฟาร์ม",
-                "Outdoor Space": "พื้นที่กลางแจ้ง"
-            }
-
-            budget_display_map = {
-                "Low": "ต่ำ",
-                "Medium": "ปานกลาง",
-                "High": "สูง"
-            }
-
-            time_display_map = {
-                "Low": "น้อย",
-                "Medium": "ปานกลาง",
-                "High": "มาก"
-            }
-
-            # แปลงข้อมูลที่แสดงผลจาก Neo4j ให้เป็นภาษาไทย
-            pet_display_map = {
-                "Dog": "สุนัข",
-                "Cat": "แมว",
-                "Bird": "นก",
-                "Rabbit": "กระต่าย",
-                "Fish": "ปลา",
-                "Hamster": "แฮมสเตอร์",
-                "Duck": "เป็ด",
-                "Sheep": "แกะ",
-                "Turtle": "เต่า",
-                "Horse": "ม้า"
-            }
-
-            # คำอธิบายภาษาไทยสำหรับสัตว์แต่ละชนิด
-            description_display_map = {
-                "Dog":
-                    "สุนัขเป็นสัตว์เลี้ยงที่เป็นมิตรและชอบอยู่ร่วมกับผู้คน เหมาะสำหรับผู้ที่มีเวลาในการดูแลและพาออกกำลังกาย",
-                "Cat":
-                    "แมวเป็นสัตว์เลี้ยงที่รักอิสระและสามารถปรับตัวให้เข้ากับสภาพแวดล้อมภายในบ้านได้ดี",
-                "Bird":
-                    "นกเป็นสัตว์เลี้ยงขนาดเล็กที่มีความกระตือรือร้นและสามารถสร้างความเพลิดเพลินให้กับผู้เลี้ยงได้",
-                "Rabbit":
-                    "กระต่ายเป็นสัตว์เลี้ยงขนาดเล็กที่มีนิสัยอ่อนโยนและค่อนข้างเงียบ เหมาะสำหรับผู้ที่ชอบสัตว์เลี้ยงที่สงบ",
-                "Fish":
-                    "ปลาเป็นสัตว์เลี้ยงที่เงียบและเหมาะสำหรับผู้ที่ต้องการสัตว์เลี้ยงที่ใช้พื้นที่ไม่มาก",
-                "Hamster":
-                    "แฮมสเตอร์เป็นสัตว์เลี้ยงขนาดเล็กที่สามารถเลี้ยงในพื้นที่จำกัด และมีพฤติกรรมที่น่าสนใจให้สังเกต",
-                "Duck":
-                    "เป็ดเป็นสัตว์ที่ชอบอยู่รวมกันและต้องการพื้นที่สำหรับเดินเล่นและทำกิจกรรมกลางแจ้ง",
-                "Sheep":
-                    "แกะเป็นสัตว์เลี้ยงในพื้นที่เกษตรที่มักอยู่รวมกันเป็นฝูง และต้องการพื้นที่สำหรับใช้ชีวิตอย่างเหมาะสม",
-                "Turtle":
-                    "เต่าเป็นสัตว์ที่ค่อนข้างสงบและเงียบ เหมาะสำหรับผู้ที่ชอบสังเกตพฤติกรรมของสัตว์",
-                "Horse":
-                    "ม้าเป็นสัตว์ขนาดใหญ่ที่มีความกระตือรือร้น และต้องการพื้นที่กว้างสำหรับการเคลื่อนไหวและออกกำลังกาย"
-            }
-
-            for record in result.records:
-
-                st.markdown("---")
-
-                pet_name = pet_display_map.get(
-                    record["Pet"],
-                    record["Pet"]
-                )
-
-                # ใช้คำอธิบายภาษาไทยที่กำหนดไว้เสมอ
-                # เพื่อไม่ให้ข้อความภาษาอังกฤษจาก Neo4j แสดงบนหน้าจอ
-                description = description_display_map.get(
-                    record["Pet"],
-                    "ยังไม่มีคำอธิบายภาษาไทยสำหรับสัตว์ชนิดนี้"
-                )
-
-                # แสดงรูปทางซ้าย และขยายรายละเอียดทางขวาให้อ่านง่ายขึ้น
-                image_col, info_col = st.columns([1.25, 3.75], gap="large")
-
-                with image_col:
-                    image_path = get_pet_image(record["Pet"])
-
-                    if image_path:
-                        st.markdown('<div class="pet-result-image">', unsafe_allow_html=True)
-                        st.image(
-                            str(image_path),
-                            width=240
-                        )
-                        st.markdown('</div>', unsafe_allow_html=True)
-                    else:
-                        st.info(f"ไม่พบรูปของ {pet_name}")
-
-                with info_col:
-                    st.markdown(
-                        f'<div class="pet-result-title">🐾 {pet_name} — {record["Score"]}/3</div>',
-                        unsafe_allow_html=True
-                    )
-
-                    st.markdown(
-                        f'<div class="pet-result-description">{description}</div>',
-                        unsafe_allow_html=True
-                    )
-
-                    col1, col2, col3 = st.columns(3, gap="medium")
-
-                    with col1:
-                        suitable_spaces = [
-                            space_display_map.get(space, space)
-                            for space in record["SuitableSpace"]
-                        ]
-
-                        st.markdown(
-                            '<div class="pet-detail">🏠 <b>พื้นที่ที่เหมาะสม</b><br>'
-                            + ", ".join(suitable_spaces)
-                            + '</div>',
-                            unsafe_allow_html=True
-                        )
-
-                    with col2:
-                        st.markdown(
-                            '<div class="pet-detail">💰 <b>งบประมาณ</b><br>'
-                            + budget_display_map.get(record['Budget'], record['Budget'])
-                            + '</div>',
-                            unsafe_allow_html=True
-                        )
-
-                    with col3:
-                        st.markdown(
-                            '<div class="pet-detail">⏰ <b>เวลาที่ใช้ดูแล</b><br>'
-                            + time_display_map.get(record['TimeAvailable'], record['TimeAvailable'])
-                            + '</div>',
-                            unsafe_allow_html=True
-                        )
-
-        except Exception as e:
-
-            st.error(
-                "ไม่สามารถเชื่อมต่อกับ Neo4j ได้"
-            )
-
-            st.write(str(e))
-
-
-# =========================================================
-# PET GUIDE PAGE
-# =========================================================
-
-elif page == "🐾 คู่มือสัตว์เลี้ยง":
-
-    st.title("🐾 คู่มือแนะนำสัตว์เลี้ยง")
-
-    st.write(
-        "ทำความรู้จักกับสัตว์เลี้ยงแต่ละประเภท "
-        "ลักษณะนิสัย ลักษณะทั่วไป และการดูแลเบื้องต้น"
-    )
-
-    st.markdown("---")
-
-    pets = [
-
-        {
-            "name": "Dog",
-            "title": "สุนัข",
-            "personality": "เป็นมิตร เข้าสังคม และชอบทำกิจกรรม",
-            "description":
-                "สุนัขเป็นสัตว์เลี้ยงที่เป็นมิตรและชอบอยู่ร่วมกับผู้คน "
-                "เหมาะสำหรับผู้ที่มีเวลาในการดูแลและพาออกกำลังกาย",
-            "care":
-                "ต้องการอาหาร น้ำสะอาด การออกกำลังกาย "
-                "การดูแลสุขภาพ และการเอาใจใส่อย่างสม่ำเสมอ"
-        },
-
-        {
-            "name": "Cat",
-            "title": "แมว",
-            "personality": "รักอิสระ ปรับตัวได้ดี และค่อนข้างสงบ",
-            "description":
-                "แมวเป็นสัตว์เลี้ยงที่รักอิสระและสามารถปรับตัว "
-                "ให้เข้ากับสภาพแวดล้อมภายในบ้านได้ดี",
-            "care":
-                "ต้องการอาหาร น้ำสะอาด กระบะทราย "
-                "พื้นที่สำหรับพักผ่อน และการดูแลสุขภาพอย่างสม่ำเสมอ"
-        },
-
-        {
-            "name": "Bird",
-            "title": "นก",
-            "personality": "ชอบเข้าสังคม กระตือรือร้น และร่าเริง",
-            "description":
-                "นกเป็นสัตว์เลี้ยงขนาดเล็กที่มีความกระตือรือร้น "
-                "และสามารถสร้างความเพลิดเพลินให้กับผู้เลี้ยงได้",
-            "care":
-                "ต้องการกรงที่เหมาะสม อาหาร น้ำสะอาด "
-                "และการดูแลความสะอาดของกรงอย่างสม่ำเสมอ"
-        },
-
-        {
-            "name": "Rabbit",
-            "title": "กระต่าย",
-            "personality": "อ่อนโยน สงบ และไม่ก้าวร้าว",
-            "description":
-                "กระต่ายเป็นสัตว์เลี้ยงขนาดเล็กที่มีนิสัยอ่อนโยน "
-                "และค่อนข้างเงียบ เหมาะสำหรับผู้ที่ชอบสัตว์เลี้ยงที่สงบ",
-            "care":
-                "ต้องการพื้นที่อยู่อาศัยที่สะอาด อาหารที่เหมาะสม "
-                "น้ำสะอาด และการดูแลสุขภาพอย่างสม่ำเสมอ"
-        },
-
-        {
-            "name": "Fish",
-            "title": "ปลา",
-            "personality": "สงบ เงียบ และดูแลง่าย",
-            "description":
-                "ปลาเป็นสัตว์เลี้ยงที่เงียบและเหมาะสำหรับผู้ที่ต้องการ "
-                "สัตว์เลี้ยงที่ใช้พื้นที่ไม่มาก",
-            "care":
-                "ต้องการตู้ปลาที่เหมาะสม น้ำสะอาด "
-                "อาหารที่เหมาะสม และการดูแลคุณภาพน้ำเป็นประจำ"
-        },
-
-        {
-            "name": "Hamster",
-            "title": "แฮมสเตอร์",
-            "personality": "ตัวเล็ก กระตือรือร้น และชอบสำรวจ",
-            "description":
-                "แฮมสเตอร์เป็นสัตว์เลี้ยงขนาดเล็กที่สามารถเลี้ยง "
-                "ในพื้นที่จำกัด และมีพฤติกรรมที่น่าสนใจให้สังเกต",
-            "care":
-                "ต้องการกรงที่สะอาด อาหาร น้ำสะอาด "
-                "และอุปกรณ์สำหรับออกกำลังกายที่เหมาะสม"
-        },
-
-        {
-            "name": "Duck",
-            "title": "เป็ด",
-            "personality": "ชอบเข้าสังคม กระตือรือร้น และชอบอยู่รวมกัน",
-            "description":
-                "เป็ดเป็นสัตว์ที่ชอบอยู่รวมกันและต้องการพื้นที่ "
-                "สำหรับเดินเล่นและทำกิจกรรมกลางแจ้ง",
-            "care":
-                "ต้องการพื้นที่กลางแจ้ง น้ำสะอาด อาหารที่เหมาะสม "
-                "ที่พักอาศัย และการดูแลอย่างสม่ำเสมอ"
-        },
-
-        {
-            "name": "Sheep",
-            "title": "แกะ",
-            "personality": "รักสงบ ชอบอยู่รวมกัน และเข้าสังคมได้ดี",
-            "description":
-                "แกะเป็นสัตว์เลี้ยงในพื้นที่เกษตรที่มักอยู่รวมกันเป็นฝูง "
-                "และต้องการพื้นที่สำหรับใช้ชีวิตอย่างเหมาะสม",
-            "care":
-                "ต้องการพื้นที่สำหรับเลี้ยง อาหาร น้ำสะอาด "
-                "ที่พัก และการดูแลสุขภาพอย่างเหมาะสม"
-        },
-
-        {
-            "name": "Turtle",
-            "title": "เต่า",
-            "personality": "สงบ เงียบ และเคลื่อนไหวช้า",
-            "description":
-                "เต่าเป็นสัตว์ที่ค่อนข้างสงบและเงียบ "
-                "เหมาะสำหรับผู้ที่ชอบสังเกตพฤติกรรมของสัตว์",
-            "care":
-                "ต้องการพื้นที่อยู่อาศัยที่เหมาะสม "
-                "อาหารที่เหมาะกับชนิดของเต่า น้ำสะอาด "
-                "และการดูแลสภาพแวดล้อมอย่างสม่ำเสมอ"
-        },
-
-        {
-            "name": "Horse",
-            "title": "ม้า",
-            "personality": "กระตือรือร้น แข็งแรง และต้องการการเคลื่อนไหว",
-            "description":
-                "ม้าเป็นสัตว์ขนาดใหญ่ที่มีความกระตือรือร้น "
-                "และต้องการพื้นที่กว้างสำหรับการเคลื่อนไหวและออกกำลังกาย",
-            "care":
-                "ต้องการพื้นที่กลางแจ้งขนาดใหญ่ อาหาร น้ำสะอาด "
-                "การออกกำลังกาย และการดูแลสุขภาพอย่างสม่ำเสมอ"
-        }
-
-    ]
-
-    for i in range(0, len(pets), 3):
-
-        columns = st.columns(3)
-
-        for j, col in enumerate(columns):
-
-            if i + j >= len(pets):
-                continue
-
-            pet = pets[i + j]
-
-            with col:
-
-                # กรอบแยกข้อมูลสัตว์แต่ละตัว
-                with st.container(border=True):
-
-                    image_path = get_pet_image(
-                        pet["name"]
-                    )
-
-                    if image_path:
-
-                        st.image(
-                            str(image_path),
-                            use_container_width=True
-                        )
-
-                    else:
-
-                        st.warning(
-                            f"ไม่พบรูปของ {pet['title']}"
-                        )
-
-                    st.subheader(
-                        f"🐾 {pet['title']}"
-                    )
-
-                    st.markdown(
-                        '<div class="pet-section-title">ลักษณะนิสัย</div>',
-                        unsafe_allow_html=True
-                    )
-                    st.write(pet["personality"])
-
-                    st.markdown(
-                        '<div class="pet-section-title">ลักษณะทั่วไป</div>',
-                        unsafe_allow_html=True
-                    )
-                    st.write(pet["description"])
-
-                    st.markdown(
-                        '<div class="pet-section-title">การดูแลเบื้องต้น</div>',
-                        unsafe_allow_html=True
-                    )
-                    st.write(pet["care"])
-
-    st.info(
-        "💡 ข้อมูลในหน้านี้ใช้สำหรับแนะนำลักษณะทั่วไปของสัตว์ "
-        "ส่วนการเลือกสัตว์ที่เหมาะสมกับผู้ใช้งาน "
-        "สามารถใช้ระบบแนะนำจากหน้า Home ได้"
-    )
-
-
-# =========================================================
-# GRAPH EXPLORER PAGE
-# =========================================================
-
-elif page == "🕸️ Graph Explorer":
-
-    st.title("🕸️ Graph Explorer")
-    st.write("แสดงโครงสร้าง Graph Database ของระบบแนะนำสัตว์เลี้ยงจาก Neo4j")
-
-    # โครงสร้างกราฟของโปรเจกต์นี้
-    st.markdown("""
-    <div style="font-size:20px; line-height:1.8; margin-bottom:18px;">
-        <b>โครงสร้างความสัมพันธ์</b><br>
-        🐾 สัตว์เลี้ยง → 🏠 พื้นที่ที่เหมาะสม<br>
-        🐾 สัตว์เลี้ยง → 💰 ระดับงบประมาณ<br>
-        🐾 สัตว์เลี้ยง → ⏰ เวลาที่ใช้ดูแล
-    </div>
-    """, unsafe_allow_html=True)
-
-    try:
-        driver = get_driver()
-
-        # ดึงเฉพาะ Graph Schema ของระบบสัตว์เลี้ยง
-        # ไม่ใช้ MATCH (n)-[r]->(m) แบบกว้าง เพื่อให้กราฟตรงกับโดเมนของโปรเจกต์
-        graph_result = driver.execute_query(
-            """
-            MATCH (p:Pet)
-            OPTIONAL MATCH (p)-[r1:SUITABLE_FOR]->(space:LivingSpace)
-            OPTIONAL MATCH (p)-[r2:COST_LEVEL]->(budget:Budget)
-            OPTIONAL MATCH (p)-[r3:NEEDS_TIME]->(time:TimeAvailable)
-
-            WITH p,
-                 collect(DISTINCT {
-                     target: space,
-                     rel: CASE WHEN space IS NULL THEN NULL ELSE 'เหมาะกับพื้นที่' END
-                 }) AS spaces,
-                 collect(DISTINCT {
-                     target: budget,
-                     rel: CASE WHEN budget IS NULL THEN NULL ELSE 'ระดับงบประมาณ' END
-                 }) AS budgets,
-                 collect(DISTINCT {
-                     target: time,
-                     rel: CASE WHEN time IS NULL THEN NULL ELSE 'เวลาที่ใช้ดูแล' END
-                 }) AS times
-
-            UNWIND (
-                [x IN spaces WHERE x.target IS NOT NULL] +
-                [x IN budgets WHERE x.target IS NOT NULL] +
-                [x IN times WHERE x.target IS NOT NULL]
-            ) AS x
-
-            RETURN
-                elementId(p) AS source_id,
-                coalesce(p.name, 'สัตว์เลี้ยง') AS source,
-                'Pet' AS source_label,
-                elementId(x.target) AS target_id,
-                coalesce(x.target.name, 'ข้อมูล') AS target,
-                CASE
-                    WHEN x.target:LivingSpace THEN 'LivingSpace'
-                    WHEN x.target:Budget THEN 'Budget'
-                    WHEN x.target:TimeAvailable THEN 'TimeAvailable'
-                    ELSE 'Node'
-                END AS target_label,
-                x.rel AS relationship
-            ORDER BY source
-            LIMIT 500
-            """
-        )
-
-        nodes = {}
-        edges = []
-
-        # ชื่อประเภท Node เป็นภาษาไทยสำหรับแสดงในกราฟ
-        label_th = {
-            "Pet": "สัตว์เลี้ยง",
-            "LivingSpace": "พื้นที่",
-            "Budget": "งบประมาณ",
-            "TimeAvailable": "เวลา"
-        }
-
-        for record in graph_result.records:
-            source_id = str(record["source_id"])
-            target_id = str(record["target_id"])
-
-            source_name = str(record["source"])
-            target_name = str(record["target"])
-            source_label = str(record["source_label"])
-            target_label = str(record["target_label"])
-
-            if source_id not in nodes:
-                nodes[source_id] = {
-                    "id": source_id,
-                    "label": source_name,
-                    "title": f"ประเภท: {label_th.get(source_label, source_label)}<br>ชื่อ: {html.escape(source_name)}",
-                    "group": source_label
-                }
-
-            if target_id not in nodes:
-                nodes[target_id] = {
-                    "id": target_id,
-                    "label": target_name,
-                    "title": f"ประเภท: {label_th.get(target_label, target_label)}<br>ชื่อ: {html.escape(target_name)}",
-                    "group": target_label
-                }
-
-            edges.append({
-                "from": source_id,
-                "to": target_id,
-                "label": str(record["relationship"]),
-                "arrows": "to"
-            })
-
-        if not nodes:
-            st.warning("ยังไม่มีข้อมูล Graph สำหรับแสดงผล")
-            st.info("ให้เข้าเมนู 🔐 ผู้ดูแลระบบ แล้วเพิ่ม/สร้างข้อมูลสัตว์เลี้ยงใน Neo4j ก่อน")
-        else:
-            st.caption(f"พบ {len(nodes)} โหนด และ {len(edges)} ความสัมพันธ์")
-
-            # Legend
-            st.markdown("""
-            <div style="display:flex; gap:12px; flex-wrap:wrap; margin:8px 0 14px 0; font-size:16px;">
-                <span>🐾 สัตว์เลี้ยง</span>
-                <span>🏠 พื้นที่</span>
-                <span>💰 งบประมาณ</span>
-                <span>⏰ เวลา</span>
-            </div>
-            """, unsafe_allow_html=True)
-
-            graph_nodes = json.dumps(list(nodes.values()), ensure_ascii=False)
-            graph_edges = json.dumps(edges, ensure_ascii=False)
-
-            graph_html = f"""
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <meta charset="utf-8">
-                <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
-                <style>
-                    html, body {{
-                        margin: 0;
-                        padding: 0;
-                        width: 100%;
-                        height: 100%;
-                        overflow: hidden;
-                        background: #0e1117;
-                        font-family: Arial, sans-serif;
-                    }}
-                    #graph {{
-                        width: 100%;
-                        height: 700px;
-                        border: 1px solid #3a3d49;
-                        border-radius: 14px;
-                        background: #0e1117;
-                    }}
-                    #hint {{
-                        position: absolute;
-                        top: 14px;
-                        left: 14px;
-                        padding: 9px 13px;
-                        color: #ffffff;
-                        background: rgba(25,27,35,.94);
-                        border: 1px solid #555a6b;
-                        border-radius: 9px;
-                        font-size: 15px;
-                        z-index: 5;
-                    }}
-                </style>
-            </head>
-            <body>
-                <div id="hint">ลากโหนด • เลื่อนเมาส์เพื่อซูม • ดับเบิลคลิกเพื่อโฟกัส • วางเมาส์เพื่อดูรายละเอียด</div>
-                <div id="graph"></div>
-                <script>
-                    const nodes = new vis.DataSet({graph_nodes});
-                    const edges = new vis.DataSet({graph_edges});
-                    const container = document.getElementById('graph');
-                    const data = {{ nodes: nodes, edges: edges }};
-
-                    const options = {{
-                        autoResize: true,
-                        physics: {{
-                            enabled: true,
-                            stabilization: {{ iterations: 250 }},
-                            barnesHut: {{
-                                gravitationalConstant: -6000,
-                                centralGravity: 0.18,
-                                springLength: 190,
-                                springConstant: 0.045,
-                                damping: 0.28
-                            }}
-                        }},
-                        interaction: {{
-                            hover: true,
-                            navigationButtons: true,
-                            keyboard: true,
-                            zoomView: true,
-                            dragView: true,
-                            tooltipDelay: 80
-                        }},
-                        nodes: {{
-                            shape: 'dot',
-                            size: 30,
-                            borderWidth: 2,
-                            font: {{
-                                color: '#ffffff',
-                                size: 19,
-                                face: 'Arial',
-                                strokeWidth: 4,
-                                strokeColor: '#0e1117'
-                            }},
-                            color: {{
-                                background: '#6c63ff',
-                                border: '#a69cff',
-                                highlight: {{ background: '#ffb84d', border: '#ffd27a' }}
-                            }}
-                        }},
-                        groups: {{
-                            Pet: {{
-                                color: {{ background: '#6c63ff', border: '#b0a8ff', highlight: {{ background: '#8a82ff', border: '#ffffff' }} }},
-                                size: 34
-                            }},
-                            LivingSpace: {{
-                                color: {{ background: '#2e9d67', border: '#76d39d', highlight: {{ background: '#42bf83', border: '#ffffff' }} }},
-                                size: 28
-                            }},
-                            Budget: {{
-                                color: {{ background: '#d48b25', border: '#ffc56b', highlight: {{ background: '#f0a63c', border: '#ffffff' }} }},
-                                size: 28
-                            }},
-                            TimeAvailable: {{
-                                color: {{ background: '#287eb8', border: '#75c6f2', highlight: {{ background: '#3c9bd5', border: '#ffffff' }} }},
-                                size: 28
-                            }}
-                        }},
-                        edges: {{
-                            width: 2,
-                            color: {{ color: '#777d8f', highlight: '#ffffff' }},
-                            arrows: {{ to: {{ enabled: true, scaleFactor: 0.75 }} }},
-                            font: {{
-                                color: '#e7e8ee',
-                                size: 15,
-                                align: 'middle',
-                                strokeWidth: 4,
-                                strokeColor: '#0e1117'
-                            }},
-                            smooth: {{ type: 'dynamic' }}
-                        }}
-                    }};
-
-                    const network = new vis.Network(container, data, options);
-
-                    network.once('stabilizationIterationsDone', function() {{
-                        network.fit({{ animation: {{ duration: 600, easingFunction: 'easeInOutQuad' }} }});
-                    }});
-
-                    network.on('doubleClick', function(params) {{
-                        if (params.nodes.length > 0) {{
-                            network.focus(params.nodes[0], {{ scale: 1.35, animation: true }});
-                        }}
-                    }});
-                </script>
-            </body>
-            </html>
-            """
-
-            components.html(graph_html, height=730, scrolling=False)
-
-    except Exception as e:
-        st.error("ไม่สามารถโหลด Graph Explorer จาก Neo4j ได้")
-        st.write(str(e))
-
-
-# =========================================================
-# ADMIN PAGE
-# =========================================================
-
-elif page == "🔐 ผู้ดูแลระบบ":
-
-    st.title("🔐 ผู้ดูแลระบบ")
-
-    if "admin_logged_in" not in st.session_state:
-        st.session_state.admin_logged_in = False
-
-    # =====================================================
-    # LOGIN
-    # =====================================================
-
-    if not st.session_state.admin_logged_in:
-
-        st.subheader("🔑 เข้าสู่ระบบผู้ดูแล")
-
-        with st.form("admin_login_form"):
-
-            username = st.text_input("ชื่อผู้ใช้")
-            password = st.text_input("รหัสผ่าน", type="password")
-
-            login_submit = st.form_submit_button(
-                "🔐 เข้าสู่ระบบ",
-                use_container_width=True
-            )
-
-        if login_submit:
-
-            # สำหรับงานส่ง/เดโม
-            # Username: admin
-            # Password: admin123
-            if username == "admin" and password == "admin123":
-
-                st.session_state.admin_logged_in = True
-                st.success("เข้าสู่ระบบผู้ดูแลสำเร็จ")
-                st.rerun()
-
-            else:
-                st.error("ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง")
-
-    # =====================================================
-    # DASHBOARD
-    # =====================================================
-
-    else:
-
-        st.title("🔧 แผงควบคุมผู้ดูแลระบบ")
-
-        top_col1, top_col2 = st.columns([4, 1])
-
-        with top_col1:
-            st.success("เข้าสู่ระบบผู้ดูแลเรียบร้อยแล้ว")
-
-        with top_col2:
-            if st.button("🚪 ออกจากระบบ", use_container_width=True):
-                st.session_state.admin_logged_in = False
-                st.rerun()
-
-        st.markdown("---")
-
-        # =================================================
-        # DATABASE CONNECTION / STATS
-        # =================================================
-
-        try:
-            driver = get_driver()
-
-            count_result = driver.execute_query(
-                "MATCH (p:Pet) RETURN count(p) AS total"
-            )
-            total_pets = count_result.records[0]["total"]
-
-            stat_col1, stat_col2, stat_col3 = st.columns(3)
-
-            with stat_col1:
-                st.metric("🐾 จำนวนสัตว์เลี้ยง", total_pets)
-
-            with stat_col2:
-                space_count = driver.execute_query(
-                    "MATCH (n:LivingSpace) RETURN count(n) AS total"
-                ).records[0]["total"]
-                st.metric("🏠 พื้นที่", space_count)
-
-            with stat_col3:
-                budget_count = driver.execute_query(
-                    "MATCH (n:Budget) RETURN count(n) AS total"
-                ).records[0]["total"]
-                st.metric("💰 ระดับงบประมาณ", budget_count)
-
-        except Exception as e:
-            st.error("ไม่สามารถเชื่อมต่อกับ Neo4j ได้")
-            st.write(str(e))
-            st.stop()
-
-        st.markdown("---")
-
-        # =================================================
-        # ADD PET
-        # =================================================
-
-        st.subheader("➕ เพิ่มสัตว์เลี้ยง")
-
-        with st.form("add_pet_form", clear_on_submit=True):
-
-            add_col1, add_col2 = st.columns(2)
-
-            with add_col1:
-                new_pet_name = st.text_input("ชื่อสัตว์เลี้ยง")
-
-            with add_col2:
-                new_pet_description = st.text_area("รายละเอียด")
-
-            add_col3, add_col4, add_col5 = st.columns(3)
-
-            with add_col3:
-                new_pet_space_th = st.selectbox(
-                    "พื้นที่ที่เหมาะสม",
-                    ["บ้าน", "คอนโด", "ฟาร์ม", "พื้นที่กลางแจ้ง"]
-                )
-
-            with add_col4:
-                new_pet_budget_th = st.selectbox(
-                    "งบประมาณ",
-                    ["ต่ำ", "ปานกลาง", "สูง"]
-                )
-
-            with add_col5:
-                new_pet_time_th = st.selectbox(
-                    "เวลาที่ใช้ดูแล",
-                    ["น้อย", "ปานกลาง", "มาก"]
-                )
-
-            add_submit = st.form_submit_button(
-                "➕ เพิ่มสัตว์เลี้ยง",
-                use_container_width=True
-            )
-
-        space_to_db = {
-            "บ้าน": "House",
-            "คอนโด": "Condo",
-            "ฟาร์ม": "Farm",
-            "พื้นที่กลางแจ้ง": "Outdoor Space"
-        }
-
-        budget_to_db = {
-            "ต่ำ": "Low",
-            "ปานกลาง": "Medium",
-            "สูง": "High"
-        }
-
-        time_to_db = {
-            "น้อย": "Low",
-            "ปานกลาง": "Medium",
-            "มาก": "High"
-        }
-
-        if add_submit:
-
-            name = new_pet_name.strip()
-            description = new_pet_description.strip()
-
-            if not name or not description:
-                st.warning("กรุณากรอกชื่อและรายละเอียดสัตว์เลี้ยง")
-
-            else:
-                try:
-                    existing = driver.execute_query(
-                        "MATCH (p:Pet {name: $name}) RETURN p LIMIT 1",
-                        name=name
-                    )
-
-                    if existing.records:
-                        st.warning(f"มีสัตว์เลี้ยงชื่อ {name} อยู่แล้ว ไม่สามารถเพิ่มชื่อซ้ำได้")
-
-                    else:
-                        driver.execute_query(
-                            """
-                            CREATE (p:Pet {
-                                name: $name,
-                                description: $description
-                            })
-
-                            WITH p
-
-                            MERGE (space:LivingSpace {name: $space})
-                            MERGE (budget:Budget {name: $budget})
-                            MERGE (time:TimeAvailable {name: $time})
-
-                            CREATE (p)-[:SUITABLE_FOR]->(space)
-                            CREATE (p)-[:COST_LEVEL]->(budget)
-                            CREATE (p)-[:NEEDS_TIME]->(time)
-                            """,
-                            name=name,
-                            description=description,
-                            space=space_to_db[new_pet_space_th],
-                            budget=budget_to_db[new_pet_budget_th],
-                            time=time_to_db[new_pet_time_th]
-                        )
-
-                        st.success(f"เพิ่ม {name} สำเร็จ")
-                        st.rerun()
-
-                except Exception as e:
-                    st.error("ไม่สามารถเพิ่มข้อมูลได้")
-                    st.write(str(e))
-
-        st.markdown("---")
-
-        # =================================================
-        # MANAGE PETS
-        # =================================================
-
-        st.subheader("🐾 จัดการข้อมูลสัตว์เลี้ยง")
-
-        try:
-
-            result = driver.execute_query(
-                """
-                MATCH (p:Pet)
-
-                OPTIONAL MATCH (p)-[:SUITABLE_FOR]->(space:LivingSpace)
-                OPTIONAL MATCH (p)-[:COST_LEVEL]->(budget:Budget)
-                OPTIONAL MATCH (p)-[:NEEDS_TIME]->(time:TimeAvailable)
-
-                RETURN
-                    p.name AS name,
-                    p.description AS description,
-                    collect(DISTINCT space.name)[0] AS space,
-                    collect(DISTINCT budget.name)[0] AS budget,
-                    collect(DISTINCT time.name)[0] AS time
-
-                ORDER BY name
-                """
-            )
-
-            if not result.records:
-                st.info("ยังไม่มีข้อมูลสัตว์เลี้ยงใน Neo4j")
-
-            db_to_space = {v: k for k, v in space_to_db.items()}
-            db_to_budget = {v: k for k, v in budget_to_db.items()}
-            db_to_time = {v: k for k, v in time_to_db.items()}
-
-            spaces = list(space_to_db.keys())
-            budgets = list(budget_to_db.keys())
-            times = list(time_to_db.keys())
-
-            for index, record in enumerate(result.records):
-
-                pet_name = record["name"]
-
-                with st.expander(f"🐾 {pet_name}", expanded=False):
-
-                    with st.form(f"edit_pet_form_{index}"):
-
-                        edit_name = st.text_input(
-                            "ชื่อสัตว์เลี้ยง",
-                            value=record["name"] or ""
-                        )
-
-                        edit_description = st.text_area(
-                            "รายละเอียด",
-                            value=record["description"] or ""
-                        )
-
-                        current_space = db_to_space.get(record["space"], spaces[0])
-                        current_budget = db_to_budget.get(record["budget"], budgets[0])
-                        current_time = db_to_time.get(record["time"], times[0])
-
-                        edit_col1, edit_col2, edit_col3 = st.columns(3)
-
-                        with edit_col1:
-                            edit_space = st.selectbox(
-                                "พื้นที่",
-                                spaces,
-                                index=spaces.index(current_space)
-                            )
-
-                        with edit_col2:
-                            edit_budget = st.selectbox(
-                                "งบประมาณ",
-                                budgets,
-                                index=budgets.index(current_budget)
-                            )
-
-                        with edit_col3:
-                            edit_time = st.selectbox(
-                                "เวลาที่ดูแล",
-                                times,
-                                index=times.index(current_time)
-                            )
-
-                        save_submit = st.form_submit_button(
-                            "💾 บันทึกการแก้ไข",
-                            use_container_width=True
-                        )
-
-                    if save_submit:
-
-                        new_name = edit_name.strip()
-                        new_description = edit_description.strip()
-
-                        if not new_name or not new_description:
-                            st.warning("กรุณากรอกชื่อและรายละเอียดให้ครบ")
-
-                        else:
-                            try:
-                                # ถ้าเปลี่ยนชื่อ ให้ตรวจสอบชื่อซ้ำก่อน
-                                duplicate = driver.execute_query(
-                                    """
-                                    MATCH (p:Pet {name: $name})
-                                    WHERE $old_name <> $name
-                                    RETURN p LIMIT 1
-                                    """,
-                                    old_name=record["name"],
-                                    name=new_name
-                                )
-
-                                if duplicate.records:
-                                    st.warning(f"มีสัตว์เลี้ยงชื่อ {new_name} อยู่แล้ว")
-
-                                else:
-                                    driver.execute_query(
-                                        """
-                                        MATCH (p:Pet {name: $old_name})
-
-                                        SET
-                                            p.name = $name,
-                                            p.description = $description
-
-                                        WITH p
-
-                                        OPTIONAL MATCH
-                                            (p)-[r:SUITABLE_FOR|COST_LEVEL|NEEDS_TIME]->()
-                                        DELETE r
-
-                                        WITH p
-
-                                        MERGE (space:LivingSpace {name: $space})
-                                        MERGE (budget:Budget {name: $budget})
-                                        MERGE (time:TimeAvailable {name: $time})
-
-                                        CREATE (p)-[:SUITABLE_FOR]->(space)
-                                        CREATE (p)-[:COST_LEVEL]->(budget)
-                                        CREATE (p)-[:NEEDS_TIME]->(time)
-                                        """,
-                                        old_name=record["name"],
-                                        name=new_name,
-                                        description=new_description,
-                                        space=space_to_db[edit_space],
-                                        budget=budget_to_db[edit_budget],
-                                        time=time_to_db[edit_time]
-                                    )
-
-                                    st.success(f"แก้ไข {new_name} สำเร็จ")
-                                    st.rerun()
-
-                            except Exception as e:
-                                st.error("ไม่สามารถแก้ไขข้อมูลได้")
-                                st.write(str(e))
-
-                    st.markdown("---")
-                    st.markdown("**⚠️ การลบข้อมูล**")
-
-                    delete_confirm = st.checkbox(
-                        "ฉันยืนยันว่าต้องการลบสัตว์เลี้ยงตัวนี้",
-                        key=f"confirm_delete_{index}"
-                    )
-
-                    if st.button(
-                        "🗑️ ลบสัตว์เลี้ยง",
-                        key=f"delete_pet_{index}",
-                        disabled=not delete_confirm,
-                        use_container_width=True
-                    ):
-
-                        try:
-                            driver.execute_query(
-                                """
-                                MATCH (p:Pet {name: $name})
-                                DETACH DELETE p
-                                """,
-                                name=record["name"]
-                            )
-
-                            st.success(f"ลบ {record['name']} สำเร็จ")
-                            st.rerun()
-
-                        except Exception as e:
-                            st.error("ไม่สามารถลบข้อมูลได้")
-                            st.write(str(e))
-
-        except Exception as e:
-            st.error("ไม่สามารถโหลดข้อมูลสัตว์เลี้ยงได้")
-            st.write(str(e))
