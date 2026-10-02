@@ -1,6 +1,9 @@
 import streamlit as st
 from neo4j import GraphDatabase
 from pathlib import Path
+import streamlit.components.v1 as components
+import json
+import html
 
 
 # =========================================================
@@ -125,6 +128,7 @@ page = st.sidebar.radio(
     [
         "🏠 หน้าหลัก",
         "🐾 คู่มือสัตว์เลี้ยง",
+        "🕸️ Graph Explorer",
         "🔐 ผู้ดูแลระบบ"
     ]
 )
@@ -620,6 +624,187 @@ elif page == "🐾 คู่มือสัตว์เลี้ยง":
         "ส่วนการเลือกสัตว์ที่เหมาะสมกับผู้ใช้งาน "
         "สามารถใช้ระบบแนะนำจากหน้า Home ได้"
     )
+
+
+# =========================================================
+# GRAPH EXPLORER PAGE
+# =========================================================
+
+elif page == "🕸️ Graph Explorer":
+
+    st.title("🕸️ Graph Explorer")
+    st.write("ดูความสัมพันธ์ของข้อมูลสัตว์เลี้ยงจาก Neo4j ในรูปแบบกราฟ")
+
+    try:
+        driver = get_driver()
+
+        graph_result = driver.execute_query(
+            """
+            MATCH (n)-[r]->(m)
+            RETURN
+                elementId(n) AS source_id,
+                coalesce(n.name, elementId(n)) AS source,
+                coalesce(labels(n)[0], 'Node') AS source_label,
+                type(r) AS relationship,
+                elementId(m) AS target_id,
+                coalesce(m.name, elementId(m)) AS target,
+                coalesce(labels(m)[0], 'Node') AS target_label
+            LIMIT 300
+            """
+        )
+
+        nodes = {}
+        edges = []
+
+        for record in graph_result.records:
+            source_id = str(record["source_id"])
+            target_id = str(record["target_id"])
+
+            if source_id not in nodes:
+                nodes[source_id] = {
+                    "id": source_id,
+                    "label": str(record["source"]),
+                    "group": str(record["source_label"])
+                }
+
+            if target_id not in nodes:
+                nodes[target_id] = {
+                    "id": target_id,
+                    "label": str(record["target"]),
+                    "group": str(record["target_label"])
+                }
+
+            edges.append({
+                "from": source_id,
+                "to": target_id,
+                "label": str(record["relationship"]),
+                "arrows": "to"
+            })
+
+        if not nodes:
+            st.info("ยังไม่มีความสัมพันธ์ใน Neo4j สำหรับแสดงเป็นกราฟ")
+        else:
+            st.caption(f"พบ {len(nodes)} โหนด และ {len(edges)} ความสัมพันธ์")
+
+            graph_nodes = json.dumps(list(nodes.values()), ensure_ascii=False)
+            graph_edges = json.dumps(edges, ensure_ascii=False)
+
+            graph_html = f"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="utf-8">
+                <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+                <style>
+                    html, body {{
+                        margin: 0;
+                        padding: 0;
+                        width: 100%;
+                        height: 100%;
+                        overflow: hidden;
+                        background: #0e1117;
+                        font-family: Arial, sans-serif;
+                    }}
+                    #graph {{
+                        width: 100%;
+                        height: 720px;
+                        border: 1px solid #30343f;
+                        border-radius: 12px;
+                        background: #0e1117;
+                    }}
+                    #hint {{
+                        position: absolute;
+                        top: 14px;
+                        left: 14px;
+                        padding: 8px 12px;
+                        color: #d9d9e0;
+                        background: rgba(30,32,42,.9);
+                        border: 1px solid #444754;
+                        border-radius: 8px;
+                        font-size: 14px;
+                        z-index: 5;
+                    }}
+                </style>
+            </head>
+            <body>
+                <div id="hint">ลากโหนดเพื่อจัดตำแหน่ง • เลื่อนเมาส์เพื่อซูม • ดับเบิลคลิกเพื่อโฟกัส</div>
+                <div id="graph"></div>
+                <script>
+                    const nodes = new vis.DataSet({graph_nodes});
+                    const edges = new vis.DataSet({graph_edges});
+
+                    const container = document.getElementById('graph');
+                    const data = {{ nodes: nodes, edges: edges }};
+
+                    const options = {{
+                        autoResize: true,
+                        physics: {{
+                            enabled: true,
+                            stabilization: {{ iterations: 180 }},
+                            barnesHut: {{
+                                gravitationalConstant: -5000,
+                                centralGravity: 0.15,
+                                springLength: 170,
+                                springConstant: 0.04,
+                                damping: 0.25
+                            }}
+                        }},
+                        interaction: {{
+                            hover: true,
+                            navigationButtons: true,
+                            keyboard: true,
+                            zoomView: true,
+                            dragView: true
+                        }},
+                        nodes: {{
+                            shape: 'dot',
+                            size: 28,
+                            borderWidth: 2,
+                            font: {{
+                                color: '#ffffff',
+                                size: 18,
+                                face: 'Arial',
+                                strokeWidth: 4,
+                                strokeColor: '#0e1117'
+                            }},
+                            color: {{
+                                background: '#6c63ff',
+                                border: '#a69cff',
+                                highlight: {{ background: '#ffb84d', border: '#ffd27a' }}
+                            }}
+                        }},
+                        edges: {{
+                            width: 2,
+                            color: {{ color: '#777d8f', highlight: '#ffffff' }},
+                            arrows: {{ to: {{ enabled: true, scaleFactor: 0.7 }} }},
+                            font: {{
+                                color: '#d7d9e0',
+                                size: 14,
+                                align: 'middle',
+                                strokeWidth: 4,
+                                strokeColor: '#0e1117'
+                            }},
+                            smooth: {{ type: 'dynamic' }}
+                        }}
+                    }};
+
+                    const network = new vis.Network(container, data, options);
+
+                    network.on('doubleClick', function(params) {{
+                        if (params.nodes.length > 0) {{
+                            network.focus(params.nodes[0], {{ scale: 1.25, animation: true }});
+                        }}
+                    }});
+                </script>
+            </body>
+            </html>
+            """
+
+            components.html(graph_html, height=750, scrolling=False)
+
+    except Exception as e:
+        st.error("ไม่สามารถโหลดกราฟจาก Neo4j ได้")
+        st.write(str(e))
 
 
 # =========================================================
